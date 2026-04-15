@@ -80,18 +80,6 @@ const collaborationSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const collaborationSchema = new mongoose.Schema({
-  from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  fromShop: String,
-  to: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  toShop: String,
-  productName: String,
-  poolTarget: Number,
-  status: { type: String, default: 'pending' }, // pending, accepted, rejected, cancelled
-  message: String,
-  createdAt: { type: Date, default: Date.now }
-});
-
 const User = mongoose.model('User', userSchema);
 const Product = mongoose.model('Product', productSchema);
 const Order = mongoose.model('Order', orderSchema);
