@@ -969,7 +969,7 @@ function PaymentScreen({ cart, setScreen, showToast, currentUser, setCart }) {
     setLoading(true);
     try {
       // Dynamic import for Razorpay helper
-      const { openRazorpayCheckout } = await import('../utils/razorpay.js');
+      const { openRazorpayCheckout } = await import('./utils/razorpay.js');
       
       openRazorpayCheckout(
         finalTotal,
@@ -1059,7 +1059,7 @@ function PaymentScreen({ cart, setScreen, showToast, currentUser, setCart }) {
                 <SumRow label="Bulk Discount" value={`-${fmt(discount)}`} color="#34d399" />
                 <SumRow label="GST (5%)" value={fmt(tax)} color="#7c9cff" />
                 {shipping > 0 && <SumRow label="Shipping" value={fmt(shipping)} color="#fbbf24" />}
-                {shipping === 0 && <div style={{ fontSize: 12, color: "#34d399", marginBottom: 8 }}>✓ FREE SHIPPING (Order > ₹5000)</div>}
+                {shipping === 0 && <div style={{ fontSize: 12, color: "#34d399", marginBottom: 8 }}>✓ FREE SHIPPING (Order {'>'} ₹5000)</div>}
                 <div style={{ height: 1, background: "#162035", margin: "10px 0" }} />
                 <SumRow label="TOTAL" value={fmt(finalTotal)} color="#fff" large />
               </div>
