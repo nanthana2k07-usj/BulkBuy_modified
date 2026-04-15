@@ -1372,28 +1372,38 @@ function AiChatbot({ open, setOpen, currentUser }) {
 
   const ask = async (q) => {
     if (!q.trim()) return;
-    const question = q;
+    const question = q.toLowerCase();
     setInput("");
-    setMsgs(prev => [...prev, { role: "user", text: question }]);
+    setMsgs(prev => [...prev, { role: "user", text: q }]);
     setLoading(true);
-    try {
-      const resp = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 300,
-          system: `You are BulkBuy AI assistant. The user is a small shop owner named ${currentUser?.ownerName} running ${currentUser?.shopName}. BulkBuy is a platform where shop owners pool orders to get bulk discounts. Active products with bulk deals include: Rice (21% off at 500kg threshold), LED Bulbs (25% off at 250pcs), Sunflower Oil (21% off at 300L). Current pool status: Rice 430/500kg (86%), LED Bulbs 200/250pcs (80%). Be helpful, concise, and encouraging about bulk savings. Keep responses under 3 sentences.`,
-          messages: [{ role: "user", content: question }],
-        }),
-      });
-      const data = await resp.json();
-      const text = data.content?.[0]?.text || "Sorry, I couldn't get a response.";
-      setMsgs(prev => [...prev, { role: "assistant", text }]);
-    } catch {
-      setMsgs(prev => [...prev, { role: "assistant", text: "Sorry, I'm having trouble connecting. Try again!" }]);
-    }
-    setLoading(false);
+    
+    // Smart local chatbot responses
+    const getResponse = (query) => {
+      const responses = {
+        "discount|save|savings": `Great question! 💰 On BulkBuy, you can save up to 25% on bulk orders. Rice gets 21% off at 500kg, LED Bulbs 25% off at 250pcs. By pooling with other shop owners, you reach thresholds faster and save more!`,
+        "pool|pooling|contribute": `🤝 Pooling is simple: You and other shop owners combine orders to reach bulk discounts together. For example, Rice pool needs 500kg total. Everyone chips in, we reach it faster, and everyone saves!`,
+        "status": `📊 Current pool status:\n• Rice: 430/500kg (86% complete) - 21% off\n• LED Bulbs: 200/250pcs (80% complete) - 25% off\n• Sunflower Oil: 120/300L (40% complete) - 21% off`,
+        "rice": `🍚 Rice Bulk Deal: Get 21% off when pool reaches 500kg. Current: 430/500kg (86% done). You can contribute now to unlock the discount!`,
+        "led|bulb": `💡 LED Bulbs: 25% discount at 250pcs threshold. Pool at 200/250pcs (80% done). Almost there!`,
+        "oil|sunflower": `🌻 Sunflower Oil: 21% off at 300L. Current pool: 120/300L (40% done). Help us reach it!`,
+        "how|work|works": `📖 BulkBuy works in 3 steps:\n1️⃣ Browse products with bulk discounts\n2️⃣ Join an active pool & contribute your quantity\n3️⃣ When threshold is reached, you get the discount!`,
+        "new|products|add": `🆕 We're constantly adding new products! Check the Browse section to see all available bulk deals and pool opportunities.`,
+        "payment|pay|price": `💳 Payment is easy - you only pay when your pooled order is confirmed. No upfront costs for bulk commitments!`,
+        "help|hello|hi": `👋 Hi ${currentUser?.ownerName}! I'm your BulkBuy assistant. Ask me about discounts, pooling, or specific products. What would you like to know?`,
+      };
+      
+      for (const [key, response] of Object.entries(responses)) {
+        if (key.split("|").some(k => query.includes(k))) return response;
+      }
+      
+      return `I'm here to help! 👋 Try asking about:\n• Discounts & savings\n• How pooling works\n• Current pool status\n• Specific products (Rice, LED Bulbs, etc.)`;
+    };
+    
+    setTimeout(() => {
+      const response = getResponse(question);
+      setMsgs(prev => [...prev, { role: "assistant", text: response }]);
+      setLoading(false);
+    }, 600);
   };
 
   if (!open) return null;
