@@ -78,6 +78,23 @@ export default function App() {
   const [, forceUpdate] = useState(0);
   const refresh = () => forceUpdate(x => x + 1);
 
+  // Load products from MongoDB on component mount
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/products");
+        const products = await res.json();
+        if (Array.isArray(products)) {
+          // Replace in-memory products with API data
+          _products = products;
+        }
+      } catch (err) {
+        console.error("Error loading products:", err);
+      }
+    };
+    loadProducts();
+  }, []);
+
   const showToast = (msg, type = "success") => {
     setToast({ msg, type });
     setTimeout(() => setToast(null), 3200);
@@ -249,15 +266,29 @@ function NotifDropdown({ setNotifOpen }) {
 function LoginScreen({ setScreen, setCurrentUser, showToast }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const login = () => {
+  const login = async () => {
     if (!form.email || !form.password) { showToast("Fill all fields", "error"); return; }
     setLoading(true);
-    setTimeout(() => {
-      const user = _users.find(u => u.email === form.email && u.password === form.password);
-      if (user) { _session = user; setCurrentUser(user); setScreen(user.role === "admin" ? "dashboard" : "dashboard"); showToast(`Welcome back, ${user.ownerName}!`); }
-      else showToast("Invalid credentials", "error");
+    try {
+      const res = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+      if (data.success) {
+        _session = data.user;
+        setCurrentUser(data.user);
+        setScreen("dashboard");
+        showToast(`Welcome back, ${data.user.ownerName}!`);
+      } else {
+        showToast("Invalid credentials", "error");
+      }
+    } catch (err) {
+      showToast("Connection error: " + err.message, "error");
+    } finally {
       setLoading(false);
-    }, 700);
+    }
   };
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "radial-gradient(ellipse at 25% 25%, rgba(79,124,255,0.07) 0%, transparent 55%), radial-gradient(ellipse at 75% 75%, rgba(124,92,252,0.06) 0%, transparent 55%), #080d18" }}>
@@ -296,17 +327,32 @@ const lblStyle = { display: "block", fontSize: 11, fontWeight: 700, color: "#4a6
 function RegisterScreen({ setScreen, showToast }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({ ownerName: "", email: "", phone: "", password: "", shopName: "", location: "", category: "" });
-  const next = () => {
+  const [loading, setLoading] = useState(false);
+  const next = async () => {
     if (step === 1) {
       if (!form.ownerName || !form.email || !form.phone || !form.password) { showToast("Fill all fields", "error"); return; }
       setStep(2);
     } else {
       if (!form.shopName || !form.location) { showToast("Fill all fields", "error"); return; }
-      if (_users.find(u => u.email === form.email)) { showToast("Email already registered", "error"); return; }
-      const newUser = { ...form, id: Date.now(), role: "owner", totalSavings: 0, orders: 0, collaborations: 0, joinDate: new Date().toLocaleDateString("en-IN", { month: "short", year: "numeric" }) };
-      _users.push(newUser);
-      showToast("Account created! Please sign in.");
-      setScreen("login");
+      setLoading(true);
+      try {
+        const res = await fetch("http://localhost:5000/api/users/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...form, role: "owner", totalSavings: 0, orders: 0, collaborations: 0, joinDate: new Date().toLocaleDateString("en-IN", { month: "short", year: "numeric" }) })
+        });
+        const data = await res.json();
+        if (data.success || data.user) {
+          showToast("Account created! Please sign in.");
+          setScreen("login");
+        } else {
+          showToast(data.error || "Registration failed", "error");
+        }
+      } catch (err) {
+        showToast("Connection error: " + err.message, "error");
+      } finally {
+        setLoading(false);
+      }
     }
   };
   return (
@@ -551,13 +597,18 @@ function BrowseScreen({ category, setSelectedCategory, setScreen, setSelectedPro
             const disc = pct(p.bulkPrice, p.price);
             return (
               <div key={p.id} className="card hover-card fade" style={{ padding: 0, overflow: "hidden", cursor: "pointer", animationDelay: `${i * 0.03}s` }} onClick={() => { setSelectedProduct(p); setScreen("product"); }}>
-                <div style={{ background: "linear-gradient(135deg,#0d1a30,#0a1525)", padding: "28px 24px 20px", textAlign: "center", position: "relative" }}>
-                  {unlocked && <div style={{ position: "absolute", top: 12, right: 12 }} className="tag tag-green">🎉 Bulk!</div>}
+                <div style={{ position: "relative", height: 200, overflow: "hidden", background: "linear-gradient(135deg,#0d1a30,#0a1525)" }}>
+                  <img 
+                    src={p.image} 
+                    alt={p.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s ease" }}
+                    onError={(e) => { e.target.src = "https://via.placeholder.com/400x300?text=" + encodeURIComponent(p.name.slice(0, 10)); }}
+                  />
                   {!unlocked && <div style={{ position: "absolute", top: 12, right: 12 }} className="tag tag-amber">-{disc}%</div>}
-                  <div style={{ fontSize: 48, marginBottom: 8 }}>{p.image}</div>
-                  <span className="tag tag-blue">{p.category}</span>
+                  {unlocked && <div style={{ position: "absolute", top: 12, right: 12 }} className="tag tag-green">🎉 Bulk!</div>}
                 </div>
                 <div style={{ padding: "16px 20px 20px" }}>
+                  <span className="tag tag-blue" style={{ marginBottom: 12, display: "inline-block" }}>{p.category}</span>
                   <h3 style={{ fontSize: 14, fontWeight: 700, color: "#c8d4f0", marginBottom: 12, lineHeight: 1.4 }}>{p.name}</h3>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 14 }}>
                     <div>
@@ -612,14 +663,23 @@ function ProductScreen({ product: p, setScreen, addToCart, poolQty, showToast, c
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: 28, alignItems: "start" }}>
           {/* Left */}
           <div>
-            <div className="card" style={{ padding: 40, textAlign: "center", marginBottom: 18 }}>
-              <div style={{ fontSize: 80, marginBottom: 16 }}>{p.image}</div>
-              <span className="tag tag-blue" style={{ marginBottom: 10, display: "inline-block" }}>{p.category}</span>
-              <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 22, fontWeight: 800, color: "#fff", marginBottom: 6 }}>{p.name}</h2>
-              <p style={{ color: "#4a6080", fontSize: 13 }}>Supplied by {p.supplier}</p>
-              <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 12 }}>
-                {"⭐".repeat(Math.floor(p.rating)).padEnd(5, "☆").split("").map((s, i) => <span key={i}>{s}</span>)}
-                <span style={{ fontSize: 13, color: "#4a6080" }}>({p.reviews} reviews)</span>
+            <div className="card" style={{ padding: 0, overflow: "hidden", marginBottom: 18 }}>
+              <div style={{ height: 350, overflow: "hidden", background: "linear-gradient(135deg,#0d1a30,#0a1525)" }}>
+                <img 
+                  src={p.image} 
+                  alt={p.name}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  onError={(e) => { e.target.src = "https://via.placeholder.com/400x350?text=" + encodeURIComponent(p.name); }}
+                />
+              </div>
+              <div style={{ padding: 28, textAlign: "center" }}>
+                <span className="tag tag-blue" style={{ marginBottom: 12, display: "inline-block" }}>{p.category}</span>
+                <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 22, fontWeight: 800, color: "#fff", marginBottom: 6 }}>{p.name}</h2>
+                <p style={{ color: "#4a6080", fontSize: 13 }}>Supplied by {p.supplier}</p>
+                <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 12 }}>
+                  {"⭐".repeat(Math.floor(p.rating)).padEnd(5, "☆").split("").map((s, i) => <span key={i}>{s}</span>)}
+                  <span style={{ fontSize: 13, color: "#4a6080" }}>({p.reviews} reviews)</span>
+                </div>
               </div>
             </div>
             {/* Pricing */}
@@ -772,7 +832,12 @@ function CartScreen({ cart, setCart, setScreen, showToast, poolQty, currentUser 
                   <div key={item.id} style={{ padding: "18px 22px", borderBottom: "1px solid #0a1525" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                       <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                        <span style={{ fontSize: 36 }}>{item.image}</span>
+                        <img 
+                          src={item.image} 
+                          alt={item.name}
+                          style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 8 }}
+                          onError={(e) => { e.target.style.display = "none"; }}
+                        />
                         <div>
                           <p style={{ fontSize: 14, fontWeight: 700, color: "#c8d4f0", marginBottom: 4 }}>{item.name}</p>
                           <p style={{ fontSize: 12, color: "#4a6080" }}>by {item.supplier}</p>
@@ -882,109 +947,268 @@ function SumRow({ label, value, color, large, strike }) {
 
 // ─── PAYMENT ────────────────────────────────────────────────────────────────────
 function PaymentScreen({ cart, setScreen, showToast, currentUser, setCart }) {
-  const [method, setMethod] = useState("upi");
-  const [upi, setUpi] = useState("");
-  const [processing, setProcessing] = useState(false);
-  const [done, setDone] = useState(false);
-  const total = cart.reduce((s, i) => s + i.bulkPrice * i.qty, 0);
-  const orderId = `BLK-${3000 + Math.floor(Math.random() * 99)}`;
+  const [step, setStep] = useState(1); // 1: Review, 2: Shipping, 3: Payment, 4: Confirmation
+  const [loading, setLoading] = useState(false);
+  const [shippingInfo, setShippingInfo] = useState({ address: "", city: "", pincode: "", phone: "" });
+  const [orderId, setOrderId] = useState(null);
+  const [paymentId, setPaymentId] = useState(null);
 
-  const pay = () => {
-    if (method === "upi" && !upi) { showToast("Enter UPI ID", "error"); return; }
-    setProcessing(true);
-    setTimeout(() => {
-      const newOrder = { id: orderId, product: cart[0]?.name || "", qty: cart.reduce((s, i) => s + i.qty, 0), status: "Pending", shops: [currentUser?.shopName || "Your Shop", "Priya Mart"], saving: Math.round((cart.reduce((s,i) => s+i.price*i.qty,0) - total) * 0.6), date: new Date().toLocaleDateString("en-IN", { month: "short", day: "numeric" }), totalAmount: total, shopBreakdown: [{ shop: currentUser?.shopName, qty: cart[0]?.qty, amount: total }] };
-      _orders.unshift(newOrder);
-      _notifications.unshift({ id: Date.now(), type: "payment", msg: `Payment of ${fmt(total)} confirmed for order ${orderId}`, time: "Just now", icon: "✅", read: false });
-      setProcessing(false);
-      setDone(true);
-    }, 2000);
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const discount = subtotal - cart.reduce((s, i) => s + i.bulkPrice * i.qty, 0);
+  const total = cart.reduce((s, i) => s + i.bulkPrice * i.qty, 0);
+  const shipping = total > 5000 ? 0 : 100;
+  const tax = Math.round(total * 0.05);
+  const finalTotal = total + tax + shipping;
+
+  const handlePayment = async () => {
+    if (!shippingInfo.address || !shippingInfo.city || !shippingInfo.pincode) {
+      showToast("Complete shipping details first", "error");
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      // Dynamic import for Razorpay helper
+      const { openRazorpayCheckout } = await import('../utils/razorpay.js');
+      
+      openRazorpayCheckout(
+        finalTotal,
+        currentUser.email,
+        currentUser.ownerName,
+        async (success, paymentData) => {
+          if (success) {
+            // Create order in database
+            const savedOrder = await createOrderInDatabase();
+            setPaymentId(paymentData);
+            setOrderId(savedOrder.id);
+            setStep(4); // Show confirmation
+            showToast("Payment successful! Order confirmed.", "success");
+          } else {
+            showToast("Payment failed. Please try again.", "error");
+          }
+          setLoading(false);
+        }
+      );
+    } catch (err) {
+      showToast("Payment error: " + err.message, "error");
+      setLoading(false);
+    }
   };
 
-  if (done) return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "#080d18" }}>
-      <div className="fade" style={{ textAlign: "center", maxWidth: 460 }}>
-        <div style={{ width: 100, height: 100, background: "rgba(52,211,153,0.12)", border: "2px solid rgba(52,211,153,0.4)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44, margin: "0 auto 24px" }}>✓</div>
-        <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 28, fontWeight: 800, color: "#34d399", marginBottom: 10 }}>Payment Successful!</h2>
-        <p style={{ color: "#4a6080", marginBottom: 6 }}>Order ID: <b style={{ color: "#4f7cff" }}>{orderId}</b></p>
-        <p style={{ color: "#4a6080", marginBottom: 28 }}>Amount paid: <b style={{ color: "#34d399" }}>{fmt(total)}</b></p>
-        <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-          <button className="btn btn-primary" onClick={() => { setCart([]); setScreen("tracking"); }}>Track Order →</button>
-          <button className="btn btn-outline" onClick={() => { setCart([]); setScreen("dashboard"); }}>Dashboard</button>
-        </div>
-      </div>
-    </div>
-  );
+  const createOrderInDatabase = async () => {
+    try {
+      const orderId = `BLK-${3000 + Math.floor(Math.random() * 9999)}`;
+      const res = await fetch("http://localhost:5000/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId,
+          products: cart,
+          status: "Confirmed",
+          totalAmount: finalTotal,
+          shippingInfo,
+          shopName: currentUser.shopName,
+          userEmail: currentUser.email,
+          createdAt: new Date()
+        })
+      });
+      const result = await res.json();
+      return { id: orderId };
+    } catch (err) {
+      throw err;
+    }
+  };
 
-  return (
-    <div>
-      <TopBar user={currentUser} setScreen={setScreen} cart={cart} logout={() => setScreen("dashboard")} notifOpen={false} setNotifOpen={() => {}} />
-      <div style={{ maxWidth: 820, margin: "0 auto", padding: "28px 24px" }}>
-        <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 26, fontWeight: 800, color: "#fff", marginBottom: 28 }}>Checkout</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 24 }}>
-          <div>
-            <div className="card" style={{ padding: 24, marginBottom: 20 }}>
-              <h3 style={{ fontSize: 15, fontWeight: 700, color: "#c8d4f0", marginBottom: 20 }}>Payment Method</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
-                {[["upi","📱 UPI Payment"],["netbanking","🏦 Net Banking"],["card","💳 Debit/Credit Card"]].map(([v,l]) => (
-                  <label key={v} style={{ display: "flex", alignItems: "center", gap: 12, padding: 14, borderRadius: 12, border: `1.5px solid ${method===v?"#4f7cff":"#162035"}`, background: method===v?"rgba(79,124,255,0.08)":"transparent", cursor: "pointer", transition: "all 0.2s" }}>
-                    <input type="radio" value={v} checked={method===v} onChange={() => setMethod(v)} style={{ accentColor: "#4f7cff" }} />
-                    <span style={{ fontSize: 14, fontWeight: 600, color: method===v?"#7c9cff":"#4a6080" }}>{l}</span>
-                  </label>
-                ))}
-              </div>
-              {method === "upi" && (
-                <div><label style={lblStyle}>UPI ID</label><input className="inp" placeholder="yourname@upi" value={upi} onChange={e => setUpi(e.target.value)} /></div>
-              )}
-              {method === "netbanking" && (
-                <div><label style={lblStyle}>Select Bank</label>
-                  <select className="inp"><option>State Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option></select>
-                </div>
-              )}
-              {method === "card" && (
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  <div><label style={lblStyle}>Card Number</label><input className="inp" placeholder="•••• •••• •••• ••••" /></div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                    <div><label style={lblStyle}>Expiry</label><input className="inp" placeholder="MM/YY" /></div>
-                    <div><label style={lblStyle}>CVV</label><input className="inp" placeholder="•••" /></div>
-                  </div>
-                </div>
-              )}
-            </div>
-            <button className="btn btn-primary" style={{ width: "100%", padding: 15, fontSize: 16 }} onClick={pay} disabled={processing}>
-              {processing ? <span>Processing… <span style={{ animation: "spin 1s linear infinite", display: "inline-block" }}>⟳</span></span> : `Pay ${fmt(total)} →`}
-            </button>
+  // Step 1: Cart Review
+  if (step === 1) {
+    return (
+      <div>
+        <TopBar user={currentUser} setScreen={setScreen} cart={cart} logout={() => setScreen("dashboard")} notifOpen={false} setNotifOpen={() => {}} />
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "28px 24px" }}>
+          <div style={{ display: "flex", gap: 8, marginBottom: 28 }}>
+            {[1, 2, 3, 4].map(s => (
+              <div key={s} style={{ flex: 1, height: 6, borderRadius: 3, background: s <= step ? "linear-gradient(90deg,#4f7cff,#7c5cfc)" : "#0f1e35", transition: "all 0.4s" }} />
+            ))}
           </div>
-          {/* Invoice */}
-          <div className="card" style={{ padding: 24 }}>
-            <h3 style={{ fontSize: 15, fontWeight: 700, color: "#c8d4f0", marginBottom: 20 }}>📄 Invoice Preview</h3>
-            <div style={{ background: "#0a1220", borderRadius: 12, padding: 18, border: "1px solid #0f1e35" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
-                <span style={{ color: "#4a6080", fontSize: 12 }}>Bill To</span>
-                <span style={{ color: "#7c9cff", fontSize: 12, fontWeight: 600 }}>{currentUser?.shopName}</span>
-              </div>
-              {cart.map(i => (
-                <div key={i.id} style={{ display: "flex", justifyContent: "space-between", marginBottom: 10, paddingBottom: 10, borderBottom: "1px solid #0f1e35" }}>
-                  <div>
-                    <p style={{ fontSize: 13, color: "#c8d4f0", fontWeight: 600 }}>{i.image} {i.name.slice(0, 22)}…</p>
-                    <p style={{ fontSize: 11, color: "#4a6080" }}>{i.qty} {i.unit} × {fmt(i.bulkPrice)}</p>
+          <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 28, fontWeight: 800, color: "#fff", marginBottom: 28 }}>🛒 Review Your Cart</h2>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 28 }}>
+            <div>
+              {cart.map((item, idx) => (
+                <div key={idx} className="card" style={{ padding: 18, marginBottom: 14, display: "flex", gap: 16, alignItems: "center" }}>
+                  <span style={{ fontSize: 32 }}>{item.image}</span>
+                  <div style={{ flex: 1 }}>
+                    <h4 style={{ color: "#fff", fontWeight: 700, marginBottom: 4 }}>{item.name}</h4>
+                    <p style={{ color: "#4a6080", fontSize: 12 }}>Qty: <b>{item.qty} {item.unit}</b></p>
+                    <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
+                      <span style={{ color: "#6a7c9c", textDecoration: "line-through", fontSize: 12 }}>{fmt(item.price * item.qty)}</span>
+                      <span style={{ color: "#34d399", fontWeight: 700 }}>{fmt(item.bulkPrice * item.qty)}</span>
+                    </div>
                   </div>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: "#34d399" }}>{fmt(i.bulkPrice * i.qty)}</p>
+                  <div style={{ textAlign: "right" }}>
+                    <span className="tag tag-green">Save {pct(item.bulkPrice, item.price)}%</span>
+                  </div>
                 </div>
               ))}
-              <div className="divider" />
-              <SumRow label="Subtotal" value={fmt(cart.reduce((s,i) => s+i.price*i.qty,0))} color="#6a7c9c" strike />
-              <div style={{ height: 8 }} />
-              <SumRow label="Bulk Discount" value={`-${fmt(cart.reduce((s,i)=>s+i.price*i.qty,0)-total)}`} color="#34d399" />
-              <div style={{ height: 8 }} />
-              <div style={{ height: 1, background: "#162035", margin: "10px 0" }} />
-              <SumRow label="TOTAL PAYABLE" value={fmt(total)} color="#fff" large />
+            </div>
+            
+            <div className="card" style={{ padding: 24, height: "fit-content", position: "sticky", top: 100 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 18 }}>💰 Order Summary</h3>
+              <div style={{ background: "#0a1220", borderRadius: 10, padding: 16, marginBottom: 16 }}>
+                <SumRow label="Subtotal" value={fmt(subtotal)} color="#6a7c9c" />
+                <SumRow label="Bulk Discount" value={`-${fmt(discount)}`} color="#34d399" />
+                <SumRow label="GST (5%)" value={fmt(tax)} color="#7c9cff" />
+                {shipping > 0 && <SumRow label="Shipping" value={fmt(shipping)} color="#fbbf24" />}
+                {shipping === 0 && <div style={{ fontSize: 12, color: "#34d399", marginBottom: 8 }}>✓ FREE SHIPPING (Order > ₹5000)</div>}
+                <div style={{ height: 1, background: "#162035", margin: "10px 0" }} />
+                <SumRow label="TOTAL" value={fmt(finalTotal)} color="#fff" large />
+              </div>
+              <button className="btn btn-primary" onClick={() => setStep(2)} style={{ width: "100%", padding: 12 }}>Continue to Shipping →</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  // Step 2: Shipping Details
+  if (step === 2) {
+    return (
+      <div>
+        <TopBar user={currentUser} setScreen={setScreen} cart={cart} logout={() => setScreen("dashboard")} notifOpen={false} setNotifOpen={() => {}} />
+        <div style={{ maxWidth: 600, margin: "0 auto", padding: "28px 24px" }}>
+          <div style={{ display: "flex", gap: 8, marginBottom: 28 }}>
+            {[1, 2, 3, 4].map(s => (
+              <div key={s} style={{ flex: 1, height: 6, borderRadius: 3, background: s <= step ? "linear-gradient(90deg,#4f7cff,#7c5cfc)" : "#0f1e35", transition: "all 0.4s" }} />
+            ))}
+          </div>
+          <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 28, fontWeight: 800, color: "#fff", marginBottom: 28 }}>📍 Shipping Address</h2>
+          
+          <div className="card" style={{ padding: 28 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <div>
+                <label style={lblStyle}>Delivery Address *</label>
+                <textarea className="inp" placeholder="House no, street, colony" rows="3" value={shippingInfo.address} onChange={e => setShippingInfo({...shippingInfo, address: e.target.value})} style={{ padding: 12, minHeight: 80 }} />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                <div>
+                  <label style={lblStyle}>City</label>
+                  <input className="inp" placeholder="Pune" value={shippingInfo.city} onChange={e => setShippingInfo({...shippingInfo, city: e.target.value})} />
+                </div>
+                <div>
+                  <label style={lblStyle}>Pincode</label>
+                  <input className="inp" placeholder="411001" value={shippingInfo.pincode} onChange={e => setShippingInfo({...shippingInfo, pincode: e.target.value})} />
+                </div>
+              </div>
+              <div>
+                <label style={lblStyle}>Phone Number</label>
+                <input className="inp" placeholder="+91 9876543210" value={shippingInfo.phone} onChange={e => setShippingInfo({...shippingInfo, phone: e.target.value})} />
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
+              <button className="btn btn-outline" onClick={() => setStep(1)} style={{ flex: 1 }}>← Back</button>
+              <button className="btn btn-primary" onClick={() => setStep(3)} style={{ flex: 1 }}>Continue to Payment →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 3: Payment
+  if (step === 3) {
+    return (
+      <div>
+        <TopBar user={currentUser} setScreen={setScreen} cart={cart} logout={() => setScreen("dashboard")} notifOpen={false} setNotifOpen={() => {}} />
+        <div style={{ maxWidth: 700, margin: "0 auto", padding: "28px 24px" }}>
+          <div style={{ display: "flex", gap: 8, marginBottom: 28 }}>
+            {[1, 2, 3, 4].map(s => (
+              <div key={s} style={{ flex: 1, height: 6, borderRadius: 3, background: s <= step ? "linear-gradient(90deg,#4f7cff,#7c5cfc)" : "#0f1e35", transition: "all 0.4s" }} />
+            ))}
+          </div>
+          <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 28, fontWeight: 800, color: "#fff", marginBottom: 10 }}>💳 Payment</h2>
+          <p style={{ color: "#4a6080", marginBottom: 28 }}>Secure payment powered by Razorpay</p>
+          
+          <div className="card" style={{ padding: 28, marginBottom: 20 }}>
+            <div style={{ background: "#0a1220", borderRadius: 12, padding: 16, marginBottom: 20 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <span style={{ color: "#4a6080", fontSize: 14 }}>Amount to Pay</span>
+                <span style={{ fontSize: 28, fontWeight: 800, color: "#4f7cff" }}>{fmt(finalTotal)}</span>
+              </div>
+              <p style={{ color: "#2a3a55", fontSize: 12 }}>Includes ₹{tax} GST + ₹{shipping} Shipping</p>
+            </div>
+            
+            <div style={{ background: "rgba(79,124,255,0.05)", border: "1px solid #162035", borderRadius: 10, padding: 14, marginBottom: 20 }}>
+              <p style={{ color: "#7c9cff", fontSize: 13, lineHeight: 1.6 }}>
+                ✓ 100% secure & encrypted<br/>
+                ✓ Razorpay certified payments<br/>
+                ✓ Instant order confirmation
+              </p>
+            </div>
+
+            <button 
+              className="btn btn-primary" 
+              onClick={handlePayment}
+              disabled={loading}
+              style={{ width: "100%", padding: 14, fontSize: 16, marginBottom: 12 }}
+            >
+              {loading ? "Processing…" : `Pay ${fmt(finalTotal)} with Razorpay →`}
+            </button>
+
+            <button className="btn btn-outline" onClick={() => setStep(2)} style={{ width: "100%" }}>
+              ← Back to Shipping
+            </button>
+          </div>
+
+          <div style={{ textAlign: "center", color: "#4a6080", fontSize: 12 }}>
+            By continuing, you agree to our Terms & Conditions
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 4: Order Confirmation
+  if (step === 4) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "#080d18" }}>
+        <div className="fade" style={{ textAlign: "center", maxWidth: 500 }}>
+          <div style={{ width: 120, height: 120, background: "rgba(52,211,153,0.12)", border: "3px solid rgba(52,211,153,0.4)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 56, margin: "0 auto 28px", animation: "pulse 2s ease-in-out infinite" }}>✓</div>
+          
+          <h1 style={{ fontFamily: "Syne,sans-serif", fontSize: 32, fontWeight: 800, color: "#34d399", marginBottom: 12 }}>Order Confirmed!</h1>
+          <p style={{ color: "#4a6080", marginBottom: 28, fontSize: 14 }}>Your payment has been processed successfully</p>
+
+          <div className="card" style={{ padding: 24, marginBottom: 24, background: "rgba(52,211,153,0.05)", border: "1px solid #162035" }}>
+            <div style={{ marginBottom: 16 }}>
+              <p style={{ color: "#4a6080", fontSize: 12 }}>Order ID</p>
+              <p style={{ color: "#4f7cff", fontSize: 20, fontWeight: 800 }}>{orderId}</p>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <p style={{ color: "#4a6080", fontSize: 12 }}>Amount Paid</p>
+              <p style={{ color: "#34d399", fontSize: 20, fontWeight: 800 }}>{fmt(finalTotal)}</p>
+            </div>
+            {paymentId && <div>
+              <p style={{ color: "#4a6080", fontSize: 12 }}>Payment ID</p>
+              <p style={{ color: "#7c9cff", fontSize: 12, fontFamily: "monospace", wordBreak: "break-all" }}>{paymentId}</p>
+            </div>}
+          </div>
+
+          <div style={{ background: "rgba(79,124,255,0.05)", borderRadius: 10, padding: 16, marginBottom: 24, border: "1px solid #162035" }}>
+            <p style={{ color: "#7c9cff", fontSize: 13, lineHeight: 1.6 }}>
+              📧 Confirmation email sent to {currentUser.email}<br/>
+              📦 Expected delivery: 3-5 business days<br/>
+              🔍 Track your order anytime
+            </p>
+          </div>
+
+          <div style={{ display: "flex", gap: 12 }}>
+            <button className="btn btn-primary" onClick={() => { setCart([]); setScreen("tracking"); }} style={{ flex: 1 }}>Track Order →</button>
+            <button className="btn btn-outline" onClick={() => { setCart([]); setScreen("dashboard"); }} style={{ flex: 1 }}>Back Home</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 // ─── TRACKING ──────────────────────────────────────────────────────────────────
