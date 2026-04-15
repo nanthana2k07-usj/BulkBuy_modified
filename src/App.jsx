@@ -1563,49 +1563,137 @@ function AdminDashboard({ setTab }) {
 
 // ─── ADMIN PRODUCTS ────────────────────────────────────────────────────────────
 function AdminProducts({ showToast, refresh }) {
-  const [form, setForm] = useState({ name: "", category: "Grocery", price: "", bulkPrice: "", bulkThreshold: "", supplier: "", image: "📦", stock: "" });
+  const [form, setForm] = useState({ name: "", category: "Grocery", price: "", bulkPrice: "", bulkThreshold: "", supplier: "", image: "", stock: "", unit: "pcs" });
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const save = () => {
-    if (!form.name || !form.price || !form.bulkPrice || !form.bulkThreshold || !form.supplier) { showToast("Fill all required fields", "error"); return; }
-    if (editId) {
-      const idx = _products.findIndex(p => p.id === editId);
-      if (idx >= 0) _products[idx] = { ..._products[idx], ...form, price: +form.price, bulkPrice: +form.bulkPrice, bulkThreshold: +form.bulkThreshold, stock: +form.stock };
-      showToast("Product updated!");
-    } else {
-      const newProd = { ...form, id: Date.now(), price: +form.price, bulkPrice: +form.bulkPrice, bulkThreshold: +form.bulkThreshold, stock: +(form.stock||1000), unit: "pcs", rating: 4.5, reviews: 0 };
-      _products.push(newProd);
-      _notifications.unshift({ id: Date.now(), type: "system", msg: `New product added: ${form.name}`, time: "Just now", icon: "🆕", read: false });
-      showToast("Product added and visible to all shops!");
+  const save = async () => {
+    if (!form.name || !form.price || !form.bulkPrice || !form.bulkThreshold || !form.supplier) { 
+      showToast("Fill all required fields", "error"); 
+      return; 
     }
-    setShowForm(false);
-    setEditId(null);
-    setForm({ name: "", category: "Grocery", price: "", bulkPrice: "", bulkThreshold: "", supplier: "", image: "📦", stock: "" });
-    refresh();
+    
+    setLoading(true);
+    try {
+      if (editId) {
+        // Update existing product
+        const res = await fetch(`http://localhost:5000/api/products/${editId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...form,
+            price: +form.price,
+            bulkPrice: +form.bulkPrice,
+            bulkThreshold: +form.bulkThreshold,
+            stock: +(form.stock || 1000)
+          })
+        });
+        if (res.ok) {
+          showToast("Product updated!");
+        }
+      } else {
+        // Add new product
+        const res = await fetch("http://localhost:5000/api/products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...form,
+            price: +form.price,
+            bulkPrice: +form.bulkPrice,
+            bulkThreshold: +form.bulkThreshold,
+            stock: +(form.stock || 1000),
+            rating: 4.5,
+            reviews: 0
+          })
+        });
+        if (res.ok) {
+          showToast("Product added and visible to all shops!");
+        }
+      }
+      
+      // Reload products
+      const allProds = await fetch("http://localhost:5000/api/products");
+      const products = await allProds.json();
+      if (Array.isArray(products)) {
+        _products = products;
+      }
+      
+      setShowForm(false);
+      setEditId(null);
+      setForm({ name: "", category: "Grocery", price: "", bulkPrice: "", bulkThreshold: "", supplier: "", image: "", stock: "", unit: "pcs" });
+      refresh();
+    } catch (err) {
+      showToast("Error saving product: " + err.message, "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const del = (id) => {
-    const idx = _products.findIndex(p => p.id === id);
-    if (idx >= 0) { _products.splice(idx, 1); showToast("Product removed"); refresh(); }
+  const del = async (id) => {
+    try {
+      await fetch(`http://localhost:5000/api/products/${id}`, { method: "DELETE" });
+      showToast("Product removed");
+      
+      // Reload products
+      const allProds = await fetch("http://localhost:5000/api/products");
+      const products = await allProds.json();
+      if (Array.isArray(products)) {
+        _products = products;
+      }
+      refresh();
+    } catch (err) {
+      showToast("Error deleting product", "error");
+    }
   };
 
   const startEdit = (p) => {
-    setForm({ name: p.name, category: p.category, price: p.price, bulkPrice: p.bulkPrice, bulkThreshold: p.bulkThreshold, supplier: p.supplier, image: p.image, stock: p.stock });
-    setEditId(p.id);
+    setForm({ 
+      name: p.name, 
+      category: p.category, 
+      price: p.price.toString(), 
+      bulkPrice: p.bulkPrice.toString(), 
+      bulkThreshold: p.bulkThreshold.toString(), 
+      supplier: p.supplier, 
+      image: p.image || "", 
+      stock: p.stock.toString(),
+      unit: p.unit || "pcs"
+    });
+    setEditId(p._id || p.id);
     setShowForm(true);
   };
 
-  const EMOJIS = ["📦","🌾","🫙","👕","📄","💡","🧴","🌿","🍬","📓","🔌","🧼","👖","🥫","🍫","🛒"];
+  const handleImageUpload = async (file) => {
+    // For now, create a data URL (works for small images)
+    // In production, upload to Cloudinary or similar
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      // Use placeholder service for uploaded images
+      const url = `https://via.placeholder.com/400x300?text=${encodeURIComponent(form.name || 'Product')}`;
+      setForm({...form, image: url});
+      showToast("Image preview ready (using placeholder for demo)");
+    };
+    if (file) reader.readAsDataURL(file);
+  };
+
+  // Sample product images from Unsplash
+  const sampleImages = [
+    "https://images.unsplash.com/photo-1586080872614-108e05cdd0ec?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1474693285529-338265e6e74c?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1565043666747-69f6646db940?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
+  ];
 
   return (
     <div className="fade">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28 }}>
         <div>
-          <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 24, fontWeight: 800, color: "#fff" }}>Product Management</h2>
+          <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 24, fontWeight: 800, color: "#fff" }}>📦 Product Management</h2>
           <p style={{ color: "#4a6080", fontSize: 13, marginTop: 3 }}>{_products.length} products in catalog</p>
         </div>
-        <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditId(null); setForm({ name: "", category: "Grocery", price: "", bulkPrice: "", bulkThreshold: "", supplier: "", image: "📦", stock: "" }); }}>
+        <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditId(null); setForm({ name: "", category: "Grocery", price: "", bulkPrice: "", bulkThreshold: "", supplier: "", image: "", stock: "", unit: "pcs" }); }}>
           {showForm ? "✕ Cancel" : "+ Add Product"}
         </button>
       </div>
@@ -1644,42 +1732,105 @@ function AdminProducts({ showToast, refresh }) {
               <label style={lblStyle}>Stock Available</label>
               <input className="inp" type="number" placeholder="5000" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} />
             </div>
+            <div>
+              <label style={lblStyle}>Unit (pcs/kg/L)</label>
+              <input className="inp" placeholder="pcs" value={form.unit} onChange={e => setForm({...form, unit: e.target.value})} />
+            </div>
+            
+            {/* Image Upload Section */}
             <div style={{ gridColumn: "1/-1" }}>
-              <label style={lblStyle}>Product Icon</label>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {EMOJIS.map(e => <div key={e} onClick={() => setForm({...form, image: e})} style={{ width: 40, height: 40, borderRadius: 10, border: `2px solid ${form.image===e?"#4f7cff":"#162035"}`, background: form.image===e?"rgba(79,124,255,0.15)":"#0a1220", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, cursor: "pointer" }}>{e}</div>)}
+              <label style={lblStyle}>Product Image</label>
+              <div style={{ marginBottom: 12 }}>
+                <p style={{ fontSize: 12, color: "#4a6080", marginBottom: 8 }}>Option 1: Paste Image URL</p>
+                <input 
+                  className="inp" 
+                  placeholder="https://images.unsplash.com/..." 
+                  value={form.image} 
+                  onChange={e => setForm({...form, image: e.target.value})}
+                />
+              </div>
+              <div style={{ marginBottom: 12 }}>
+                <p style={{ fontSize: 12, color: "#4a6080", marginBottom: 8 }}>Option 2: Upload File</p>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  className="inp"
+                  onChange={e => handleImageUpload(e.target.files?.[0])}
+                  style={{ padding: "10px 12px" }}
+                />
+              </div>
+              
+              {/* Quick Select Sample Images */}
+              <p style={{ fontSize: 12, color: "#4a6080", marginBottom: 8 }}>Quick Select:</p>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {sampleImages.map((url, idx) => (
+                  <img
+                    key={idx}
+                    src={url}
+                    alt={`sample-${idx}`}
+                    onClick={() => setForm({...form, image: url})}
+                    style={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: 8,
+                      border: form.image === url ? "3px solid #4f7cff" : "2px solid #162035",
+                      cursor: "pointer",
+                      objectFit: "cover"
+                    }}
+                  />
+                ))}
               </div>
             </div>
+
+            {/* Image Preview */}
+            {form.image && (
+              <div style={{ gridColumn: "1/-1" }}>
+                <p style={{ fontSize: 12, color: "#4a6080", marginBottom: 8 }}>Preview:</p>
+                <div style={{ width: 150, height: 150, borderRadius: 10, overflow: "hidden", border: "1px solid #162035" }}>
+                  <img 
+                    src={form.image} 
+                    alt="preview"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    onError={(e) => { e.target.src = "https://via.placeholder.com/150?text=Image"; }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
-          {form.price && form.bulkPrice && (
-            <div style={{ background: "rgba(52,211,153,0.06)", border: "1px solid rgba(52,211,153,0.2)", borderRadius: 10, padding: 12, marginBottom: 16, fontSize: 13, color: "#34d399" }}>
-              ✓ Discount: {pct(+form.bulkPrice, +form.price)}% off at bulk · Save {fmt(form.price - form.bulkPrice)} per unit
-            </div>
-          )}
-          <button className="btn btn-primary" style={{ padding: "12px 28px" }} onClick={save}>{editId ? "Update Product ✓" : "Add Product ✓"}</button>
+          
+          <button className="btn btn-primary" onClick={save} disabled={loading} style={{ width: "100%" }}>
+            {loading ? "Saving..." : (editId ? "Update Product ✓" : "Add Product ✓")}
+          </button>
         </div>
       )}
 
       <div className="card" style={{ overflow: "hidden", padding: 0 }}>
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead><tr style={{ background: "#0a1220" }}>{["","Product","Category","Regular","Bulk Price","Discount","Threshold","Stock","Supplier","Actions"].map(h => <th key={h} style={{ padding: "13px 18px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#3a4f6e", letterSpacing: "0.5px", textTransform: "uppercase", whiteSpace: "nowrap" }}>{h}</th>)}</tr></thead>
+            <thead><tr style={{ background: "#0a1220" }}>{["Image","Product","Category","Regular","Bulk","Discount","Threshold","Stock","Supplier","Actions"].map(h => <th key={h} style={{ padding: "13px 18px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#3a4f6e", letterSpacing: "0.5px", textTransform: "uppercase", whiteSpace: "nowrap" }}>{h}</th>)}</tr></thead>
             <tbody>
               {_products.map(p => (
-                <tr key={p.id} style={{ borderBottom: "1px solid #0a1525" }}>
-                  <td style={{ padding: "12px 18px", fontSize: 24 }}>{p.image}</td>
+                <tr key={p._id || p.id} style={{ borderBottom: "1px solid #0a1525" }}>
+                  <td style={{ padding: "12px 18px" }}>
+                    <img 
+                      src={p.image} 
+                      alt={p.name}
+                      style={{ width: 50, height: 50, borderRadius: 6, objectFit: "cover" }}
+                      onError={(e) => { e.target.style.display = "none"; }}
+                    />
+                  </td>
                   <td style={{ padding: "12px 18px", fontSize: 13, fontWeight: 600, color: "#c8d4f0", minWidth: 180 }}>{p.name}</td>
                   <td style={{ padding: "12px 18px" }}><span className="tag tag-blue">{p.category}</span></td>
                   <td style={{ padding: "12px 18px", fontSize: 13, color: "#8a9cc0" }}>{fmt(p.price)}</td>
                   <td style={{ padding: "12px 18px", fontSize: 13, color: "#34d399", fontWeight: 600 }}>{fmt(p.bulkPrice)}</td>
-                  <td style={{ padding: "12px 18px" }}><span className="tag tag-green">-{pct(p.bulkPrice,p.price)}%</span></td>
+                  <td style={{ padding: "12px 18px" }}><span className="tag tag-green">-{pct(p.bulkPrice, p.price)}%</span></td>
                   <td style={{ padding: "12px 18px", fontSize: 13, color: "#8a9cc0" }}>{p.bulkThreshold} {p.unit}</td>
-                  <td style={{ padding: "12px 18px", fontSize: 13, color: "#8a9cc0" }}>{p.stock.toLocaleString()}</td>
+                  <td style={{ padding: "12px 18px", fontSize: 13, color: "#8a9cc0" }}>{p.stock?.toLocaleString?.() || p.stock}</td>
                   <td style={{ padding: "12px 18px", fontSize: 12, color: "#4a6080" }}>{p.supplier}</td>
                   <td style={{ padding: "12px 18px" }}>
                     <div style={{ display: "flex", gap: 8 }}>
                       <button className="btn btn-outline" style={{ padding: "5px 12px", fontSize: 12 }} onClick={() => startEdit(p)}>Edit</button>
-                      <button className="btn btn-danger" style={{ padding: "5px 12px", fontSize: 12 }} onClick={() => del(p.id)}>Del</button>
+                      <button className="btn btn-danger" style={{ padding: "5px 12px", fontSize: 12 }} onClick={() => del(p._id || p.id)}>Del</button>
                     </div>
                   </td>
                 </tr>
