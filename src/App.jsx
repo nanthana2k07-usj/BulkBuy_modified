@@ -130,6 +130,7 @@ export default function App() {
     payment: <PaymentScreen cart={cart} setScreen={setScreen} showToast={showToast} currentUser={currentUser} setCart={setCart} />,
     tracking: <TrackingScreen setScreen={setScreen} currentUser={currentUser} />,
     chat: <ChatScreen setScreen={setScreen} currentUser={currentUser} showToast={showToast} />,
+    shops: <ShopsScreen setScreen={setScreen} currentUser={currentUser} showToast={showToast} />,
   };
 
   return (
@@ -218,6 +219,7 @@ function TopBar({ user, setScreen, cart, logout, notifOpen, setNotifOpen }) {
           <NavBtn icon="🏪" label="Browse" onClick={() => setScreen("browse")} />
           <NavBtn icon="📦" label="Orders" onClick={() => setScreen("tracking")} />
           <NavBtn icon="💬" label="Chat" onClick={() => setScreen("chat")} />
+          <NavBtn icon="🤝" label="Shops" onClick={() => setScreen("shops")} />
           {/* Notifications */}
           <div style={{ position: "relative" }}>
             <button className="btn btn-outline" style={{ padding: "8px 14px", position: "relative" }} onClick={() => setNotifOpen(!notifOpen)}>
@@ -427,8 +429,11 @@ function DashboardScreen({ user, setScreen, setSelectedCategory, cart, logout, n
                 <span className="tag tag-purple">{user.collaborations} Collabs</span>
               </div>
             </div>
-            <button className="btn btn-primary" onClick={() => setScreen("browse")} style={{ padding: "13px 24px", fontSize: 15 }}>🛒 Browse Products</button>
-          </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button className="btn btn-primary" onClick={() => setScreen("browse")} style={{ padding: "13px 24px", fontSize: 15 }}>🛒 Browse Products</button>
+              <button className="btn btn-outline" onClick={() => setScreen("shops")} style={{ padding: "13px 24px", fontSize: 15 }}>🤝 Connect Shops</button>
+            </div>
+        </div>
         </div>
 
         {/* Stats */}
@@ -1355,6 +1360,283 @@ function ChatScreen({ setScreen, currentUser, showToast }) {
             <button className="btn btn-primary" style={{ padding: "12px 20px" }} onClick={send}>Send →</button>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SHOPS COLLABORATION ───────────────────────────────────────────────────────
+function ShopsScreen({ setScreen, currentUser, showToast }) {
+  const [shops, setShops] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const [search, setSearch] = useState("");
+  const [tab, setTab] = useState("browse");
+  const [selectedShop, setSelectedShop] = useState(null);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    loadShops();
+    loadRequests();
+  }, []);
+
+  const loadShops = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/shops/${currentUser?._id}`);
+      const data = await res.json();
+      setShops(data);
+    } catch (err) {
+      showToast("Failed to load shops", "error");
+    }
+  };
+
+  const loadRequests = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/collaborations/${currentUser?._id}`);
+      const data = await res.json();
+      setRequests(data);
+    } catch (err) {
+      showToast("Failed to load requests", "error");
+    }
+  };
+
+  const sendRequest = async (toShop) => {
+    if (!message.trim()) {
+      showToast("Please add a message", "error");
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:5000/api/collaborations/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fromId: currentUser?._id,
+          toId: toShop._id,
+          fromShop: currentUser?.shopName,
+          toShop: toShop.shopName,
+          message,
+          poolTarget: ""
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`Request sent to ${toShop.shopName}!`, "success");
+        setSelectedShop(null);
+        setMessage("");
+        loadRequests();
+      }
+    } catch (err) {
+      showToast("Failed to send request", "error");
+    }
+    setLoading(false);
+  };
+
+  const respondRequest = async (requestId, status) => {
+    try {
+      const endpoint = status === "accepted" ? "accept" : "reject";
+      const res = await fetch(`http://localhost:5000/api/collaborations/${requestId}/${endpoint}`, {
+        method: "PUT"
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`Request ${status}!`, "success");
+        loadRequests();
+      }
+    } catch (err) {
+      showToast(`Failed to ${status} request`, "error");
+    }
+  };
+
+  const filteredShops = shops.filter(s => s.shopName.toLowerCase().includes(search.toLowerCase()));
+  const receivedRequests = requests.filter(r => r.to === currentUser?._id);
+  const sentRequests = requests.filter(r => r.from === currentUser?._id);
+
+  return (
+    <div>
+      <TopBar user={currentUser} setScreen={setScreen} cart={[]} logout={() => setScreen("dashboard")} notifOpen={false} setNotifOpen={() => {}} />
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "28px 24px" }}>
+        
+        {/* Header */}
+        <div style={{ marginBottom: 28 }}>
+          <h1 style={{ fontSize: 32, fontWeight: 800, color: "#c8d4f0", marginBottom: 8 }}>🤝 Shop Network</h1>
+          <p style={{ fontSize: 14, color: "#4a6080" }}>Connect with other shop owners to pool orders and save together</p>
+        </div>
+
+        {/* Tabs */}
+        <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
+          {["browse", "received", "sent"].map(t => (
+            <button 
+              key={t}
+              className={t === tab ? "btn btn-primary" : "btn btn-outline"}
+              onClick={() => setTab(t)}
+              style={{ textTransform: "capitalize" }}
+            >
+              {t === "browse" && `📍 Browse Shops (${filteredShops.length})`}
+              {t === "received" && `📬 Requests Received (${receivedRequests.filter(r => r.status === 'pending').length})`}
+              {t === "sent" && `📤 Requests Sent (${sentRequests.filter(r => r.status === 'pending').length})`}
+            </button>
+          ))}
+        </div>
+
+        {/* BROWSE SHOPS TAB */}
+        {tab === "browse" && (
+          <div>
+            <div style={{ marginBottom: 20 }}>
+              <input 
+                className="inp" 
+                placeholder="Search shops by name..." 
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{ maxWidth: 400 }}
+              />
+            </div>
+            
+            {selectedShop ? (
+              <div className="card" style={{ maxWidth: 500 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+                  <div>
+                    <h2 style={{ color: "#c8d4f0", marginBottom: 4 }}>{selectedShop.shopName}</h2>
+                    <p style={{ color: "#4a6080", fontSize: 13 }}>{selectedShop.location} • {selectedShop.category}</p>
+                    <p style={{ color: "#8a9cc0", fontSize: 12, marginTop: 8 }}>Owner: {selectedShop.ownerName}</p>
+                  </div>
+                  <button className="btn btn-outline" onClick={() => setSelectedShop(null)}>← Back</button>
+                </div>
+
+                <div style={{ background: "#0a1220", borderRadius: 10, padding: 14, marginBottom: 20 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, fontSize: 13 }}>
+                    <div>
+                      <p style={{ color: "#4a6080" }}>Orders Placed</p>
+                      <p style={{ color: "#c8d4f0", fontWeight: 700, fontSize: 18 }}>{selectedShop.orders}</p>
+                    </div>
+                    <div>
+                      <p style={{ color: "#4a6080" }}>Collaborations</p>
+                      <p style={{ color: "#34d399", fontWeight: 700, fontSize: 18 }}>{selectedShop.collaborations}</p>
+                    </div>
+                    <div>
+                      <p style={{ color: "#4a6080" }}>Total Savings</p>
+                      <p style={{ color: "#fbbf24", fontWeight: 700, fontSize: 18 }}>{fmt(selectedShop.totalSavings)}</p>
+                    </div>
+                    <div>
+                      <p style={{ color: "#4a6080" }}>Joined</p>
+                      <p style={{ color: "#7c9cff", fontWeight: 700, fontSize: 13 }}>{selectedShop.joinDate || "Jan 2025"}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{ fontSize: 13, color: "#8a9cc0", display: "block", marginBottom: 8 }}>Message (Why collaborate?)</label>
+                  <textarea 
+                    className="inp"
+                    placeholder="E.g., I'm interested in moving bulk rice orders together..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    style={{ minHeight: 100, resize: "vertical" }}
+                  />
+                </div>
+
+                <button 
+                  className="btn btn-primary"
+                  onClick={() => sendRequest(selectedShop)}
+                  disabled={loading}
+                  style={{ width: "100%", padding: 12 }}
+                >
+                  {loading ? "Sending..." : "📬 Send Collaboration Request"}
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20 }}>
+                {filteredShops.map(shop => (
+                  <div key={shop._id} className="card" style={{ cursor: "pointer" }} onClick={() => setSelectedShop(shop)}>
+                    <div style={{ display: "flex", gap: 12, marginBottom: 14 }}>
+                      <div className="avatar" style={{ width: 48, height: 48, background: avatarColor(shop.shopName), fontSize: 18, flexShrink: 0 }}>
+                        {shop.shopName.substring(0, 2).toUpperCase()}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <h3 style={{ color: "#c8d4f0", fontSize: 15, fontWeight: 700, marginBottom: 2 }}>{shop.shopName}</h3>
+                        <p style={{ color: "#4a6080", fontSize: 12 }}>{shop.location}</p>
+                      </div>
+                    </div>
+
+                    <div style={{ background: "#0a1220", borderRadius: 8, padding: 12, marginBottom: 14 }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, fontSize: 12 }}>
+                        <div>
+                          <p style={{ color: "#4a6080" }}>Orders</p>
+                          <p style={{ color: "#34d399", fontWeight: 700 }}>{shop.orders}</p>
+                        </div>
+                        <div>
+                          <p style={{ color: "#4a6080" }}>Collab</p>
+                          <p style={{ color: "#fbbf24", fontWeight: 700 }}>{shop.collaborations}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button className="btn btn-outline" style={{ width: "100%" }} onClick={() => setSelectedShop(shop)}>View & Connect →</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* RECEIVED REQUESTS TAB */}
+        {tab === "received" && (
+          <div style={{ display: "grid", gap: 16 }}>
+            {receivedRequests.length === 0 ? (
+              <div className="card" style={{ textAlign: "center", padding: 40 }}>
+                <p style={{ color: "#4a6080", fontSize: 14 }}>No collaboration requests yet</p>
+              </div>
+            ) : (
+              receivedRequests.map(req => (
+                <div key={req._id} className="card" style={{ borderLeft: `4px solid ${req.status === 'pending' ? '#fbbf24' : req.status === 'accepted' ? '#34d399' : '#ef4444'}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+                    <div>
+                      <h3 style={{ color: "#c8d4f0", marginBottom: 4 }}>From: {req.fromShop}</h3>
+                      <p style={{ color: "#8a9cc0", fontSize: 13 }}>{req.message}</p>
+                      <p style={{ color: "#4a6080", fontSize: 12, marginTop: 8 }}>Received {new Date(req.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    <span className={`tag ${req.status === 'pending' ? 'tag-yellow' : req.status === 'accepted' ? 'tag-green' : 'tag-red'}`} style={{ textTransform: "capitalize" }}>
+                      {req.status}
+                    </span>
+                  </div>
+                  
+                  {req.status === 'pending' && (
+                    <div style={{ display: "flex", gap: 10 }}>
+                      <button className="btn btn-primary" style={{ flex: 1 }} onClick={() => respondRequest(req._id, "accepted")}>✓ Accept</button>
+                      <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => respondRequest(req._id, "rejected")}>✕ Reject</button>
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {/* SENT REQUESTS TAB */}
+        {tab === "sent" && (
+          <div style={{ display: "grid", gap: 16 }}>
+            {sentRequests.length === 0 ? (
+              <div className="card" style={{ textAlign: "center", padding: 40 }}>
+                <p style={{ color: "#4a6080", fontSize: 14 }}>No requests sent yet</p>
+              </div>
+            ) : (
+              sentRequests.map(req => (
+                <div key={req._id} className="card" style={{ borderLeft: `4px solid ${req.status === 'pending' ? '#fbbf24' : req.status === 'accepted' ? '#34d399' : '#ef4444'}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+                    <div>
+                      <h3 style={{ color: "#c8d4f0", marginBottom: 4 }}>To: {req.toShop}</h3>
+                      <p style={{ color: "#8a9cc0", fontSize: 13 }}>{req.message}</p>
+                      <p style={{ color: "#4a6080", fontSize: 12, marginTop: 8 }}>Sent {new Date(req.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    <span className={`tag ${req.status === 'pending' ? 'tag-yellow' : req.status === 'accepted' ? 'tag-green' : 'tag-red'}`} style={{ textTransform: "capitalize" }}>
+                      {req.status}
+                    </span>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -68,9 +68,34 @@ const orderSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+const collaborationSchema = new mongoose.Schema({
+  from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  fromShop: String,
+  to: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  toShop: String,
+  productName: String,
+  poolTarget: Number,
+  status: { type: String, default: 'pending' },
+  message: String,
+  createdAt: { type: Date, default: Date.now }
+});
+
+const collaborationSchema = new mongoose.Schema({
+  from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  fromShop: String,
+  to: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  toShop: String,
+  productName: String,
+  poolTarget: Number,
+  status: { type: String, default: 'pending' }, // pending, accepted, rejected, cancelled
+  message: String,
+  createdAt: { type: Date, default: Date.now }
+});
+
 const User = mongoose.model('User', userSchema);
 const Product = mongoose.model('Product', productSchema);
 const Order = mongoose.model('Order', orderSchema);
+const Collaboration = mongoose.model('Collaboration', collaborationSchema);
 
 // ─── ROUTES ────────────────────────────────────────────────────────────────────
 
@@ -170,6 +195,82 @@ app.put('/api/orders/:id', async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json({ success: true, order });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── COLLABORATION REQUESTS ───────────────────────────────────────────────────
+
+// Get all shops (excluding current user)
+app.get('/api/shops/:userId', async (req, res) => {
+  try {
+    const shops = await User.find({ _id: { $ne: req.params.userId }, role: { $ne: 'admin' } }).select('-password');
+    res.json(shops);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Send collaboration request
+app.post('/api/collaborations/request', async (req, res) => {
+  try {
+    const { fromId, toId, fromShop, toShop, productName, poolTarget, message } = req.body;
+    const request = new Collaboration({
+      from: fromId,
+      to: toId,
+      fromShop,
+      toShop,
+      productName,
+      poolTarget,
+      message,
+      status: 'pending'
+    });
+    await request.save();
+    res.json({ success: true, request });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Get collaboration requests for a user
+app.get('/api/collaborations/:userId', async (req, res) => {
+  try {
+    const requests = await Collaboration.find({
+      $or: [{ from: req.params.userId }, { to: req.params.userId }]
+    }).sort({ createdAt: -1 });
+    res.json(requests);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Accept collaboration request
+app.put('/api/collaborations/:requestId/accept', async (req, res) => {
+  try {
+    const collab = await Collaboration.findByIdAndUpdate(
+      req.params.requestId,
+      { status: 'accepted' },
+      { new: true }
+    );
+    // Increment collaborations count for both users
+    await User.findByIdAndUpdate(collab.from, { $inc: { collaborations: 1 } });
+    await User.findByIdAndUpdate(collab.to, { $inc: { collaborations: 1 } });
+    res.json({ success: true, collab });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Reject collaboration request
+app.put('/api/collaborations/:requestId/reject', async (req, res) => {
+  try {
+    const collab = await Collaboration.findByIdAndUpdate(
+      req.params.requestId,
+      { status: 'rejected' },
+      { new: true }
+    );
+    res.json({ success: true, collab });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
