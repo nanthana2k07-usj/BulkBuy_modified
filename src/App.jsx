@@ -797,10 +797,10 @@ function CartScreen({ cart, setCart, setScreen, showToast, poolQty, currentUser 
     <div>
       <TopBar user={currentUser} setScreen={setScreen} cart={cart} logout={() => setScreen("dashboard")} notifOpen={false} setNotifOpen={() => {}} />
       <div style={{ maxWidth: 700, margin: "80px auto", textAlign: "center", padding: 24 }}>
-        <div style={{ fontSize: 64, marginBottom: 20 }}>🛒</div>
+        <div style={{ fontSize: 48, marginBottom: 20, opacity: 0.3 }}>[ Cart ]</div>
         <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 24, color: "#fff", marginBottom: 10 }}>Your cart is empty</h2>
         <p style={{ color: "#4a6080", marginBottom: 24 }}>Add products to start pooling orders with nearby shops</p>
-        <button className="btn btn-primary" style={{ padding: "13px 28px" }} onClick={() => setScreen("browse")}>Browse Products →</button>
+        <button className="btn btn-primary" style={{ padding: "13px 28px" }} onClick={() => setScreen("browse")}>Browse Products</button>
       </div>
     </div>
   );
@@ -818,7 +818,7 @@ function CartScreen({ cart, setCart, setScreen, showToast, poolQty, currentUser 
     <div>
       <TopBar user={currentUser} setScreen={setScreen} cart={cart} logout={() => setScreen("dashboard")} notifOpen={false} setNotifOpen={() => {}} />
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "28px 24px" }}>
-        <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 26, fontWeight: 800, color: "#fff", marginBottom: 6 }}>Aggregator Cart</h2>
+        <h2 style={{ fontFamily: "Syne,sans-serif", fontSize: 26, fontWeight: 800, color: "#fff", marginBottom: 6 }}>Shopping Cart</h2>
         <p style={{ color: "#4a6080", fontSize: 14, marginBottom: 28 }}>Pool orders with other shops to unlock bulk discounts</p>
 
         <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 24, alignItems: "start" }}>
@@ -845,20 +845,20 @@ function CartScreen({ cart, setCart, setScreen, showToast, poolQty, currentUser 
                         />
                         <div>
                           <p style={{ fontSize: 14, fontWeight: 700, color: "#c8d4f0", marginBottom: 4 }}>{item.name}</p>
-                          <p style={{ fontSize: 12, color: "#4a6080" }}>by {item.supplier}</p>
+                          <p style={{ fontSize: 12, color: "#4a6080" }}>Supplier: {item.supplier}</p>
                           <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
-                            {unlocked ? <span className="tag tag-green">🎉 Bulk Price Active</span> : <span className="tag tag-amber">⏳ Regular Price</span>}
+                            {unlocked ? <span className="tag tag-green">• BULK PRICE ACTIVE</span> : <span className="tag tag-amber">◦ REGULAR PRICE</span>}
                           </div>
                         </div>
                       </div>
-                      <button onClick={() => setCart(cart.filter((_, i) => i !== idx))} style={{ background: "none", border: "none", color: "#f87171", cursor: "pointer", fontSize: 18 }}>✕</button>
+                      <button onClick={() => setCart(cart.filter((_, i) => i !== idx))} style={{ background: "none", border: "none", color: "#f87171", cursor: "pointer", fontSize: 16, fontWeight: 700 }}>×</button>
                     </div>
                     {/* Qty controls */}
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <button className="btn btn-outline" style={{ padding: "5px 12px" }} onClick={() => setCart(cart.map((c,i) => i===idx ? {...c, qty: Math.max(10, c.qty-10)} : c))}>−</button>
-                        <span style={{ fontWeight: 700, fontSize: 16, minWidth: 40, textAlign: "center" }}>{item.qty}</span>
-                        <button className="btn btn-outline" style={{ padding: "5px 12px" }} onClick={() => setCart(cart.map((c,i) => i===idx ? {...c, qty: c.qty+10} : c))}>+</button>
+                        <button className="btn btn-outline" style={{ padding: "5px 12px", fontSize: 16, fontWeight: "bold" }} onClick={() => setCart(cart.map((c,i) => i===idx ? {...c, qty: Math.max(10, c.qty-10)} : c))}>−</button>
+                        <span style={{ fontWeight: 700, fontSize: 16, minWidth: 50, textAlign: "center" }}>{item.qty}</span>
+                        <button className="btn btn-outline" style={{ padding: "5px 12px", fontSize: 16, fontWeight: "bold" }} onClick={() => setCart(cart.map((c,i) => i===idx ? {...c, qty: c.qty+10} : c))}>+</button>
                         <span style={{ fontSize: 12, color: "#4a6080" }}>{item.unit}</span>
                       </div>
                       <div style={{ textAlign: "right" }}>
@@ -875,8 +875,8 @@ function CartScreen({ cart, setCart, setScreen, showToast, poolQty, currentUser 
                       <div className="progress-track">
                         <div className="progress-fill" style={{ width: `${progress}%`, background: unlocked ? "linear-gradient(90deg,#34d399,#10b981)" : "linear-gradient(90deg,#4f7cff,#7c5cfc)" }} />
                       </div>
-                      {!unlocked && <p style={{ fontSize: 11, color: "#fbbf24", marginTop: 6 }}>⚡ Need {item.bulkThreshold - pooled} more {item.unit} for {pct(item.bulkPrice, item.price)}% off!</p>}
-                      {unlocked && <p style={{ fontSize: 11, color: "#34d399", marginTop: 6 }}>✓ Bulk discount unlocked! Saving {pct(item.bulkPrice, item.price)}%</p>}
+                      {!unlocked && <p style={{ fontSize: 11, color: "#fbbf24", marginTop: 6 }}>Need {item.bulkThreshold - pooled} more {item.unit} to unlock {pct(item.bulkPrice, item.price)}% discount</p>}
+                      {unlocked && <p style={{ fontSize: 11, color: "#34d399", marginTop: 6 }}>✓ Bulk discount unlocked — Saving {pct(item.bulkPrice, item.price)}%</p>}
                     </div>
                   </div>
                 );
@@ -885,7 +885,7 @@ function CartScreen({ cart, setCart, setScreen, showToast, poolQty, currentUser 
 
             {/* Simulated other contributions */}
             <div className="card" style={{ padding: 22 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#c8d4f0", marginBottom: 16 }}>👥 Other Shops Contributing</h3>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#c8d4f0", marginBottom: 16 }}>Collaborating Shops</h3>
               {otherContribs.map((oc, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid #0a1525" }}>
                   <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -898,7 +898,7 @@ function CartScreen({ cart, setCart, setScreen, showToast, poolQty, currentUser 
                   <span className="tag tag-green">Contributing</span>
                 </div>
               ))}
-              <p style={{ fontSize: 12, color: "#3a4f6e", marginTop: 12 }}>💡 More shops = bigger pool = guaranteed bulk discount</p>
+              <p style={{ fontSize: 12, color: "#3a4f6e", marginTop: 12 }}>Tip: More shops collaborating = Larger pool = Guaranteed bulk discount</p>
             </div>
           </div>
 
@@ -913,16 +913,16 @@ function CartScreen({ cart, setCart, setScreen, showToast, poolQty, currentUser 
               </div>
               <div style={{ background: "rgba(52,211,153,0.06)", border: "1px solid rgba(52,211,153,0.2)", borderRadius: 12, padding: 14, marginTop: 16, marginBottom: 16 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: 13, color: "#34d399", fontWeight: 600 }}>💰 Total Savings</span>
+                  <span style={{ fontSize: 13, color: "#34d399", fontWeight: 600 }}>TOTAL SAVINGS</span>
                   <span style={{ fontSize: 20, fontWeight: 800, color: "#34d399", fontFamily: "Syne,sans-serif" }}>{fmt(savings)}</span>
                 </div>
               </div>
-              <button className="btn btn-primary" style={{ width: "100%", padding: 14, fontSize: 15 }} onClick={() => setScreen("payment")}>Proceed to Payment →</button>
+              <button className="btn btn-primary" style={{ width: "100%", padding: 14, fontSize: 15 }} onClick={() => setScreen("payment")}>Proceed to Payment</button>
               <button className="btn btn-outline" style={{ width: "100%", padding: 12, fontSize: 13, marginTop: 10 }} onClick={() => setScreen("browse")}>+ Add More Products</button>
             </div>
             {/* Bill split preview */}
             <div className="card" style={{ padding: 22 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#c8d4f0", marginBottom: 16 }}>📊 Bill Split Preview</h3>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#c8d4f0", marginBottom: 16 }}>Bill Split Preview</h3>
               {[{ shop: currentUser?.shopName || "Your Shop", amount: bulkTotal, pct: 45 }, { shop: "Priya Mart", amount: bulkTotal * 0.35, pct: 35 }, { shop: "Amit Electronics", amount: bulkTotal * 0.2, pct: 20 }].map((s, i) => (
                 <div key={i} style={{ marginBottom: 12 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
