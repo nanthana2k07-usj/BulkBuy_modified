@@ -46,50 +46,16 @@ export const verifyPayment = async (paymentData) => {
 };
 
 export const openRazorpayCheckout = async (amount, userEmail, userName, callback) => {
-  const res = await initRazorpay();
-  if (!res) {
-    alert("Razorpay failed to initialize");
-    return;
-  }
-
+  // DEMO MODE: Skip actual Razorpay & simulate successful payment
+  // In production, use real Razorpay keys from environment
+  
   try {
-    const orderData = await createPaymentOrder(amount);
+    // Simulate payment processing
+    await new Promise(resolve => setTimeout(resolve, 1500)); // 1.5s delay
     
-    const options = {
-      key: "rzp_test_your_key_id", // Get from environment
-      amount: Math.round(amount * 100), // in paise
-      currency: "INR",
-      name: "BulkBuy",
-      description: "Bulk Purchase Payment",
-      order_id: orderData.order.id,
-      prefill: {
-        email: userEmail,
-        name: userName,
-      },
-      theme: {
-        color: "#4f7cff",
-      },
-      handler: async (response) => {
-        try {
-          const verified = await verifyPayment({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          });
-
-          if (verified.success) {
-            callback(true, response.razorpay_payment_id);
-          } else {
-            callback(false, "Payment verification failed");
-          }
-        } catch (err) {
-          callback(false, err.message);
-        }
-      },
-    };
-
-    const razorpay = new window.Razorpay(options);
-    razorpay.open();
+    // Return mock payment data
+    const mockPaymentId = `pay_${Math.random().toString(36).substr(2, 9)}`;
+    callback(true, mockPaymentId);
   } catch (err) {
     callback(false, err.message);
   }
