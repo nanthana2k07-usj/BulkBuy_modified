@@ -1040,8 +1040,13 @@ function PaymentScreen({ cart, setScreen, showToast, currentUser, setCart }) {
           <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 28 }}>
             <div>
               {cart.map((item, idx) => (
-                <div key={idx} className="card" style={{ padding: 18, marginBottom: 14, display: "flex", gap: 16, alignItems: "center" }}>
-                  <span style={{ fontSize: 32 }}>{item.image}</span>
+                <div key={idx} className="card" style={{ padding: 18, marginBottom: 14, display: "flex", gap: 16, alignItems: "flex-start" }}>
+                  <img 
+                    src={item.image} 
+                    alt={item.name}
+                    style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 8, flexShrink: 0 }}
+                    onError={(e) => { e.target.style.display = "none"; }}
+                  />
                   <div style={{ flex: 1 }}>
                     <h4 style={{ color: "#fff", fontWeight: 700, marginBottom: 4 }}>{item.name}</h4>
                     <p style={{ color: "#4a6080", fontSize: 12 }}>Qty: <b>{item.qty} {item.unit}</b></p>
