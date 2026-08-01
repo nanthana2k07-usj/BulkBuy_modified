@@ -13,6 +13,15 @@ export const API_BASE = (() => {
     return '';
   }
 
+  // For production deployment, use the deployed backend URL
+  // You need to set VITE_API_URL environment variable in your hosting platform
+  // For now, fallback to a placeholder - this needs to be updated with your actual backend URL
+  if (origin.includes('vercel.app') || origin.includes('bulk-buy-modified')) {
+    // This is the deployed frontend - you need to deploy your backend separately
+    // and update this URL to your deployed backend
+    return 'https://your-backend-url.com'; // TODO: Replace with actual backend URL
+  }
+
   return trimTrailingSlash(origin);
 })();
 

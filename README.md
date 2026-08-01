@@ -448,6 +448,8 @@ Update order status (admin only).
 
 ### Option 1: Vercel (Recommended - Free)
 
+#### Frontend Deployment (Vercel)
+
 1. **Prepare for Deployment**
    ```bash
    npm run build
@@ -464,12 +466,60 @@ Update order status (admin only).
    - Go to [vercel.com](https://vercel.com)
    - Click "New Project"
    - Import your GitHub repository
-   - Configure environment variables
+   - Add Environment Variable: `VITE_API_URL` (set to your deployed backend URL)
    - Click "Deploy"
 
-4. **Backend Deployment**
-   - Deploy backend to Render, Railway, or Heroku
-   - Update frontend API URLs to point to deployed backend
+#### Backend Deployment (Render/Railway/Heroku)
+
+**Option A: Render (Free)**
+1. Go to [render.com](https://render.com)
+2. Click "New +" → "Web Service"
+3. Connect your GitHub repository
+4. Set Build Command: `npm install`
+5. Set Start Command: `node server.js`
+6. Add Environment Variables:
+   - `MONGODB_URI`: Your MongoDB connection string
+   - `JWT_SECRET`: Your JWT secret key
+   - `PORT`: 5000
+   - `RAZORPAY_KEY_ID`: Your Razorpay key
+   - `RAZORPAY_KEY_SECRET`: Your Razorpay secret
+7. Click "Deploy Web Service"
+
+**Option B: Railway (Free)**
+1. Go to [railway.app](https://railway.app)
+2. Click "New Project" → "Deploy from GitHub repo"
+3. Select your repository
+4. Add environment variables in the dashboard
+5. Railway will automatically deploy
+
+**Option C: Heroku (Free tier available)**
+1. Install Heroku CLI: `npm install -g heroku`
+2. Login: `heroku login`
+3. Create app: `heroku create your-app-name`
+4. Set environment variables:
+   ```bash
+   heroku config:set MONGODB_URI=your_mongodb_uri
+   heroku config:set JWT_SECRET=your_jwt_secret
+   heroku config:set RAZORPAY_KEY_ID=your_razorpay_key
+   heroku config:set RAZORPAY_KEY_SECRET=your_razorpay_secret
+   ```
+5. Deploy: `git push heroku master`
+
+#### Important: Connect Frontend to Backend
+
+After deploying both frontend and backend:
+
+1. **Get your backend URL** (e.g., `https://your-backend.onrender.com`)
+2. **Update Vercel Environment Variables**:
+   - Go to your Vercel project dashboard
+   - Settings → Environment Variables
+   - Add `VITE_API_URL` = your backend URL
+   - Redeploy the frontend
+
+3. **Or update manually in code**:
+   - Edit `src/utils/api.js`
+   - Replace `'https://your-backend-url.com'` with your actual backend URL
+   - Commit and push changes
 
 ### Option 2: Netlify (Free)
 
