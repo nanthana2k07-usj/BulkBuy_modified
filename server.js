@@ -3184,5 +3184,4 @@ io.on('connection', (socket) => {
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
-  console.log(`MongoDB: ${process.env.MONGODB_URI || 'mongodb://localhost:27017/bulkbuy'}`);
 });

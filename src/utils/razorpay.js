@@ -13,7 +13,7 @@ export const initRazorpay = () => {
   });
 };
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://bulkbuy-modified.onrender.com';
 
 export const createPaymentOrder = async (amount) => {
   try {
