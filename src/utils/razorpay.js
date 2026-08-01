@@ -13,9 +13,11 @@ export const initRazorpay = () => {
   });
 };
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export const createPaymentOrder = async (amount) => {
   try {
-    const res = await fetch("http://localhost:5000/api/payments/create-order", {
+    const res = await fetch(`${API_BASE}/api/payments/create-order`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -33,7 +35,7 @@ export const createPaymentOrder = async (amount) => {
 
 export const verifyPayment = async (paymentData) => {
   try {
-    const res = await fetch("http://localhost:5000/api/payments/verify", {
+    const res = await fetch(`${API_BASE}/api/payments/verify`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(paymentData),

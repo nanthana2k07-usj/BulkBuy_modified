@@ -8,6 +8,7 @@ from datetime import datetime
 import hmac
 import hashlib
 import json
+from flask import send_from_directory
 
 app = Flask(__name__)
 CORS(app)
@@ -28,7 +29,7 @@ users_col.create_index('email', unique=True)
 
 print('✅ MongoDB Connected')
 
-# ─── ROUTES ────────────────────────────────────────────────────────────────────
+# ───- ROUTES ───────────────────────────────────────────────────────
 
 # USERS
 @app.route('/api/users/login', methods=['POST'])
@@ -55,7 +56,7 @@ def register():
         data['collaborations'] = 0
         data['role'] = 'owner'
         data['joinDate'] = datetime.now().isoformat()
-        data['createdAt'] = datetime.new()
+        data['createdAt'] = datetime.now()
         
         result = users_col.insert_one(data)
         user = users_col.find_one({'_id': result.inserted_id})
@@ -332,6 +333,23 @@ def verify_payment():
 @app.route('/api/health', methods=['GET'])
 def health():
     return jsonify({'status': 'ok', 'timestamp': datetime.now().isoformat()})
+
+
+# Serve frontend (index.html) and static files from project root
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    # If the requested path exists as a file, serve it
+    full_path = os.path.join(os.getcwd(), path)
+    if path and os.path.exists(full_path) and os.path.isfile(full_path):
+        return send_from_directory(os.getcwd(), path)
+
+    # Otherwise serve index.html (Single Page App entry)
+    index_path = os.path.join(os.getcwd(), 'index.html')
+    if os.path.exists(index_path):
+        return send_from_directory(os.getcwd(), 'index.html')
+
+    return jsonify({'error': 'index.html not found'}), 404
 
 
 # Run server
