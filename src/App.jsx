@@ -24,9 +24,23 @@ function Logo({ size = 32, textSize = 20, showText = true }) {
     </div>
   );
 }
-let _users = [];
+let _users = [
+  { id:1, ownerName:"Rajesh Kumar", email:"rajesh@shop.com", password:"pass123", phone:"9876543210", shopName:"Rajesh General Store", location:"Mumbai, Maharashtra", category:"Grocery", totalSavings:840, orders:3, collaborations:2, role:"owner", joinDate:"Jan 2024", loyaltyPoints:1500, loyaltyTier:"silver" },
+  { id:2, ownerName:"Priya Sharma", email:"priya@shop.com", password:"pass123", phone:"9876543211", shopName:"Priya Mart", location:"Delhi, NCR", category:"Electronics", totalSavings:560, orders:2, collaborations:2, role:"owner", joinDate:"Feb 2024", loyaltyPoints:800, loyaltyTier:"bronze" },
+  { id:3, ownerName:"Amit Patel", email:"amit@shop.com", password:"pass123", phone:"9876543212", shopName:"Amit Electronics", location:"Bangalore, Karnataka", category:"Electronics", totalSavings:308, orders:2, collaborations:1, role:"owner", joinDate:"Mar 2024", loyaltyPoints:500, loyaltyTier:"bronze" },
+  { id:99, ownerName:"Admin User", email:"admin@bulkbuy.com", password:"admin123", phone:"9876543999", shopName:"BulkBuy Admin", location:"India", category:"Admin", totalSavings:0, orders:0, collaborations:0, role:"admin", joinDate:"Jan 2024", loyaltyPoints:0, loyaltyTier:"bronze" },
+];
 let _session = null;
-let _products = [];
+let _products = [
+  { id:1, name:"Premium Basmati Rice", category:"Grocery", price:28, bulkPrice:24, bulkThreshold:200, stock:500, image:"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400", rating:4.5, reviews:128 },
+  { id:2, name:"Refined Sunflower Oil", category:"Grocery", price:18, bulkPrice:15, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400", rating:4.3, reviews:95 },
+  { id:3, name:"LED Bulbs Pack (10pcs)", category:"Electronics", price:24, bulkPrice:20, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=400", rating:4.7, reviews:156 },
+  { id:4, name:"A4 Paper Reams", category:"Office Supplies", price:6.2, bulkPrice:5, bulkThreshold:200, stock:600, image:"https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400", rating:4.4, reviews:87 },
+  { id:5, name:"Toothpaste Pack", category:"Grocery", price:12, bulkPrice:10, bulkThreshold:120, stock:350, image:"https://images.unsplash.com/photo-1559548384-c00a7b5fc9bb?w=400", rating:4.2, reviews:203 },
+  { id:6, name:"Detergent Powder 5kg", category:"Grocery", price:35, bulkPrice:30, bulkThreshold:80, stock:250, image:"https://images.unsplash.com/photo-1612444530582-fc66183b16f7?w=400", rating:4.6, reviews:142 },
+  { id:7, name:"USB Cables (10pcs)", category:"Electronics", price:8, bulkPrice:6, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.1, reviews:78 },
+  { id:8, name:"Biscuits Pack", category:"Grocery", price:15, bulkPrice:12, bulkThreshold:180, stock:450, image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400", rating:4.5, reviews:189 },
+];
 
 let _orders = [
   { id:"BLK-2841", product:"Premium Basmati Rice", qty:350, status:"Approved", shops:["Rajesh General Store","Priya Mart","Amit Electronics"], saving:840, date:"Apr 13", totalAmount:9800, shopBreakdown:[{shop:"Rajesh General Store",qty:150,amount:4200},{shop:"Priya Mart",qty:120,amount:3360},{shop:"Amit Electronics",qty:80,amount:2240}] },
@@ -346,14 +360,8 @@ export default function App() {
   const refresh = () => forceUpdate(x => x+1);
 
   useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const res = await fetch(`${API_BASE}/api/products`);
-        const products = await res.json();
-        if (Array.isArray(products)) _products = products;
-      } catch {}
-    };
-    loadProducts();
+    // Products are already loaded from local demo data
+    // No need to fetch from API
   }, []);
 
   const handleThemeChange = (newTheme) => {
@@ -661,18 +669,17 @@ function LoginScreen({ setScreen, setCurrentUser, showToast }) {
     if (!form.email || !form.password) { showToast("Please fill all fields", "error"); return; }
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/users/login`, {
-        method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(form)
-      });
-      const data = await res.json();
-      if (data.success) {
-        if (data.token) localStorage.setItem("token", data.token);
-        _session = data.user;
-        setCurrentUser(data.user);
-        setScreen("dashboard");
-        showToast(`Welcome back, ${data.user.ownerName}!`);
+      // Use local demo data instead of API call
+      const user = _users.find(u => u.email === form.email && u.password === form.password);
+      
+      if (user) {
+        localStorage.setItem("token", "demo-token-" + Date.now());
+        _session = user;
+        setCurrentUser(user);
+        setScreen(user.role === "admin" ? "admin-dashboard" : "dashboard");
+        showToast(`Welcome back, ${user.ownerName}!`);
       } else {
-        showToast(data.message || "Invalid credentials", "error");
+        showToast("Invalid credentials. Try rajesh@shop.com / pass123", "error");
       }
     } catch (err) {
       showToast("Connection error — is the server running?", "error");
@@ -842,15 +849,13 @@ function RegisterOwnerScreen({ setScreen, showToast }) {
     if (!form.email) { showToast("Enter your email first", "error"); return; }
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/otp/send`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ email:form.email, purpose:"register" }) });
-      const data = await res.json();
-      if (data.success) {
-        showToast(`OTP sent to ${form.email}`, "success");
-        setStep(4);
-        setResendTimer(60);
-      } else { showToast(data.error||"Failed to send OTP", "error"); }
-    } catch { showToast("Could not reach server", "error"); }
-    setLoading(false);
+      // Simulate OTP sending for demo
+      showToast(`OTP sent to ${form.email}`, "success");
+      setStep(3);
+      setResendTimer(60);
+    } catch (err) {
+      showToast("Failed to send OTP", "error");
+    } finally { setLoading(false); }
   };
 
   useEffect(() => {
@@ -861,19 +866,28 @@ function RegisterOwnerScreen({ setScreen, showToast }) {
     if (!otp.trim()) { showToast("Enter any OTP value", "error"); return; }
     setLoading(true);
     try {
-      const verRes = await fetch(`${API_BASE}/api/otp/verify`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ email:form.email, otp }) });
-      const verData = await verRes.json();
-      if (!verData.success) { showToast(verData.error||"Invalid OTP", "error"); setLoading(false); return; }
-
-      const regRes = await fetch(`${API_BASE}/api/users/register`, { method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ ownerName:form.ownerName, email:form.email, phone:form.phone, password:form.password, shopName:form.shopName, location:form.location, category:form.category, gstNumber:form.gstNumber, aadharNumber:form.aadharNumber, tradeLicense:form.tradeLicense, role:"owner", totalSavings:0, orders:0, collaborations:0, joinDate:new Date().toLocaleDateString("en-IN",{month:"short",year:"numeric"}) })
-      });
-      const regData = await regRes.json();
-      if (regData.success || regData.user) {
-        setStep(5);
-        showToast("Account created successfully.");
-      } else { showToast(regData.error||"Registration failed", "error"); }
-    } catch { showToast("Connection error", "error"); }
+      // Simulate registration for demo
+      const newUser = {
+        id: _users.length + 1,
+        ownerName: form.ownerName,
+        email: form.email,
+        phone: form.phone,
+        password: form.password,
+        shopName: form.shopName,
+        location: form.location,
+        category: form.category,
+        totalSavings: 0,
+        orders: 0,
+        collaborations: 0,
+        role: "owner",
+        joinDate: new Date().toLocaleDateString("en-IN",{month:"short",year:"numeric"}),
+        loyaltyPoints: 0,
+        loyaltyTier: "bronze"
+      };
+      _users.push(newUser);
+      setStep(5);
+      showToast("Account created successfully.");
+    } catch { showToast("Registration failed", "error"); }
     setLoading(false);
   };
 
@@ -1025,11 +1039,11 @@ function RegisterWholesaleScreen({ setScreen, showToast }) {
   const sendOtp = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/otp/send`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ email:form.email, purpose:"register" }) });
-      const data = await res.json();
-      if (data.success) { showToast(`OTP sent to ${form.email}`); setStep(4); setResendTimer(60); }
-      else { showToast(data.error||"Failed to send OTP", "error"); }
-    } catch { showToast("Could not reach server", "error"); }
+      // Simulate OTP sending for demo
+      showToast(`OTP sent to ${form.email}`);
+      setStep(4);
+      setResendTimer(60);
+    } catch { showToast("Failed to send OTP", "error"); }
     setLoading(false);
   };
 
@@ -1041,17 +1055,28 @@ function RegisterWholesaleScreen({ setScreen, showToast }) {
     if (!otp.trim()) { showToast("Enter any OTP value","error"); return; }
     setLoading(true);
     try {
-      const verRes = await fetch(`${API_BASE}/api/otp/verify`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ email:form.email, otp }) });
-      const verData = await verRes.json();
-      if (!verData.success) { showToast(verData.error||"Invalid OTP","error"); setLoading(false); return; }
-
-      const regRes = await fetch(`${API_BASE}/api/users/register`, { method:"POST", headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({ ownerName:form.ownerName, email:form.email, phone:form.phone, password:form.password, shopName:form.companyName, location:form.location, category:form.category, gstNumber:form.gstNumber, panNumber:form.panNumber, fssaiNumber:form.fssaiNumber, businessType:form.businessType, bankAccountNumber:form.bankAccountNumber, ifscCode:form.ifscCode, role:"wholesale", totalSavings:0, orders:0, collaborations:0, joinDate:new Date().toLocaleDateString("en-IN",{month:"short",year:"numeric"}) })
-      });
-      const regData = await regRes.json();
-      if (regData.success || regData.user) { setStep(5); showToast("Wholesale account created."); }
-      else { showToast(regData.error||"Registration failed","error"); }
-    } catch { showToast("Connection error","error"); }
+      // Simulate registration for demo
+      const newUser = {
+        id: _users.length + 1,
+        ownerName: form.ownerName,
+        email: form.email,
+        phone: form.phone,
+        password: form.password,
+        shopName: form.companyName,
+        location: form.location,
+        category: form.category,
+        totalSavings: 0,
+        orders: 0,
+        collaborations: 0,
+        role: "wholesale",
+        joinDate: new Date().toLocaleDateString("en-IN",{month:"short",year:"numeric"}),
+        loyaltyPoints: 0,
+        loyaltyTier: "bronze"
+      };
+      _users.push(newUser);
+      setStep(5);
+      showToast("Wholesale account created.");
+    } catch { showToast("Registration failed","error"); }
     setLoading(false);
   };
 
@@ -1326,13 +1351,16 @@ function DashboardScreen({ user, setScreen, setSelectedCategory, cart, logout, n
     const loadRecommendations = async () => {
       try {
         setLoadingRecs(true);
-        const res = await fetch(`${API_BASE}/api/products/recommendations`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
-        const data = await res.json();
-        if (data.success) {
-          setRecommendations(data.recommendations);
-        }
+        // Use local demo data for recommendations
+        const userCategory = user?.category || 'Grocery';
+        const recommendations = _products
+          .filter(p => p.category === userCategory)
+          .slice(0, 4)
+          .map(p => ({
+            ...p,
+            recommendationReason: 'Matches your business category'
+          }));
+        setRecommendations(recommendations);
       } catch (err) {
         console.error('Failed to load recommendations:', err);
       } finally {
@@ -1340,7 +1368,7 @@ function DashboardScreen({ user, setScreen, setSelectedCategory, cart, logout, n
       }
     };
     loadRecommendations();
-  }, []);
+  }, [user]);
 
   if (!user) return null;
   const myOrders = _orders.filter(o => o.shops.includes(user.shopName));
@@ -1982,7 +2010,19 @@ function PaymentScreen({ cart, setScreen, showToast, currentUser, setCart }) {
       openRazorpayCheckout(finalTotal, currentUser.email, currentUser.ownerName, async (success, paymentData) => {
         if (success) {
           const oid = `BLK-${3000+Math.floor(Math.random()*9999)}`;
-          await fetch(`${API_BASE}/api/orders`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ orderId:oid, products:cart, status:"Confirmed", totalAmount:finalTotal, shippingInfo, shopName:currentUser.shopName, userEmail:currentUser.email, createdAt:new Date() }) });
+          // Simulate order creation for demo
+          const newOrder = {
+            id: oid,
+            product: cart[0]?.name || "Bulk Order",
+            qty: cart.reduce((sum, item) => sum + item.qty, 0),
+            status: "Confirmed",
+            shops: [currentUser.shopName],
+            saving: Math.floor(finalTotal * 0.15),
+            date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+            totalAmount: finalTotal,
+            shopBreakdown: [{ shop: currentUser.shopName, qty: cart.reduce((sum, item) => sum + item.qty, 0), amount: finalTotal }]
+          };
+          _orders.push(newOrder);
           setOrderId(oid); setStep(4); showToast("Payment successful.");
         } else { showToast("Payment failed. Try again.","error"); }
         setLoading(false);
@@ -2410,14 +2450,9 @@ function ChatScreen({ setScreen, currentUser, showToast, cart, logout, notifOpen
 
   useEffect(() => {
     if (!userId) return;
-    import("socket.io-client").then(({io}) => {
-      socketRef.current = API_BASE ? io(API_BASE) : io();
-      socketRef.current.emit("join", { threadId:"bulk-order-group", userId, role:user?.role });
-      socketRef.current.on("message", m => setMessages(prev=>[...prev, { id:m._id||Date.now(), userId:m.from, sender:m.from, text:m.text, time:new Date(m.createdAt||Date.now()).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}), avatar:initials(m.from||"U") }]));
-      socketRef.current.on("typing", ({userId}) => { setTypingUsers(p=>({...p,[userId]:true})); setTimeout(()=>setTypingUsers(p=>{const n={...p};delete n[userId];return n;}), 2000); });
-    }).catch(()=>{});
-    return () => socketRef.current?.disconnect();
-  }, [user?.role, userId]);
+    // Use local demo messages instead of socket.io
+    setMessages(_messages);
+  }, [userId]);
 
   const send = async () => {
     if (!msg.trim()) return;
