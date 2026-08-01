@@ -452,6 +452,102 @@ function authenticateJWT(req, res, next) {
   }
 }
 
+// ─── LOYALTY POINTS SYSTEM ───────────────────────────────────────────────────────
+
+// Get user loyalty points
+app.get('/api/users/loyalty', authenticateJWT, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('loyaltyPoints loyaltyTier totalSavings orders collaborations');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Calculate tier based on points
+    const calculateTier = (points) => {
+      if (points >= 10000) return 'platinum';
+      if (points >= 5000) return 'gold';
+      if (points >= 2000) return 'silver';
+      return 'bronze';
+    };
+
+    const currentTier = calculateTier(user.loyaltyPoints);
+    const nextTier = {
+      bronze: { name: 'silver', points: 2000 },
+      silver: { name: 'gold', points: 5000 },
+      gold: { name: 'platinum', points: 10000 },
+      platinum: { name: 'platinum', points: 10000 }
+    };
+
+    res.json({
+      loyaltyPoints: user.loyaltyPoints,
+      loyaltyTier: currentTier,
+      totalSavings: user.totalSavings,
+      orders: user.orders,
+      collaborations: user.collaborations,
+      nextTier: nextTier[currentTier],
+      tierProgress: currentTier === 'platinum' ? 100 : Math.min((user.loyaltyPoints / nextTier[currentTier].points) * 100, 100)
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Redeem loyalty points for discount
+app.post('/api/users/loyalty/redeem', authenticateJWT, async (req, res) => {
+  try {
+    const { pointsToRedeem, orderId } = req.body;
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (user.loyaltyPoints < pointsToRedeem) {
+      return res.status(400).json({ error: 'Insufficient loyalty points' });
+    }
+
+    // Calculate discount (100 points = ₹10 discount)
+    const discount = Math.floor(pointsToRedeem / 10);
+
+    // Update user points
+    user.loyaltyPoints -= pointsToRedeem;
+    await user.save();
+
+    res.json({
+      success: true,
+      pointsRedeemed: pointsToRedeem,
+      discountAmount: discount,
+      remainingPoints: user.loyaltyPoints
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add loyalty points (called after order completion)
+app.post('/api/users/loyalty/add', authenticateJWT, async (req, res) => {
+  try {
+    const { points, reason } = req.body;
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    user.loyaltyPoints += points;
+    await user.save();
+
+    res.json({
+      success: true,
+      pointsAdded: points,
+      totalPoints: user.loyaltyPoints,
+      reason
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/users', async (req, res) => {
   try {
     const { search, role, page = 1, limit = 50 } = req.query;
@@ -776,6 +872,91 @@ app.get('/api/orders/:id/invoice', async (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader('Content-Disposition', `attachment; filename="invoice_${order.invoiceNumber}.html"`);
     res.send(invoiceHTML);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── PRODUCT RECOMMENDATION ENGINE ─────────────────────────────────────────────────
+
+// Get personalized product recommendations
+app.get('/api/products/recommendations', authenticateJWT, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('favorites').populate('wishlist.product');
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Get user's category and preferences
+    const userCategory = user.category;
+    const favoriteProducts = user.favorites || [];
+    const wishlistProducts = user.wishlist.map(w => w.product) || [];
+
+    // Get all products
+    const allProducts = await Product.find({});
+
+    // Recommendation algorithm
+    const recommendations = [];
+
+    // 1. Category-based recommendations
+    const categoryProducts = allProducts.filter(p => 
+      p.category === userCategory && 
+      !favoriteProducts.some(f => f._id.toString() === p._id.toString()) &&
+      !wishlistProducts.some(w => w._id.toString() === p._id.toString())
+    );
+    recommendations.push(...categoryProducts.slice(0, 5));
+
+    // 2. Similar products based on favorites
+    if (favoriteProducts.length > 0) {
+      const favoriteCategories = [...new Set(favoriteProducts.map(p => p.category))];
+      const similarProducts = allProducts.filter(p =>
+        favoriteCategories.includes(p.category) &&
+        !favoriteProducts.some(f => f._id.toString() === p._id.toString()) &&
+        !wishlistProducts.some(w => w._id.toString() === p._id.toString())
+      );
+      recommendations.push(...similarProducts.slice(0, 5));
+    }
+
+    // 3. Popular products (high stock, good rating)
+    const popularProducts = allProducts.filter(p =>
+      p.stock > 100 &&
+      !favoriteProducts.some(f => f._id.toString() === p._id.toString()) &&
+      !wishlistProducts.some(w => w._id.toString() === p._id.toString())
+    ).sort((a, b) => b.stock - a.stock).slice(0, 5);
+    recommendations.push(...popularProducts);
+
+    // 4. Remove duplicates and limit to 10 recommendations
+    const uniqueRecommendations = [];
+    const seenIds = new Set();
+    
+    for (const product of recommendations) {
+      if (!seenIds.has(product._id.toString())) {
+        seenIds.add(product._id.toString());
+        uniqueRecommendations.push(product);
+      }
+      if (uniqueRecommendations.length >= 10) break;
+    }
+
+    // Add recommendation reasons
+    const recommendationsWithReasons = uniqueRecommendations.map(product => {
+      let reason = 'Popular choice';
+      if (product.category === userCategory) {
+        reason = 'Matches your business category';
+      } else if (favoriteProducts.some(f => f.category === product.category)) {
+        reason = 'Similar to your favorites';
+      }
+      return {
+        ...product.toObject(),
+        recommendationReason: reason
+      };
+    });
+
+    res.json({
+      success: true,
+      recommendations: recommendationsWithReasons,
+      total: recommendationsWithReasons.length
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

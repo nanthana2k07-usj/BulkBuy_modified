@@ -1312,12 +1312,34 @@ function StatusTag({ status }) {
 function DashboardScreen({ user, setScreen, setSelectedCategory, cart, logout, notifOpen, setNotifOpen, showToast, refresh }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [greeting, setGreeting] = useState("Good morning");
+  const [recommendations, setRecommendations] = useState([]);
+  const [loadingRecs, setLoadingRecs] = useState(false);
 
   useEffect(() => {
     const h = new Date().getHours();
     if (h < 12) setGreeting("Good morning");
     else if (h < 17) setGreeting("Good afternoon");
     else setGreeting("Good evening");
+  }, []);
+
+  useEffect(() => {
+    const loadRecommendations = async () => {
+      try {
+        setLoadingRecs(true);
+        const res = await fetch(`${API_BASE}/api/products/recommendations`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          setRecommendations(data.recommendations);
+        }
+      } catch (err) {
+        console.error('Failed to load recommendations:', err);
+      } finally {
+        setLoadingRecs(false);
+      }
+    };
+    loadRecommendations();
   }, []);
 
   if (!user) return null;
@@ -1330,7 +1352,7 @@ function DashboardScreen({ user, setScreen, setSelectedCategory, cart, logout, n
     { label:"Total Savings", value:fmt(totalSaved||user.totalSavings||0), icon: IcDollar, color:"#34d399", bg:"rgba(52,211,153,0.08)", border:"rgba(52,211,153,0.2)", sub:"All time" },
     { label:"Active Orders", value:activeOrders.length, icon: IcPackage, color:"#4f7cff", bg:"rgba(79,124,255,0.08)", border:"rgba(79,124,255,0.2)", sub:`${myOrders.length} total` },
     { label:"Collaborations", value:user.collaborations||0, icon: IcHandshake, color:"#a78bfa", bg:"rgba(167,139,250,0.08)", border:"rgba(167,139,250,0.2)", sub:"Partner shops" },
-    { label:"Bulk Unlocked", value:myOrders.filter(o=>o.saving>0).length, icon: IcAward, color:"#fbbf24", bg:"rgba(251,191,36,0.08)", border:"rgba(251,191,36,0.2)", sub:"Discount orders" },
+    { label:"Loyalty Points", value:user.loyaltyPoints||0, icon: IcStar, color:"#fbbf24", bg:"rgba(251,191,36,0.08)", border:"rgba(251,191,36,0.2)", sub:`${user.loyaltyTier||'Bronze'} tier` },
   ];
 
   const tabs = [
@@ -1400,6 +1422,35 @@ function DashboardScreen({ user, setScreen, setSelectedCategory, cart, logout, n
           </div>
           <button className="btn btn-primary" style={{ padding:"9px 20px", fontSize:13, fontWeight:700 }} onClick={() => setScreen("browse")}><span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Join Pool <IcArrowRight size={14} color="#ffffff" /></span></button>
         </div>
+
+        {/* Product Recommendations */}
+        {recommendations.length > 0 && (
+          <div style={{ marginBottom:28 }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+              <h3 style={{ fontSize:16, fontWeight:700, color:"#c8d4f0", display:"flex", alignItems:"center", gap:8 }}><IcStar size={16} color="#fbbf24" /> Recommended for You</h3>
+              <button className="btn btn-ghost" style={{ fontSize:12, padding:"6px 12px" }} onClick={() => setScreen("browse")}>View all</button>
+            </div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:16 }}>
+              {recommendations.slice(0, 4).map(product => (
+                <div key={product._id} className="hover-lift" style={{ borderRadius:16, border:"1px solid rgba(30,48,80,0.5)", background:"rgba(14,24,41,0.7)", padding:16, cursor:"pointer" }} onClick={() => { setSelectedProduct(product); setScreen("product"); }}>
+                  <div style={{ width:"100%", height:120, background:"rgba(10,18,32,0.8)", borderRadius:12, marginBottom:12, overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    {product.image ? (
+                      <img src={product.image} alt={product.name} style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+                    ) : (
+                      <IcPackage size={32} color="rgba(164,196,255,0.3)" />
+                    )}
+                  </div>
+                  <h4 style={{ fontSize:13, fontWeight:600, color:"#c8d4f0", marginBottom:4, lineHeight:1.3 }}>{product.name}</h4>
+                  <p style={{ fontSize:11, color:"rgba(164,196,255,0.4)", marginBottom:8 }}>{product.category}</p>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                    <span style={{ fontSize:14, fontWeight:700, color:"#34d399" }}>₹{product.price}</span>
+                    <span className="tag tag-amber" style={{ fontSize:10 }}>{product.recommendationReason}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Tabs */}
         <div style={{ display:"flex", gap:2, marginBottom:24, background:"rgba(10,18,32,0.8)", borderRadius:14, padding:4, width:"fit-content", border:"1px solid rgba(30,48,80,0.4)" }}>
