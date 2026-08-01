@@ -411,7 +411,7 @@ export default function App() {
   };
 
   return (
-    <div style={{ fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif", background:"var(--background)", minHeight:"100vh", color:"var(--text)" }}>
+    <div style={{ fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif", background:THEMES[theme].background, minHeight:"100vh", color:THEMES[theme].text }}>
       <GlobalStyles theme={theme} />
       {currentUser && !["login","register-choice","register-owner","register-wholesale","splash","auth-landing","payment"].includes(screen) && (
         <div style={{ position:"fixed", top:20, right:20, zIndex:1000, display:"flex", alignItems:"center", gap:12 }}>
@@ -664,8 +664,12 @@ function LoginScreen({ setScreen, setCurrentUser, showToast }) {
   const [form, setForm] = useState({ email:"", password:"" });
   const [loading, setLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
+  const [step, setStep] = useState(1); // 1: credentials, 2: OTP
+  const [otp, setOtp] = useState("");
+  const [resendTimer, setResendTimer] = useState(0);
+  const [foundUser, setFoundUser] = useState(null);
 
-  const login = async () => {
+  const sendOtp = async () => {
     if (!form.email || !form.password) { showToast("Please fill all fields", "error"); return; }
     setLoading(true);
     try {
@@ -673,11 +677,10 @@ function LoginScreen({ setScreen, setCurrentUser, showToast }) {
       const user = _users.find(u => u.email === form.email && u.password === form.password);
       
       if (user) {
-        localStorage.setItem("token", "demo-token-" + Date.now());
-        _session = user;
-        setCurrentUser(user);
-        setScreen(user.role === "admin" ? "admin-dashboard" : "dashboard");
-        showToast(`Welcome back, ${user.ownerName}!`);
+        setFoundUser(user);
+        showToast(`OTP sent to ${form.email}`, "success");
+        setStep(2);
+        setResendTimer(60);
       } else {
         showToast("Invalid credentials. Try rajesh@shop.com / pass123", "error");
       }
@@ -685,6 +688,29 @@ function LoginScreen({ setScreen, setCurrentUser, showToast }) {
       showToast("Login failed. Please try again.", "error");
     } finally { setLoading(false); }
   };
+
+  const verifyOtp = async () => {
+    if (!otp.trim()) { showToast("Enter OTP", "error"); return; }
+    setLoading(true);
+    try {
+      // Simulate OTP verification - accept any 6-digit OTP
+      if (otp.length === 6) {
+        localStorage.setItem("token", "demo-token-" + Date.now());
+        _session = foundUser;
+        setCurrentUser(foundUser);
+        setScreen(foundUser.role === "admin" ? "admin-dashboard" : "dashboard");
+        showToast(`Welcome back, ${foundUser.ownerName}!`);
+      } else {
+        showToast("Invalid OTP. Enter 6 digits", "error");
+      }
+    } catch (err) {
+      showToast("OTP verification failed", "error");
+    } finally { setLoading(false); }
+  };
+
+  useEffect(() => {
+    if (resendTimer > 0) { const t = setTimeout(() => setResendTimer(r=>r-1), 1000); return () => clearTimeout(t); }
+  }, [resendTimer]);
 
   return (
     <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:24, background:"radial-gradient(ellipse at 25% 25%, rgba(79,124,255,0.08) 0%, transparent 55%), radial-gradient(ellipse at 75% 75%, rgba(124,92,252,0.06) 0%, transparent 55%), #060b14", position:"relative", overflow:"hidden" }}>
@@ -702,39 +728,68 @@ function LoginScreen({ setScreen, setCurrentUser, showToast }) {
           <Logo size={44} textSize={26} />
         </div>
 
-        <div className="card-glow" style={{ padding:40 }}>
-          <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:26, fontWeight:800, color:"#fff", marginBottom:6 }}>Welcome back</h2>
-          <p style={{ color:"rgba(164,196,255,0.5)", fontSize:14, marginBottom:32 }}>Sign in to your shop dashboard</p>
+        <div className="card-glow" style={{ padding:40, textAlign:"center" }}>
+          {step === 1 ? (
+            <>
+              <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:26, fontWeight:800, color:"var(--text)", marginBottom:6 }}>Welcome back</h2>
+              <p style={{ color:"var(--text-muted)", fontSize:14, marginBottom:32 }}>Sign in to your shop dashboard</p>
 
-          <div style={{ display:"flex", flexDirection:"column", gap:18 }}>
-            <div>
-              <label style={lblStyle}>Email Address</label>
-              <div className="inp-icon">
-                <span className="icon"><IcMail size={16} color="currentColor" /></span>
-                <input className="inp" type="email" placeholder="owner@yourshop.com" value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
-              </div>
-            </div>
-            <div>
-              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
-                <label style={{...lblStyle, marginBottom:0}}>Password</label>
-                <span style={{ fontSize:12, color:"rgba(79,124,255,0.8)", cursor:"pointer", fontWeight:500 }}>Forgot?</span>
-              </div>
-              <div style={{ position:"relative" }}>
-                <input className="inp" type={showPwd?"text":"password"} placeholder="••••••••••" value={form.password} onChange={e => setForm({...form, password:e.target.value})} onKeyDown={e => e.key==="Enter" && login()} style={{ paddingRight:48 }} />
-                <button onClick={() => setShowPwd(!showPwd)} style={{ position:"absolute", right:14, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", color:"rgba(164,196,255,0.4)", cursor:"pointer", display:"flex", alignItems:"center" }}>{showPwd ? <IcEyeOff size={16} color="currentColor" /> : <IcEye size={16} color="currentColor" />}</button>
-              </div>
-            </div>
+              <div style={{ display:"flex", flexDirection:"column", gap:18, textAlign:"left" }}>
+                <div>
+                  <label style={lblStyle}>Email Address</label>
+                  <div className="inp-icon">
+                    <span className="icon"><IcMail size={16} color="currentColor" /></span>
+                    <input className="inp" type="email" placeholder="owner@yourshop.com" value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                  </div>
+                </div>
+                <div>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
+                    <label style={{...lblStyle, marginBottom:0}}>Password</label>
+                    <span style={{ fontSize:12, color:"var(--primary)", cursor:"pointer", fontWeight:500 }}>Forgot?</span>
+                  </div>
+                  <div style={{ position:"relative" }}>
+                    <input className="inp" type={showPwd?"text":"password"} placeholder="••••••••••" value={form.password} onChange={e => setForm({...form, password:e.target.value})} onKeyDown={e => e.key==="Enter" && sendOtp()} style={{ paddingRight:48 }} />
+                    <button onClick={() => setShowPwd(!showPwd)} style={{ position:"absolute", right:14, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", color:"var(--text-muted)", cursor:"pointer", display:"flex", alignItems:"center" }}>{showPwd ? <IcEyeOff size={16} color="currentColor" /> : <IcEye size={16} color="currentColor" />}</button>
+                  </div>
+                </div>
 
-            <button className="btn btn-primary" onClick={login} disabled={loading} style={{ padding:"15px", fontSize:15, fontWeight:700, marginTop:4, borderRadius:14 }}>
-              {loading ? <span style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:10 }}><span style={{ width:16, height:16, border:"2px solid rgba(255,255,255,0.3)", borderTopColor:"#fff", borderRadius:"50%", animation:"spin 0.7s linear infinite" }} />Signing in…</span> : <span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Sign In <IcArrowRight size={16} color="#ffffff" /></span>}
-            </button>
-          </div>
+                <button className="btn btn-primary" onClick={sendOtp} disabled={loading} style={{ padding:"15px", fontSize:15, fontWeight:700, marginTop:4, borderRadius:14, width:"100%" }}>
+                  {loading ? <span style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:10 }}><span style={{ width:16, height:16, border:"2px solid rgba(255,255,255,0.3)", borderTopColor:"#fff", borderRadius:"50%", animation:"spin 0.7s linear infinite" }} />Sending OTP…</span> : <span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Send OTP <IcArrowRight size={16} color="#ffffff" /></span>}
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:26, fontWeight:800, color:"var(--text)", marginBottom:6 }}>Verify OTP</h2>
+              <p style={{ color:"var(--text-muted)", fontSize:14, marginBottom:32 }}>Enter the 6-digit code sent to {form.email}</p>
 
-          <div className="divider" style={{ margin:"24px 0" }} />
-          <p style={{ textAlign:"center", color:"rgba(164,196,255,0.4)", fontSize:13 }}>
-            Don't have an account?{" "}
-            <span style={{ color:"#7c9cff", cursor:"pointer", fontWeight:600 }} onClick={() => setScreen("register-choice")}>Create one free</span>
-          </p>
+              <div style={{ marginBottom:24 }}>
+                <OtpInput value={otp} onChange={setOtp} />
+              </div>
+
+              <button className="btn btn-primary" onClick={verifyOtp} disabled={loading || otp.length !== 6} style={{ padding:"15px", fontSize:15, fontWeight:700, marginTop:4, borderRadius:14, width:"100%" }}>
+                {loading ? <span style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:10 }}><span style={{ width:16, height:16, border:"2px solid rgba(255,255,255,0.3)", borderTopColor:"#fff", borderRadius:"50%", animation:"spin 0.7s linear infinite" }} />Verifying…</span> : <span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Verify & Sign In <IcCheckCircle size={16} color="#ffffff" /></span>}
+              </button>
+
+              <div style={{ marginTop:20, fontSize:13, color:"var(--text-muted)" }}>
+                {resendTimer > 0 ? <span>Resend in {resendTimer}s</span> : <span style={{ color:"var(--primary)", cursor:"pointer" }} onClick={sendOtp}>Resend OTP</span>}
+              </div>
+
+              <button className="btn btn-ghost" onClick={() => setStep(1)} style={{ marginTop:16, fontSize:13 }}>
+                <IcArrowLeft size={14} /> Back to login
+              </button>
+            </>
+          )}
+
+          {step === 1 && (
+            <>
+              <div className="divider" style={{ margin:"24px 0" }} />
+              <p style={{ textAlign:"center", color:"var(--text-muted)", fontSize:13 }}>
+                Don't have an account?{" "}
+                <span style={{ color:"var(--primary)", cursor:"pointer", fontWeight:600 }} onClick={() => setScreen("register-choice")}>Create one free</span>
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -2131,6 +2186,48 @@ function PaymentScreen({ cart, setScreen, showToast, currentUser, setCart }) {
 
 
 // ════════════════════════════════════════════════════════════════════
+// ─── INVOICE GENERATION ─────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════
+const generateInvoice = (order) => {
+  const invoiceContent = `
+BULKBUY INVOICE
+===============
+Invoice #: INV-${order.id}
+Date: ${new Date().toLocaleDateString()}
+Status: ${order.status}
+
+ORDER DETAILS
+-------------
+Product: ${order.product}
+Quantity: ${order.qty} units
+Total Amount: ${fmt(order.totalAmount)}
+Savings: ${fmt(order.saving)}
+
+PARTICIPATING SHOPS
+-------------------
+${(order.shopBreakdown||[]).map((sb, i) => `
+${i+1}. ${sb.shop}
+   Quantity: ${sb.qty} units
+   Amount: ${fmt(sb.amount)}
+`).join('')}
+
+---
+Thank you for choosing BulkBuy!
+For questions, contact support@bulkbuy.com
+  `.trim();
+
+  const blob = new Blob([invoiceContent], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Invoice-${order.id}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ════════════════════════════════════════════════════════════════════
 // ─── TRACKING ─────────────────────────────────────────────────────
 // ════════════════════════════════════════════════════════════════════
 function TrackingScreen({ setScreen, currentUser, cart, logout, notifOpen, setNotifOpen }) {
@@ -2209,6 +2306,10 @@ function TrackingScreen({ setScreen, currentUser, cart, logout, notifOpen, setNo
                   <span style={{ fontWeight:900, color:"#fff", fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:18 }}>{fmt(order.totalAmount)}</span>
                 </div>
               </div>
+
+              <button className="btn btn-primary" onClick={() => generateInvoice(order)} style={{ width:"100%", padding:"14px", fontSize:14, fontWeight:700, borderRadius:14, marginTop:16, display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
+                <IcFileText size={18} color="#ffffff" /> Download Invoice
+              </button>
             </div>
           )}
         </div>
@@ -3165,18 +3266,78 @@ function AdminAnalytics() {
     revenue: _orders.filter(o => o.product && _products.find(p => p.name === o.product)?.category === cat).reduce((s,o) => s + o.totalAmount, 0)
   }));
 
+  const monthlyData = [
+    { month: 'Jan', orders: 45, revenue: 125000 },
+    { month: 'Feb', orders: 52, revenue: 142000 },
+    { month: 'Mar', orders: 38, revenue: 98000 },
+    { month: 'Apr', orders: 65, revenue: 178000 },
+    { month: 'May', orders: 58, revenue: 156000 },
+    { month: 'Jun', orders: 72, revenue: 195000 },
+  ];
+
+  const maxRevenue = Math.max(...monthlyData.map(d => d.revenue));
+  const maxOrders = Math.max(...monthlyData.map(d => d.orders));
+
   return (
     <div className="fade-in">
-      <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:24, fontWeight:800, color:"#fff", marginBottom:4, display:"flex", alignItems:"center", gap:8 }}><IcPieChart size={24} /> Analytics</h2>
-      <p style={{ color:"rgba(164,196,255,0.4)", fontSize:13, marginBottom:28 }}>Business insights and performance metrics</p>
+      <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:24, fontWeight:800, color:"var(--text)", marginBottom:4, display:"flex", alignItems:"center", gap:8 }}><IcPieChart size={24} /> Analytics</h2>
+      <p style={{ color:"var(--text-muted)", fontSize:13, marginBottom:28 }}>Business insights and performance metrics</p>
       
+      {/* Key Metrics */}
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:16, marginBottom:28 }}>
+        {[
+          { label:"Total Revenue", value:fmt(_orders.reduce((s,o)=>s+o.totalAmount,0)), icon:<IcDollar size={22} />, color:"#34d399", bg:"rgba(52,211,153,0.08)" },
+          { label:"Total Orders", value:_orders.length, icon:<IcFileText size={22} />, color:"#4f7cff", bg:"rgba(79,124,255,0.08)" },
+          { label:"Active Users", value:_users.filter(u=>u.role!=="admin").length, icon:<IcUsers size={22} />, color:"#a78bfa", bg:"rgba(167,139,250,0.08)" },
+          { label:"Total Savings", value:fmt(_orders.reduce((s,o)=>s+o.saving,0)), icon:<IcAward size={22} />, color:"#fbbf24", bg:"rgba(251,191,36,0.08)" },
+        ].map((stat,i) => (
+          <div key={i} style={{ padding:20, borderRadius:16, border:"1px solid var(--card-border)", background:stat.bg, backdropFilter:"blur(12px)" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
+              <span style={{ color:stat.color }}>{stat.icon}</span>
+              <span style={{ fontSize:12, color:"var(--text-muted)", fontWeight:600 }}>{stat.label}</span>
+            </div>
+            <div style={{ fontSize:24, fontWeight:800, color:stat.color, fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif" }}>{stat.value}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(400px,1fr))", gap:20, marginBottom:28 }}>
+        {/* Revenue Chart */}
+        <div style={{ padding:24, borderRadius:20, border:"1px solid var(--card-border)", background:"var(--card-background)" }}>
+          <h3 style={{ fontSize:15, fontWeight:700, color:"var(--text)", marginBottom:20, display:"flex", alignItems:"center", gap:8 }}><IcBarChart size={18} color="#4f7cff" /> Monthly Revenue</h3>
+          <div style={{ display:"flex", alignItems:"flex-end", gap:12, height:180 }}>
+            {monthlyData.map((d,i) => (
+              <div key={i} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:8 }}>
+                <div style={{ width:"100%", background:"linear-gradient(180deg,#4f7cff,#7c5cfc)", borderRadius:8, height:`${(d.revenue/maxRevenue)*100}%`, minHeight:20, transition:"all 0.3s", position:"relative" }} />
+                <span style={{ fontSize:11, color:"var(--text-muted)", fontWeight:500 }}>{d.month}</span>
+                <span style={{ fontSize:10, color:"#4f7cff" }}>{fmt(d.revenue/1000)}k</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Orders Chart */}
+        <div style={{ padding:24, borderRadius:20, border:"1px solid var(--card-border)", background:"var(--card-background)" }}>
+          <h3 style={{ fontSize:15, fontWeight:700, color:"var(--text)", marginBottom:20, display:"flex", alignItems:"center", gap:8 }}><IcPackage size={18} color="#a78bfa" /> Monthly Orders</h3>
+          <div style={{ display:"flex", alignItems:"flex-end", gap:12, height:180 }}>
+            {monthlyData.map((d,i) => (
+              <div key={i} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:8 }}>
+                <div style={{ width:"100%", background:"linear-gradient(180deg,#a78bfa,#8b5cf6)", borderRadius:8, height:`${(d.orders/maxOrders)*100}%`, minHeight:20, transition:"all 0.3s" }} />
+                <span style={{ fontSize:11, color:"var(--text-muted)", fontWeight:500 }}>{d.month}</span>
+                <span style={{ fontSize:10, color:"#a78bfa" }}>{d.orders}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))", gap:20, marginBottom:28 }}>
-        <div style={{ padding:24, borderRadius:20, border:"1px solid rgba(30,48,80,0.5)", background:"rgba(14,24,41,0.7)" }}>
-          <h3 style={{ fontSize:15, fontWeight:700, color:"#c8d4f0", marginBottom:18, display:"flex", alignItems:"center", gap:8 }}><IcBarChart size={18} color="#4f7cff" /> Revenue by Category</h3>
+        <div style={{ padding:24, borderRadius:20, border:"1px solid var(--card-border)", background:"var(--card-background)" }}>
+          <h3 style={{ fontSize:15, fontWeight:700, color:"var(--text)", marginBottom:18, display:"flex", alignItems:"center", gap:8 }}><IcBarChart size={18} color="#4f7cff" /> Revenue by Category</h3>
           {categoryStats.map(cat => (
             <div key={cat.category} style={{ marginBottom:16 }}>
               <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:6 }}>
-                <span style={{ color:"rgba(164,196,255,0.5)" }}>{cat.category}</span>
+                <span style={{ color:"var(--text-muted)" }}>{cat.category}</span>
                 <span style={{ color:"#4f7cff", fontWeight:600 }}>{fmt(cat.revenue)}</span>
               </div>
               <div className="progress-track" style={{ height:8 }}>
@@ -3186,19 +3347,19 @@ function AdminAnalytics() {
           ))}
         </div>
 
-        <div style={{ padding:24, borderRadius:20, border:"1px solid rgba(30,48,80,0.5)", background:"rgba(14,24,41,0.7)" }}>
-          <h3 style={{ fontSize:15, fontWeight:700, color:"#c8d4f0", marginBottom:18, display:"flex", alignItems:"center", gap:8 }}><IcPackage size={18} color="#a78bfa" /> Product Distribution</h3>
+        <div style={{ padding:24, borderRadius:20, border:"1px solid var(--card-border)", background:"var(--card-background)" }}>
+          <h3 style={{ fontSize:15, fontWeight:700, color:"var(--text)", marginBottom:18, display:"flex", alignItems:"center", gap:8 }}><IcPackage size={18} color="#a78bfa" /> Product Distribution</h3>
           {categoryStats.map(cat => (
-            <div key={cat.category} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"8px 0", borderBottom:"1px solid rgba(15,30,53,0.4)" }}>
-              <span style={{ fontSize:13, color:"rgba(164,196,255,0.5)" }}>{cat.category}</span>
+            <div key={cat.category} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"8px 0", borderBottom:"1px solid var(--card-border)" }}>
+              <span style={{ fontSize:13, color:"var(--text-muted)" }}>{cat.category}</span>
               <span className="tag tag-purple" style={{ fontSize:11 }}>{cat.count} products</span>
             </div>
           ))}
         </div>
       </div>
 
-      <div style={{ padding:24, borderRadius:20, border:"1px solid rgba(30,48,80,0.5)", background:"rgba(14,24,41,0.7)" }}>
-        <h3 style={{ fontSize:15, fontWeight:700, color:"#c8d4f0", marginBottom:18, display:"flex", alignItems:"center", gap:8 }}><IcTrendUp size={18} color="#34d399" /> Order Trends</h3>
+      <div style={{ padding:24, borderRadius:20, border:"1px solid var(--card-border)", background:"var(--card-background)" }}>
+        <h3 style={{ fontSize:15, fontWeight:700, color:"var(--text)", marginBottom:18, display:"flex", alignItems:"center", gap:8 }}><IcTrendUp size={18} color="#34d399" /> Order Status Distribution</h3>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:16 }}>
           {[
             { label:"Total Orders", value:_orders.length, icon:<IcFileText size={20} />, color:"#4f7cff" },
@@ -3206,7 +3367,7 @@ function AdminAnalytics() {
             { label:"Pending", value:_orders.filter(o=>o.status==="Pending").length, icon:<IcAlertTriangle size={20} />, color:"#fbbf24" },
             { label:"In Transit", value:_orders.filter(o=>o.status==="Shipped").length, icon:<IcTruck size={20} />, color:"#a78bfa" },
           ].map((stat,i) => (
-            <div key={i} style={{ padding:16, borderRadius:12, background:"rgba(8,16,32,0.5)", border:"1px solid rgba(30,48,80,0.4)" }}>
+            <div key={i} style={{ padding:16, borderRadius:12, background:"rgba(8,16,32,0.5)", border:"1px solid var(--card-border)" }}>
               <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
                 <span style={{ color:stat.color }}>{stat.icon}</span>
                 <span style={{ fontSize:12, color:"rgba(164,196,255,0.4)" }}>{stat.label}</span>
