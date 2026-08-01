@@ -682,7 +682,7 @@ function LoginScreen({ setScreen, setCurrentUser, showToast }) {
         showToast("Invalid credentials. Try rajesh@shop.com / pass123", "error");
       }
     } catch (err) {
-      showToast("Connection error — is the server running?", "error");
+      showToast("Login failed. Please try again.", "error");
     } finally { setLoading(false); }
   };
 
