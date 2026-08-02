@@ -453,8 +453,8 @@ export default function App() {
   };
 
   return (
-    <div style={{ fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif", background:"#060b14", minHeight:"100vh", color:"#d8e4f0", position:"relative" }}>
-      <GlobalStyles theme="dark" />
+    <div style={{ fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif", background:THEMES[theme].background, minHeight:"100vh", color:THEMES[theme].text, position:"relative" }}>
+      <GlobalStyles theme={theme} />
       {screens[screen] || screens.dashboard}
       {currentUser && !["login","register-choice","register-owner","register-wholesale","splash","auth-landing","payment"].includes(screen) && (
         <>
@@ -1909,6 +1909,23 @@ function ProductScreen({ product: p, setScreen, addToCart, poolQty, showToast, c
                   ))}
                 </div>
               )}
+
+              {/* Available Shoppers for Pooling */}
+              <div style={{ marginBottom:20 }}>
+                <p style={{ fontSize:11, color:"rgba(164,196,255,0.3)", marginBottom:10, fontWeight:600, letterSpacing:"0.5px", textTransform:"uppercase" }}>Available Shoppers for Pooling</p>
+                {_users.filter(u => u.role === "owner" && u.shopName !== (currentUser?.shopName || _session?.shopName) && !contributions.some(c => c.shopName === u.shopName)).slice(0, 5).map((u,i)=>(
+                  <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"8px 0", borderBottom:"1px solid rgba(15,30,53,0.4)" }}>
+                    <div style={{ display:"flex", gap:10, alignItems:"center" }}>
+                      <div className="avatar" style={{ width:28, height:28, background:avatarColor(u.shopName), fontSize:11 }}>{initials(u.shopName)}</div>
+                      <div>
+                        <span style={{ fontSize:13, color:"rgba(164,196,255,0.6)", display:"block" }}>{u.shopName}</span>
+                        <span style={{ fontSize:11, color:"rgba(164,196,255,0.3)", display:"block" }}>{u.location}</span>
+                      </div>
+                    </div>
+                    <span className="tag tag-blue" style={{ fontSize:10, padding:"4px 8px" }}>Available</span>
+                  </div>
+                ))}
+              </div>
 
               <div style={{ marginBottom:20 }}>
                 <label style={lblStyle}>Your Quantity ({p.unit})</label>
