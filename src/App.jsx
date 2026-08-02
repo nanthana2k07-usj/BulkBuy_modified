@@ -32,56 +32,56 @@ let _users = [
 ];
 let _session = null;
 let _products = [
-  { id:1, name:"Premium Basmati Rice", category:"Grocery", price:28, bulkPrice:24, bulkThreshold:200, stock:500, image:"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400", rating:4.5, reviews:128 },
-  { id:2, name:"Refined Sunflower Oil", category:"Grocery", price:18, bulkPrice:15, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400", rating:4.3, reviews:95 },
-  { id:3, name:"LED Bulbs Pack (10pcs)", category:"Electronics", price:24, bulkPrice:20, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=400", rating:4.7, reviews:156 },
-  { id:4, name:"A4 Paper Reams", category:"Office Supplies", price:6.2, bulkPrice:5, bulkThreshold:200, stock:600, image:"https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400", rating:4.4, reviews:87 },
-  { id:5, name:"Toothpaste Pack", category:"Grocery", price:12, bulkPrice:10, bulkThreshold:120, stock:350, image:"https://images.unsplash.com/photo-1559548384-c00a7b5fc9bb?w=400", rating:4.2, reviews:203 },
-  { id:6, name:"Detergent Powder 5kg", category:"Grocery", price:35, bulkPrice:30, bulkThreshold:80, stock:250, image:"https://images.unsplash.com/photo-1612444530582-fc66183b16f7?w=400", rating:4.6, reviews:142 },
-  { id:7, name:"USB Cables (10pcs)", category:"Electronics", price:8, bulkPrice:6, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.1, reviews:78 },
-  { id:8, name:"Biscuits Pack", category:"Grocery", price:15, bulkPrice:12, bulkThreshold:180, stock:450, image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400", rating:4.5, reviews:189 },
-  { id:9, name:"Wheat Flour (25kg)", category:"Grocery", price:22, bulkPrice:18, bulkThreshold:250, stock:550, image:"https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400", rating:4.6, reviews:167 },
-  { id:10, name:"Sugar (50kg)", category:"Grocery", price:32, bulkPrice:28, bulkThreshold:200, stock:400, image:"https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400", rating:4.4, reviews:134 },
-  { id:11, name:"Tea Powder (5kg)", category:"Grocery", price:45, bulkPrice:38, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400", rating:4.8, reviews:201 },
-  { id:12, name:"Coffee Beans (10kg)", category:"Grocery", price:55, bulkPrice:48, bulkThreshold:80, stock:200, image:"https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400", rating:4.9, reviews:178 },
-  { id:13, name:"Spices Mix (2kg)", category:"Grocery", price:28, bulkPrice:24, bulkThreshold:150, stock:320, image:"https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400", rating:4.3, reviews:92 },
-  { id:14, name:"Cooking Oil (10L)", category:"Grocery", price:42, bulkPrice:36, bulkThreshold:120, stock:380, image:"https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400", rating:4.5, reviews:145 },
-  { id:15, name:"Rice (50kg)", category:"Grocery", price:38, bulkPrice:32, bulkThreshold:200, stock:450, image:"https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400", rating:4.4, reviews:156 },
-  { id:16, name:"Notebooks (100pcs)", category:"Stationery", price:18, bulkPrice:15, bulkThreshold:200, stock:500, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.2, reviews:89 },
-  { id:17, name:"Pens Pack (50pcs)", category:"Stationery", price:12, bulkPrice:10, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.1, reviews:67 },
-  { id:18, name:"Markers Set (20pcs)", category:"Stationery", price:22, bulkPrice:18, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.3, reviews:78 },
-  { id:19, name:"Calculator", category:"Electronics", price:15, bulkPrice:12, bulkThreshold:80, stock:350, image:"https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400", rating:4.4, reviews:112 },
-  { id:20, name:"Power Strips (5pcs)", category:"Electronics", price:28, bulkPrice:24, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=400", rating:4.5, reviews:134 },
-  { id:21, name:"Shampoo Bottles (12pcs)", category:"Grocery", price:18, bulkPrice:15, bulkThreshold:100, stock:320, image:"https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=400", rating:4.3, reviews:156 },
-  { id:22, name:"Soap Bars (24pcs)", category:"Grocery", price:14, bulkPrice:11, bulkThreshold:120, stock:400, image:"https://images.unsplash.com/photo-1616401784845-180882ba9ba8?w=400", rating:4.2, reviews:134 },
-  { id:23, name:"Hand Wash (5L)", category:"Grocery", price:22, bulkPrice:18, bulkThreshold:80, stock:280, image:"https://images.unsplash.com/photo-1573521193826-58c7dc2e13e3?w=400", rating:4.5, reviews:98 },
-  { id:24, name:"Tissue Paper Packs", category:"Grocery", price:8, bulkPrice:6, bulkThreshold:200, stock:500, image:"https://images.unsplash.com/photo-1583947215256-38c3a828e5a9?w=400", rating:4.1, reviews:76 },
-  { id:25, name:"Cleaning Supplies Kit", category:"Grocery", price:35, bulkPrice:28, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1581578731117-104f2a65391c?w=400", rating:4.4, reviews:112 },
-  { id:26, name:"Storage Containers (Set of 10)", category:"Grocery", price:25, bulkPrice:20, bulkThreshold:100, stock:350, image:"https://images.unsplash.com/photo-1594908900066-3f47337c1d9b?w=400", rating:4.3, reviews:89 },
-  { id:27, name:"Plastic Bags Bundle", category:"Grocery", price:6, bulkPrice:4, bulkThreshold:300, stock:600, image:"https://images.unsplash.com/photo-1616628188859-9a1c1e5d4e5e?w=400", rating:3.9, reviews:67 },
-  { id:28, name:"Disposable Plates (100pcs)", category:"Grocery", price:12, bulkPrice:9, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1530103862676-de3c9a59af57?w=400", rating:4.0, reviews:78 },
-  { id:29, name:"Paper Cups (200pcs)", category:"Grocery", price:10, bulkPrice:7, bulkThreshold:200, stock:450, image:"https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400", rating:4.1, reviews:92 },
-  { id:30, name:"Aluminum Foil Rolls", category:"Grocery", price:8, bulkPrice:6, bulkThreshold:180, stock:380, image:"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400", rating:4.2, reviews:84 },
-  { id:31, name:"Clips and Pins Set", category:"Stationery", price:5, bulkPrice:3, bulkThreshold:250, stock:550, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.0, reviews:56 },
-  { id:32, name:"Stapler and Staples", category:"Stationery", price:8, bulkPrice:6, bulkThreshold:120, stock:320, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.3, reviews:73 },
-  { id:33, name:"Glue Bottles (6pcs)", category:"Stationery", price:10, bulkPrice:8, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.1, reviews:68 },
-  { id:34, name:"Scissors Set (3pcs)", category:"Stationery", price:15, bulkPrice:12, bulkThreshold:80, stock:240, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.4, reviews:91 },
-  { id:35, name:"Tape Rolls (10pcs)", category:"Stationery", price:12, bulkPrice:9, bulkThreshold:150, stock:380, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.2, reviews:79 },
-  { id:36, name:"File Folders (25pcs)", category:"Stationery", price:18, bulkPrice:14, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400", rating:4.3, reviews:85 },
-  { id:37, name:"Envelopes (100pcs)", category:"Stationery", price:8, bulkPrice:6, bulkThreshold:200, stock:450, image:"https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400", rating:4.0, reviews:62 },
-  { id:38, name:"Whiteboard Markers", category:"Stationery", price:14, bulkPrice:11, bulkThreshold:80, stock:220, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.5, reviews:104 },
-  { id:39, name:"Desk Organizer", category:"Stationery", price:20, bulkPrice:16, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.4, reviews:88 },
-  { id:40, name:"Mouse Pad (10pcs)", category:"Electronics", price:6, bulkPrice:4, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400", rating:4.1, reviews:72 },
-  { id:41, name:"Keyboard Wrist Rest", category:"Electronics", price:12, bulkPrice:9, bulkThreshold:80, stock:240, image:"https://images.unsplash.com/photo-1587829741301-dc798b91add1?w=400", rating:4.3, reviews:65 },
-  { id:42, name:"HDMI Cables (5pcs)", category:"Electronics", price:18, bulkPrice:14, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.4, reviews:97 },
-  { id:43, name:"Ethernet Cables (10pcs)", category:"Electronics", price:15, bulkPrice:12, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.2, reviews:84 },
-  { id:44, name:"SD Cards (10pcs)", category:"Electronics", price:35, bulkPrice:28, bulkThreshold:50, stock:150, image:"https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400", rating:4.6, reviews:123 },
-  { id:45, name:"USB Flash Drives (5pcs)", category:"Electronics", price:28, bulkPrice:22, bulkThreshold:40, stock:120, image:"https://images.unsplash.com/photo-1618410320928-25228d611631?w=400", rating:4.5, reviews:108 },
-  { id:46, name:"Phone Chargers (5pcs)", category:"Electronics", price:22, bulkPrice:17, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400", rating:4.3, reviews:95 },
-  { id:47, name:"Bluetooth Speakers (3pcs)", category:"Electronics", price:45, bulkPrice:36, bulkThreshold:30, stock:90, image:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400", rating:4.7, reviews:167 },
-  { id:48, name:"Earbuds (10pcs)", category:"Electronics", price:32, bulkPrice:25, bulkThreshold:50, stock:150, image:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400", rating:4.4, reviews:142 },
-  { id:49, name:"Webcam HD", category:"Electronics", price:38, bulkPrice:30, bulkThreshold:25, stock:75, image:"https://images.unsplash.com/photo-1587826080692-f439cd0b70da?w=400", rating:4.5, reviews:89 },
-  { id:50, name:"Wireless Mouse (5pcs)", category:"Electronics", price:28, bulkPrice:22, bulkThreshold:40, stock:120, image:"https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400", rating:4.4, reviews:118 }
+  { id:1, name:"Premium Basmati Rice", category:"Grocery", price:28, bulkPrice:24, bulkThreshold:200, stock:500, image:"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400", rating:4.5, reviews:128, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:2, name:"Refined Sunflower Oil", category:"Grocery", price:18, bulkPrice:15, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400", rating:4.3, reviews:95, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:3, name:"LED Bulbs Pack (10pcs)", category:"Electronics", price:24, bulkPrice:20, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=400", rating:4.7, reviews:156, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:4, name:"A4 Paper Reams", category:"Office Supplies", price:6.2, bulkPrice:5, bulkThreshold:200, stock:600, image:"https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400", rating:4.4, reviews:87, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:5, name:"Toothpaste Pack", category:"Grocery", price:12, bulkPrice:10, bulkThreshold:120, stock:350, image:"https://images.unsplash.com/photo-1559548384-c00a7b5fc9bb?w=400", rating:4.2, reviews:203, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:6, name:"Detergent Powder 5kg", category:"Grocery", price:35, bulkPrice:30, bulkThreshold:80, stock:250, image:"https://images.unsplash.com/photo-1612444530582-fc66183b16f7?w=400", rating:4.6, reviews:142, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:7, name:"USB Cables (10pcs)", category:"Electronics", price:8, bulkPrice:6, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.1, reviews:78, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:8, name:"Biscuits Pack", category:"Grocery", price:15, bulkPrice:12, bulkThreshold:180, stock:450, image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400", rating:4.5, reviews:189, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:9, name:"Wheat Flour (25kg)", category:"Grocery", price:22, bulkPrice:18, bulkThreshold:250, stock:550, image:"https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400", rating:4.6, reviews:167, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:10, name:"Sugar (50kg)", category:"Grocery", price:32, bulkPrice:28, bulkThreshold:200, stock:400, image:"https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400", rating:4.4, reviews:134, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:11, name:"Tea Powder (5kg)", category:"Grocery", price:45, bulkPrice:38, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400", rating:4.8, reviews:201, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:12, name:"Coffee Beans (10kg)", category:"Grocery", price:55, bulkPrice:48, bulkThreshold:80, stock:200, image:"https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400", rating:4.9, reviews:178, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:13, name:"Spices Mix (2kg)", category:"Grocery", price:28, bulkPrice:24, bulkThreshold:150, stock:320, image:"https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400", rating:4.3, reviews:92, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:14, name:"Cooking Oil (10L)", category:"Grocery", price:42, bulkPrice:36, bulkThreshold:120, stock:380, image:"https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400", rating:4.5, reviews:145, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:15, name:"Rice (50kg)", category:"Grocery", price:38, bulkPrice:32, bulkThreshold:200, stock:450, image:"https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400", rating:4.4, reviews:156, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:16, name:"Notebooks (100pcs)", category:"Stationery", price:18, bulkPrice:15, bulkThreshold:200, stock:500, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.2, reviews:89, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:17, name:"Pens Pack (50pcs)", category:"Stationery", price:12, bulkPrice:10, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.1, reviews:67, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:18, name:"Markers Set (20pcs)", category:"Stationery", price:22, bulkPrice:18, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.3, reviews:78, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:19, name:"Calculator", category:"Electronics", price:15, bulkPrice:12, bulkThreshold:80, stock:350, image:"https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400", rating:4.4, reviews:112, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:20, name:"Power Strips (5pcs)", category:"Electronics", price:28, bulkPrice:24, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=400", rating:4.5, reviews:134, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:21, name:"Shampoo Bottles (12pcs)", category:"Grocery", price:18, bulkPrice:15, bulkThreshold:100, stock:320, image:"https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=400", rating:4.3, reviews:156, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:22, name:"Soap Bars (24pcs)", category:"Grocery", price:14, bulkPrice:11, bulkThreshold:120, stock:400, image:"https://images.unsplash.com/photo-1616401784845-180882ba9ba8?w=400", rating:4.2, reviews:134, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:23, name:"Hand Wash (5L)", category:"Grocery", price:22, bulkPrice:18, bulkThreshold:80, stock:280, image:"https://images.unsplash.com/photo-1573521193826-58c7dc2e13e3?w=400", rating:4.5, reviews:98, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:24, name:"Tissue Paper Packs", category:"Grocery", price:8, bulkPrice:6, bulkThreshold:200, stock:500, image:"https://images.unsplash.com/photo-1583947215256-38c3a828e5a9?w=400", rating:4.1, reviews:76, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:25, name:"Cleaning Supplies Kit", category:"Grocery", price:35, bulkPrice:28, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1581578731117-104f2a65391c?w=400", rating:4.4, reviews:112, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:26, name:"Storage Containers (Set of 10)", category:"Grocery", price:25, bulkPrice:20, bulkThreshold:100, stock:350, image:"https://images.unsplash.com/photo-1594908900066-3f47337c1d9b?w=400", rating:4.3, reviews:89, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:27, name:"Plastic Bags Bundle", category:"Grocery", price:6, bulkPrice:4, bulkThreshold:300, stock:600, image:"https://images.unsplash.com/photo-1616628188859-9a1c1e5d4e5e?w=400", rating:3.9, reviews:67, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:28, name:"Disposable Plates (100pcs)", category:"Grocery", price:12, bulkPrice:9, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1530103862676-de3c9a59af57?w=400", rating:4.0, reviews:78, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:29, name:"Paper Cups (200pcs)", category:"Grocery", price:10, bulkPrice:7, bulkThreshold:200, stock:450, image:"https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400", rating:4.1, reviews:92, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:30, name:"Aluminum Foil Rolls", category:"Grocery", price:8, bulkPrice:6, bulkThreshold:180, stock:380, image:"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400", rating:4.2, reviews:84, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:31, name:"Clips and Pins Set", category:"Stationery", price:5, bulkPrice:3, bulkThreshold:250, stock:550, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.0, reviews:56, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:32, name:"Stapler and Staples", category:"Stationery", price:8, bulkPrice:6, bulkThreshold:120, stock:320, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.3, reviews:73, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:33, name:"Glue Bottles (6pcs)", category:"Stationery", price:10, bulkPrice:8, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.1, reviews:68, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:34, name:"Scissors Set (3pcs)", category:"Stationery", price:15, bulkPrice:12, bulkThreshold:80, stock:240, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.4, reviews:91, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:35, name:"Tape Rolls (10pcs)", category:"Stationery", price:12, bulkPrice:9, bulkThreshold:150, stock:380, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.2, reviews:79, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:36, name:"File Folders (25pcs)", category:"Stationery", price:18, bulkPrice:14, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400", rating:4.3, reviews:85, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:37, name:"Envelopes (100pcs)", category:"Stationery", price:8, bulkPrice:6, bulkThreshold:200, stock:450, image:"https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400", rating:4.0, reviews:62, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:38, name:"Whiteboard Markers", category:"Stationery", price:14, bulkPrice:11, bulkThreshold:80, stock:220, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.5, reviews:104, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:39, name:"Desk Organizer", category:"Stationery", price:20, bulkPrice:16, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.4, reviews:88, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:40, name:"Mouse Pad (10pcs)", category:"Electronics", price:6, bulkPrice:4, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400", rating:4.1, reviews:72, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:41, name:"Keyboard Wrist Rest", category:"Electronics", price:12, bulkPrice:9, bulkThreshold:80, stock:240, image:"https://images.unsplash.com/photo-1587829741301-dc798b91add1?w=400", rating:4.3, reviews:65, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:42, name:"HDMI Cables (5pcs)", category:"Electronics", price:18, bulkPrice:14, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.4, reviews:97, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:43, name:"Ethernet Cables (10pcs)", category:"Electronics", price:15, bulkPrice:12, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.2, reviews:84, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:44, name:"SD Cards (10pcs)", category:"Electronics", price:35, bulkPrice:28, bulkThreshold:50, stock:150, image:"https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400", rating:4.6, reviews:123, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:45, name:"USB Flash Drives (5pcs)", category:"Electronics", price:28, bulkPrice:22, bulkThreshold:40, stock:120, image:"https://images.unsplash.com/photo-1618410320928-25228d611631?w=400", rating:4.5, reviews:108, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:46, name:"Phone Chargers (5pcs)", category:"Electronics", price:22, bulkPrice:17, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400", rating:4.3, reviews:95, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:47, name:"Bluetooth Speakers (3pcs)", category:"Electronics", price:45, bulkPrice:36, bulkThreshold:30, stock:90, image:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400", rating:4.7, reviews:167, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:48, name:"Earbuds (10pcs)", category:"Electronics", price:32, bulkPrice:25, bulkThreshold:50, stock:150, image:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400", rating:4.4, reviews:142, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:49, name:"Webcam HD", category:"Electronics", price:38, bulkPrice:30, bulkThreshold:25, stock:75, image:"https://images.unsplash.com/photo-1587826080692-f439cd0b70da?w=400", rating:4.5, reviews:89, wholesaleStore:"Metro Wholesale", adminId:99 },
+  { id:50, name:"Wireless Mouse (5pcs)", category:"Electronics", price:28, bulkPrice:22, bulkThreshold:40, stock:120, image:"https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400", rating:4.4, reviews:118, wholesaleStore:"Metro Wholesale", adminId:99 }
 ];
 
 let _orders = [
@@ -1865,7 +1865,7 @@ function ProductScreen({ product: p, setScreen, addToCart, poolQty, showToast, c
               <div style={{ padding:"24px 28px" }}>
                 <span className="tag tag-blue" style={{ marginBottom:12, display:"inline-block" }}>{p.category}</span>
                 <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:22, fontWeight:800, color:"#fff", marginBottom:6 }}>{p.name}</h2>
-                <p style={{ color:"rgba(164,196,255,0.4)", fontSize:13 }}>Supplied by {p.supplier}</p>
+                <p style={{ color:"rgba(164,196,255,0.4)", fontSize:13 }}>Wholesale Store: {p.wholesaleStore}</p>
                 <div style={{ display:"flex", gap:4, marginTop:10, alignItems:"center" }}>
                   {"⭐".repeat(Math.floor(p.rating||4))}
                   <span style={{ fontSize:12, color:"rgba(164,196,255,0.4)", marginLeft:4 }}>({p.reviews||0} reviews)</span>
@@ -1913,7 +1913,7 @@ function ProductScreen({ product: p, setScreen, addToCart, poolQty, showToast, c
               {/* Available Shoppers for Pooling */}
               <div style={{ marginBottom:20 }}>
                 <p style={{ fontSize:11, color:"rgba(164,196,255,0.3)", marginBottom:10, fontWeight:600, letterSpacing:"0.5px", textTransform:"uppercase" }}>Available Shoppers for Pooling</p>
-                {_users.filter(u => u.role === "owner" && u.shopName !== (currentUser?.shopName || _session?.shopName) && !contributions.some(c => c.shopName === u.shopName)).slice(0, 5).map((u,i)=>(
+                {_users.filter(u => u.role === "owner" && u.shopName !== (currentUser?.shopName || _session?.shopName) && !contributions.some(c => c.shopName === u.shopName)).map((u,i)=>(
                   <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"8px 0", borderBottom:"1px solid rgba(15,30,53,0.4)" }}>
                     <div style={{ display:"flex", gap:10, alignItems:"center" }}>
                       <div className="avatar" style={{ width:28, height:28, background:avatarColor(u.shopName), fontSize:11 }}>{initials(u.shopName)}</div>
@@ -3016,7 +3016,7 @@ function AdminApp({ user, logout, showToast, toast, refresh }) {
       </div>
       <div style={{ flex:1, overflowY:"auto", padding:"28px 32px" }}>
         {tab==="dashboard" && <AdminDashboard setTab={setTab} />}
-        {tab==="products" && <AdminProducts showToast={showToast} refresh={r} />}
+        {tab==="products" && <AdminProducts showToast={showToast} refresh={r} user={user} />}
         {tab==="orders" && <AdminOrders showToast={showToast} refresh={r} />}
         {tab==="payments" && <AdminPayments />}
         {tab==="delivery" && <AdminDelivery showToast={showToast} refresh={r} />}
@@ -3089,23 +3089,33 @@ function AdminDashboard({ setTab }) {
 }
 
 
-function AdminProducts({ showToast, refresh }) {
-  const [form, setForm] = useState({ name:"", category:"Grocery", price:"", bulkPrice:"", bulkThreshold:"", supplier:"", image:"", stock:"", unit:"pcs" });
+function AdminProducts({ showToast, refresh, user }) {
+  const [form, setForm] = useState({ name:"", category:"Grocery", price:"", bulkPrice:"", bulkThreshold:"", supplier:"", image:"", stock:"", unit:"pcs", wholesaleStore:"" });
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const adminId = user?.id || user?._id || 99;
+  const adminStoreName = user?.shopName || "Metro Wholesale";
+
+  // Filter products to show only this admin's products
+  const myProducts = _products.filter(p => p.adminId === adminId);
 
   const save = async () => {
     if (!form.name||!form.price||!form.bulkPrice||!form.bulkThreshold||!form.supplier) { showToast("Fill all required fields","error"); return; }
     setLoading(true);
     try {
-      const body = { ...form, price:+form.price, bulkPrice:+form.bulkPrice, bulkThreshold:+form.bulkThreshold, stock:+(form.stock||1000) };
-      if (editId) await apiFetch(`/api/products/${editId}`, { method:"PUT", body });
-      else await apiFetch("/api/products", { method:"POST", body:{ ...body, rating:4.5, reviews:0 } });
-      const all = await apiFetch("/api/products");
-      if (Array.isArray(all)) _products = all;
+      const body = { ...form, price:+form.price, bulkPrice:+form.bulkPrice, bulkThreshold:+form.bulkThreshold, stock:+(form.stock||1000), adminId, wholesaleStore: form.wholesaleStore || adminStoreName };
+      if (editId) {
+        const idx = _products.findIndex(p => (p._id||p.id) === editId);
+        if (idx !== -1) {
+          _products[idx] = { ..._products[idx], ...body };
+        }
+      } else {
+        const newId = Math.max(..._products.map(p => p.id || 0)) + 1;
+        _products.push({ ...body, id: newId, rating: 4.5, reviews: 0 });
+      }
       setShowForm(false); setEditId(null);
-      setForm({ name:"", category:"Grocery", price:"", bulkPrice:"", bulkThreshold:"", supplier:"", image:"", stock:"", unit:"pcs" });
+      setForm({ name:"", category:"Grocery", price:"", bulkPrice:"", bulkThreshold:"", supplier:"", image:"", stock:"", unit:"pcs", wholesaleStore:"" });
       showToast(editId?"Product updated!":"Product added!");
       refresh();
     } catch { showToast("Error saving product","error"); }
@@ -3114,9 +3124,10 @@ function AdminProducts({ showToast, refresh }) {
 
   const del = async (id) => {
     try {
-      await apiFetch(`/api/products/${id}`, { method:"DELETE" });
-      const all = await apiFetch("/api/products");
-      if (Array.isArray(all)) _products = all;
+      const idx = _products.findIndex(p => (p._id||p.id) === id);
+      if (idx !== -1) {
+        _products.splice(idx, 1);
+      }
       showToast("Product removed"); refresh();
     } catch { showToast("Error deleting","error"); }
   };
@@ -3124,8 +3135,8 @@ function AdminProducts({ showToast, refresh }) {
   return (
     <div className="fade-in">
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:28 }}>
-        <div><h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:24, fontWeight:900, color:"#fff" }}>📦 Products</h2><p style={{ color:"rgba(164,196,255,0.4)", fontSize:13, marginTop:3 }}>{_products.length} in catalog</p></div>
-        <button className="btn btn-primary" onClick={()=>{setShowForm(!showForm);setEditId(null);setForm({ name:"", category:"Grocery", price:"", bulkPrice:"", bulkThreshold:"", supplier:"", image:"", stock:"", unit:"pcs" });}} style={{ fontWeight:700 }}>{showForm?"✕ Cancel":"+ Add Product"}</button>
+        <div><h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:24, fontWeight:900, color:"#fff" }}>📦 My Products</h2><p style={{ color:"rgba(164,196,255,0.4)", fontSize:13, marginTop:3 }}>{myProducts.length} products in your catalog</p></div>
+        <button className="btn btn-primary" onClick={()=>{setShowForm(!showForm);setEditId(null);setForm({ name:"", category:"Grocery", price:"", bulkPrice:"", bulkThreshold:"", supplier:"", image:"", stock:"", unit:"pcs", wholesaleStore:adminStoreName });}} style={{ fontWeight:700 }}>{showForm?"✕ Cancel":"+ Add Product"}</button>
       </div>
       {showForm && (
         <div style={{ padding:28, borderRadius:20, border:"1px solid rgba(79,124,255,0.3)", background:"rgba(14,24,41,0.8)", marginBottom:24 }} className="fade-in">
@@ -3133,6 +3144,7 @@ function AdminProducts({ showToast, refresh }) {
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
             <div style={{ gridColumn:"1/-1" }}><label style={lblStyle}>Name *</label><input className="inp" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Premium Basmati Rice" /></div>
             <div><label style={lblStyle}>Category</label><select className="inp" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}>{CATEGORIES.filter(c=>c!=="All").map(c=><option key={c}>{c}</option>)}</select></div>
+            <div><label style={lblStyle}>Wholesale Store *</label><input className="inp" value={form.wholesaleStore} onChange={e=>setForm({...form,wholesaleStore:e.target.value})} placeholder="Metro Wholesale" /></div>
             <div><label style={lblStyle}>Supplier *</label><input className="inp" value={form.supplier} onChange={e=>setForm({...form,supplier:e.target.value})} placeholder="AgriSupply Co." /></div>
             <div><label style={lblStyle}>Regular Price ₹ *</label><input className="inp" type="number" value={form.price} onChange={e=>setForm({...form,price:e.target.value})} placeholder="2800" /></div>
             <div><label style={lblStyle}>Bulk Price ₹ *</label><input className="inp" type="number" value={form.bulkPrice} onChange={e=>setForm({...form,bulkPrice:e.target.value})} placeholder="2200" /></div>
@@ -3147,13 +3159,14 @@ function AdminProducts({ showToast, refresh }) {
       <div style={{ borderRadius:20, border:"1px solid rgba(30,48,80,0.5)", background:"rgba(14,24,41,0.7)", overflow:"hidden" }}>
         <div style={{ overflowX:"auto" }}>
           <table style={{ width:"100%", borderCollapse:"collapse" }}>
-            <thead><tr style={{ background:"rgba(6,11,20,0.5)" }}>{["Image","Product","Category","Regular","Bulk","Disc","Threshold","Stock","Actions"].map(h=><th key={h} style={{ padding:"12px 16px", textAlign:"left", fontSize:11, fontWeight:700, color:"rgba(164,196,255,0.3)", textTransform:"uppercase", letterSpacing:"0.5px", whiteSpace:"nowrap" }}>{h}</th>)}</tr></thead>
+            <thead><tr style={{ background:"rgba(6,11,20,0.5)" }}>{["Image","Product","Category","Wholesale Store","Regular","Bulk","Disc","Threshold","Stock","Actions"].map(h=><th key={h} style={{ padding:"12px 16px", textAlign:"left", fontSize:11, fontWeight:700, color:"rgba(164,196,255,0.3)", textTransform:"uppercase", letterSpacing:"0.5px", whiteSpace:"nowrap" }}>{h}</th>)}</tr></thead>
             <tbody>
-              {_products.map(p=>(
+              {myProducts.map(p=>(
                 <tr key={p._id||p.id} style={{ borderBottom:"1px solid rgba(15,30,53,0.4)" }} onMouseEnter={e=>e.currentTarget.style.background="rgba(79,124,255,0.03)"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
                   <td style={{ padding:"12px 16px" }}><img src={p.image} alt={p.name} style={{ width:44, height:44, borderRadius:8, objectFit:"cover" }} onError={e=>{e.target.style.display="none";}} /></td>
                   <td style={{ padding:"12px 16px", fontSize:13, fontWeight:600, color:"#c8d4f0", minWidth:160 }}>{p.name}</td>
                   <td style={{ padding:"12px 16px" }}><span className="tag tag-blue" style={{ fontSize:10 }}>{p.category}</span></td>
+                  <td style={{ padding:"12px 16px", fontSize:12, color:"rgba(164,196,255,0.5)" }}>{p.wholesaleStore}</td>
                   <td style={{ padding:"12px 16px", fontSize:13, color:"rgba(164,196,255,0.4)" }}>{fmt(p.price)}</td>
                   <td style={{ padding:"12px 16px", fontSize:13, color:"#34d399", fontWeight:600 }}>{fmt(p.bulkPrice)}</td>
                   <td style={{ padding:"12px 16px" }}><span className="tag tag-green" style={{ fontSize:10 }}>-{pct(p.bulkPrice,p.price)}%</span></td>
@@ -3161,7 +3174,7 @@ function AdminProducts({ showToast, refresh }) {
                   <td style={{ padding:"12px 16px", fontSize:13, color:"rgba(164,196,255,0.4)" }}>{p.stock?.toLocaleString?.()}</td>
                   <td style={{ padding:"12px 16px" }}>
                     <div style={{ display:"flex", gap:6 }}>
-                      <button className="btn btn-outline" style={{ padding:"5px 12px", fontSize:12 }} onClick={()=>{setForm({name:p.name,category:p.category,price:p.price.toString(),bulkPrice:p.bulkPrice.toString(),bulkThreshold:p.bulkThreshold.toString(),supplier:p.supplier,image:p.image||"",stock:(p.stock||0).toString(),unit:p.unit||"pcs"});setEditId(p._id||p.id);setShowForm(true);}}>Edit</button>
+                      <button className="btn btn-outline" style={{ padding:"5px 12px", fontSize:12 }} onClick={()=>{setForm({name:p.name,category:p.category,price:p.price.toString(),bulkPrice:p.bulkPrice.toString(),bulkThreshold:p.bulkThreshold.toString(),supplier:p.supplier,image:p.image||"",stock:(p.stock||0).toString(),unit:p.unit||"pcs",wholesaleStore:p.wholesaleStore||adminStoreName});setEditId(p._id||p.id);setShowForm(true);}}>Edit</button>
                       <button className="btn btn-danger" style={{ padding:"5px 12px", fontSize:12 }} onClick={()=>del(p._id||p.id)}>Del</button>
                     </div>
                   </td>
