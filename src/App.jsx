@@ -40,6 +40,18 @@ let _products = [
   { id:6, name:"Detergent Powder 5kg", category:"Grocery", price:35, bulkPrice:30, bulkThreshold:80, stock:250, image:"https://images.unsplash.com/photo-1612444530582-fc66183b16f7?w=400", rating:4.6, reviews:142 },
   { id:7, name:"USB Cables (10pcs)", category:"Electronics", price:8, bulkPrice:6, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.1, reviews:78 },
   { id:8, name:"Biscuits Pack", category:"Grocery", price:15, bulkPrice:12, bulkThreshold:180, stock:450, image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400", rating:4.5, reviews:189 },
+  { id:9, name:"Wheat Flour (25kg)", category:"Grocery", price:22, bulkPrice:18, bulkThreshold:250, stock:550, image:"https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400", rating:4.6, reviews:167 },
+  { id:10, name:"Sugar (50kg)", category:"Grocery", price:32, bulkPrice:28, bulkThreshold:200, stock:400, image:"https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400", rating:4.4, reviews:134 },
+  { id:11, name:"Tea Powder (5kg)", category:"Grocery", price:45, bulkPrice:38, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400", rating:4.8, reviews:201 },
+  { id:12, name:"Coffee Beans (10kg)", category:"Grocery", price:55, bulkPrice:48, bulkThreshold:80, stock:200, image:"https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400", rating:4.9, reviews:178 },
+  { id:13, name:"Spices Mix (2kg)", category:"Grocery", price:28, bulkPrice:24, bulkThreshold:150, stock:320, image:"https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400", rating:4.3, reviews:92 },
+  { id:14, name:"Cooking Oil (10L)", category:"Grocery", price:42, bulkPrice:36, bulkThreshold:120, stock:380, image:"https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400", rating:4.5, reviews:145 },
+  { id:15, name:"Rice (50kg)", category:"Grocery", price:38, bulkPrice:32, bulkThreshold:200, stock:450, image:"https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400", rating:4.4, reviews:156 },
+  { id:16, name:"Notebooks (100pcs)", category:"Stationery", price:18, bulkPrice:15, bulkThreshold:200, stock:500, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.2, reviews:89 },
+  { id:17, name:"Pens Pack (50pcs)", category:"Stationery", price:12, bulkPrice:10, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.1, reviews:67 },
+  { id:18, name:"Markers Set (20pcs)", category:"Stationery", price:22, bulkPrice:18, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.3, reviews:78 },
+  { id:19, name:"Calculator", category:"Electronics", price:15, bulkPrice:12, bulkThreshold:80, stock:350, image:"https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400", rating:4.4, reviews:112 },
+  { id:20, name:"Power Strips (5pcs)", category:"Electronics", price:28, bulkPrice:24, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=400", rating:4.5, reviews:134 },
 ];
 
 let _orders = [
@@ -411,10 +423,10 @@ export default function App() {
   };
 
   return (
-    <div style={{ fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif", background:THEMES[theme].background, minHeight:"100vh", color:THEMES[theme].text }}>
+    <div style={{ fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif", background:THEMES[theme].background, minHeight:"100vh", color:THEMES[theme].text, position:"relative" }}>
       <GlobalStyles theme={theme} />
       {currentUser && !["login","register-choice","register-owner","register-wholesale","splash","auth-landing","payment"].includes(screen) && (
-        <div style={{ position:"fixed", top:20, right:20, zIndex:1000, display:"flex", alignItems:"center", gap:12 }}>
+        <div style={{ position:"fixed", top:16, right:16, zIndex:9999, display:"flex", alignItems:"center", gap:12, padding:"8px 12px", borderRadius:12, background:THEMES[theme].cardBackground, border:`1px solid ${THEMES[theme].cardBorder}`, backdropFilter:"blur(12px)" }}>
           <ThemeSwitcher currentTheme={theme} onThemeChange={handleThemeChange} />
         </div>
       )}
@@ -546,7 +558,7 @@ function AuthLandingScreen({ setScreen }) {
   return (
     <div style={{ minHeight:"100vh", display:"grid", gridTemplateColumns:"1fr 1fr", overflow:"hidden" }}>
       {/* Left — hero panel */}
-      <div style={{ position:"relative", background:"radial-gradient(ellipse at 20% 50%, rgba(79,124,255,0.18) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(124,92,252,0.15) 0%, transparent 50%), linear-gradient(180deg,#070d1e 0%,#060b14 100%)", display:"flex", flexDirection:"column", justifyContent:"center", padding:"60px 56px", overflow:"hidden" }}>
+      <div style={{ position:"relative", background:"radial-gradient(ellipse at 20% 50%, rgba(79,124,255,0.18) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(124,92,252,0.15) 0%, transparent 50%), var(--background)", display:"flex", flexDirection:"column", justifyContent:"center", padding:"60px 56px", overflow:"hidden" }}>
         {/* Dot pattern bg */}
         <div className="dot-pattern" style={{ position:"absolute", inset:0, opacity:0.4 }} />
 
@@ -713,7 +725,7 @@ function LoginScreen({ setScreen, setCurrentUser, showToast }) {
   }, [resendTimer]);
 
   return (
-    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:24, background:"radial-gradient(ellipse at 25% 25%, rgba(79,124,255,0.08) 0%, transparent 55%), radial-gradient(ellipse at 75% 75%, rgba(124,92,252,0.06) 0%, transparent 55%), #060b14", position:"relative", overflow:"hidden" }}>
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:24, background:"radial-gradient(ellipse at 25% 25%, rgba(79,124,255,0.08) 0%, transparent 55%), radial-gradient(ellipse at 75% 75%, rgba(124,92,252,0.06) 0%, transparent 55%), var(--background)", position:"relative", overflow:"hidden" }}>
       <div className="dot-pattern" style={{ position:"absolute", inset:0, opacity:0.3 }} />
       <div style={{ position:"absolute", top:"30%", left:"50%", transform:"translateX(-50%)", width:700, height:700, background:"radial-gradient(circle,rgba(79,124,255,0.06) 0%,transparent 70%)", borderRadius:"50%", pointerEvents:"none" }} />
 
@@ -808,7 +820,7 @@ function RegisterChoiceScreen({ setScreen }) {
   ];
 
   return (
-    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:24, background:"radial-gradient(ellipse at 50% 0%, rgba(79,124,255,0.1) 0%, transparent 60%), #060b14" }}>
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:24, background:"radial-gradient(ellipse at 50% 0%, rgba(79,124,255,0.1) 0%, transparent 60%), var(--background)" }}>
       <div style={{ width:"100%", maxWidth:860, animation:"fadeUp 0.5s ease" }}>
         <button className="btn btn-ghost" onClick={() => setScreen("auth-landing")} style={{ marginBottom:32, fontSize:13, padding:"8px 0" }}><IcArrowLeft size={16} /> Back</button>
 
@@ -952,7 +964,7 @@ function RegisterOwnerScreen({ setScreen, showToast }) {
   if (step === 5) return <RegisterSuccessScreen onLogin={() => setScreen("login")} accountType="Shop Owner" />;
 
   return (
-    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:"24px", background:"radial-gradient(ellipse at 50% 0%, rgba(79,124,255,0.08) 0%, transparent 60%), #060b14" }}>
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:24, background:"radial-gradient(ellipse at 50% 0%, rgba(79,124,255,0.08) 0%, transparent 60%), var(--background)" }}>
       <div style={{ width:"100%", maxWidth:520, animation:"fadeUp 0.5s ease" }}>
         <button className="btn btn-ghost" onClick={() => step>1 ? setStep(step-1) : setScreen("register-choice")} style={{ marginBottom:24, fontSize:13, padding:"8px 0" }}><IcArrowLeft size={16} /> Back</button>
 
@@ -1139,10 +1151,10 @@ function RegisterWholesaleScreen({ setScreen, showToast }) {
   const progress = ((step - 1) / totalSteps) * 100;
   if (step === 5) return <RegisterSuccessScreen onLogin={() => setScreen("login")} accountType="Wholesale Seller" />;
 
-  const businessTypes = ["Manufacturer","Distributor","Importer","Wholesaler","C&F Agent"];
+  const businessTypes = ["Manufacturer","Distributor","Importer","Wholesaler","C&F Agent","Exporter"];
 
   return (
-    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:"24px", background:"radial-gradient(ellipse at 50% 0%, rgba(124,92,252,0.1) 0%, transparent 60%), #060b14" }}>
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:"24px", background:"radial-gradient(ellipse at 50% 0%, rgba(124,92,252,0.1) 0%, transparent 60%), var(--background)" }}>
       <div style={{ width:"100%", maxWidth:560, animation:"fadeUp 0.5s ease" }}>
         <button className="btn btn-ghost" onClick={() => step>1 ? setStep(step-1) : setScreen("register-choice")} style={{ marginBottom:24, fontSize:13, padding:"8px 0" }}><IcArrowLeft size={16} /> Back</button>
 
@@ -1281,7 +1293,7 @@ function RegisterWholesaleScreen({ setScreen, showToast }) {
 // ─── REGISTER SUCCESS ──────────────────────────────────────────────────────────
 function RegisterSuccessScreen({ onLogin, accountType }) {
   return (
-    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:"#060b14", padding:24 }}>
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:"var(--background)", padding:24 }}>
       <div style={{ textAlign:"center", maxWidth:440, animation:"bounceIn 0.6s ease" }}>
         <div style={{ width:120, height:120, background:"radial-gradient(circle, rgba(52,211,153,0.15) 0%, transparent 70%)", border:"2px solid rgba(52,211,153,0.3)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 28px", animation:"glowPulse 2s infinite" }}><IcCheckCircle size={52} color="#34d399" /></div>
         <h1 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:32, fontWeight:900, color:"#34d399", marginBottom:12 }}>Account Ready</h1>
@@ -2526,44 +2538,24 @@ function ChatScreen({ setScreen, currentUser, showToast, cart, logout, notifOpen
   const userId = user?._id || user?.id || null;
   const [msg, setMsg] = useState("");
   const [messages, setMessages] = useState(_messages);
-  const [threads, setThreads] = useState([]);
+  const [threads, setThreads] = useState([
+    { threadId: "bulk-order-group", lastMessage: { sender: "Bulk Order Group", text: "Pool orders together", from: "Group" }, unreadCount: 0 }
+  ]);
   const [currentThread, setCurrentThread] = useState("bulk-order-group");
   const endRef = useRef(null);
-  const socketRef = useRef(null);
-  const [typingUsers, setTypingUsers] = useState({});
 
   useEffect(() => endRef.current?.scrollIntoView({ behavior:"smooth" }), [messages]);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        if (!userId) return;
-        const tData = await apiFetch(`/api/chat/threads/${userId}`);
-        if (Array.isArray(tData)) setThreads(tData);
-        const mData = await apiFetch(`/api/chat/messages/${currentThread}`);
-        if (Array.isArray(mData)) setMessages(mData.map(m=>({ id:m._id||Date.now(), userId:m.from, sender:m.from, text:m.text, time:new Date(m.createdAt).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}), avatar:initials(m.from||"U") })));
-      } catch {
-        showToast?.("Unable to load chat right now", "error");
-      }
-    };
-    loadData();
-  }, [currentThread, showToast, userId]);
-
-  useEffect(() => {
-    if (!userId) return;
-    // Use local demo messages instead of socket.io
+    // Use local demo messages
     setMessages(_messages);
-  }, [userId]);
+  }, []);
 
   const send = async () => {
     if (!msg.trim()) return;
     const newMsg = { id:Date.now(), userId, sender:user?.shopName||"You", text:msg, time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}), avatar:initials(user?.shopName||"You") };
     setMessages(prev=>[...prev, newMsg]);
     setMsg("");
-    try {
-      if (socketRef.current?.connected) { socketRef.current.emit("message", { threadId:currentThread, from:userId, to:null, text:msg }); }
-      else { await apiFetch("/api/chat/messages", { method:"POST", body:{ userId, sender:user?.shopName||"You", text:msg, threadId:currentThread } }); }
-    } catch {}
   };
 
   return (
