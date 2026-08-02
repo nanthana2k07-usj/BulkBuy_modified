@@ -52,6 +52,36 @@ let _products = [
   { id:18, name:"Markers Set (20pcs)", category:"Stationery", price:22, bulkPrice:18, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.3, reviews:78 },
   { id:19, name:"Calculator", category:"Electronics", price:15, bulkPrice:12, bulkThreshold:80, stock:350, image:"https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400", rating:4.4, reviews:112 },
   { id:20, name:"Power Strips (5pcs)", category:"Electronics", price:28, bulkPrice:24, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=400", rating:4.5, reviews:134 },
+  { id:21, name:"Shampoo Bottles (12pcs)", category:"Grocery", price:18, bulkPrice:15, bulkThreshold:100, stock:320, image:"https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=400", rating:4.3, reviews:156 },
+  { id:22, name:"Soap Bars (24pcs)", category:"Grocery", price:14, bulkPrice:11, bulkThreshold:120, stock:400, image:"https://images.unsplash.com/photo-1616401784845-180882ba9ba8?w=400", rating:4.2, reviews:134 },
+  { id:23, name:"Hand Wash (5L)", category:"Grocery", price:22, bulkPrice:18, bulkThreshold:80, stock:280, image:"https://images.unsplash.com/photo-1573521193826-58c7dc2e13e3?w=400", rating:4.5, reviews:98 },
+  { id:24, name:"Tissue Paper Packs", category:"Grocery", price:8, bulkPrice:6, bulkThreshold:200, stock:500, image:"https://images.unsplash.com/photo-1583947215256-38c3a828e5a9?w=400", rating:4.1, reviews:76 },
+  { id:25, name:"Cleaning Supplies Kit", category:"Grocery", price:35, bulkPrice:28, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1581578731117-104f2a65391c?w=400", rating:4.4, reviews:112 },
+  { id:26, name:"Storage Containers (Set of 10)", category:"Grocery", price:25, bulkPrice:20, bulkThreshold:100, stock:350, image:"https://images.unsplash.com/photo-1594908900066-3f47337c1d9b?w=400", rating:4.3, reviews:89 },
+  { id:27, name:"Plastic Bags Bundle", category:"Grocery", price:6, bulkPrice:4, bulkThreshold:300, stock:600, image:"https://images.unsplash.com/photo-1616628188859-9a1c1e5d4e5e?w=400", rating:3.9, reviews:67 },
+  { id:28, name:"Disposable Plates (100pcs)", category:"Grocery", price:12, bulkPrice:9, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1530103862676-de3c9a59af57?w=400", rating:4.0, reviews:78 },
+  { id:29, name:"Paper Cups (200pcs)", category:"Grocery", price:10, bulkPrice:7, bulkThreshold:200, stock:450, image:"https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400", rating:4.1, reviews:92 },
+  { id:30, name:"Aluminum Foil Rolls", category:"Grocery", price:8, bulkPrice:6, bulkThreshold:180, stock:380, image:"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400", rating:4.2, reviews:84 },
+  { id:31, name:"Clips and Pins Set", category:"Stationery", price:5, bulkPrice:3, bulkThreshold:250, stock:550, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.0, reviews:56 },
+  { id:32, name:"Stapler and Staples", category:"Stationery", price:8, bulkPrice:6, bulkThreshold:120, stock:320, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.3, reviews:73 },
+  { id:33, name:"Glue Bottles (6pcs)", category:"Stationery", price:10, bulkPrice:8, bulkThreshold:100, stock:280, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.1, reviews:68 },
+  { id:34, name:"Scissors Set (3pcs)", category:"Stationery", price:15, bulkPrice:12, bulkThreshold:80, stock:240, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.4, reviews:91 },
+  { id:35, name:"Tape Rolls (10pcs)", category:"Stationery", price:12, bulkPrice:9, bulkThreshold:150, stock:380, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.2, reviews:79 },
+  { id:36, name:"File Folders (25pcs)", category:"Stationery", price:18, bulkPrice:14, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400", rating:4.3, reviews:85 },
+  { id:37, name:"Envelopes (100pcs)", category:"Stationery", price:8, bulkPrice:6, bulkThreshold:200, stock:450, image:"https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400", rating:4.0, reviews:62 },
+  { id:38, name:"Whiteboard Markers", category:"Stationery", price:14, bulkPrice:11, bulkThreshold:80, stock:220, image:"https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400", rating:4.5, reviews:104 },
+  { id:39, name:"Desk Organizer", category:"Stationery", price:20, bulkPrice:16, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1531346878377-a5be20888657?w=400", rating:4.4, reviews:88 },
+  { id:40, name:"Mouse Pad (10pcs)", category:"Electronics", price:6, bulkPrice:4, bulkThreshold:150, stock:400, image:"https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400", rating:4.1, reviews:72 },
+  { id:41, name:"Keyboard Wrist Rest", category:"Electronics", price:12, bulkPrice:9, bulkThreshold:80, stock:240, image:"https://images.unsplash.com/photo-1587829741301-dc798b91add1?w=400", rating:4.3, reviews:65 },
+  { id:42, name:"HDMI Cables (5pcs)", category:"Electronics", price:18, bulkPrice:14, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.4, reviews:97 },
+  { id:43, name:"Ethernet Cables (10pcs)", category:"Electronics", price:15, bulkPrice:12, bulkThreshold:100, stock:300, image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400", rating:4.2, reviews:84 },
+  { id:44, name:"SD Cards (10pcs)", category:"Electronics", price:35, bulkPrice:28, bulkThreshold:50, stock:150, image:"https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400", rating:4.6, reviews:123 },
+  { id:45, name:"USB Flash Drives (5pcs)", category:"Electronics", price:28, bulkPrice:22, bulkThreshold:40, stock:120, image:"https://images.unsplash.com/photo-1618410320928-25228d611631?w=400", rating:4.5, reviews:108 },
+  { id:46, name:"Phone Chargers (5pcs)", category:"Electronics", price:22, bulkPrice:17, bulkThreshold:60, stock:180, image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400", rating:4.3, reviews:95 },
+  { id:47, name:"Bluetooth Speakers (3pcs)", category:"Electronics", price:45, bulkPrice:36, bulkThreshold:30, stock:90, image:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400", rating:4.7, reviews:167 },
+  { id:48, name:"Earbuds (10pcs)", category:"Electronics", price:32, bulkPrice:25, bulkThreshold:50, stock:150, image:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400", rating:4.4, reviews:142 },
+  { id:49, name:"Webcam HD", category:"Electronics", price:38, bulkPrice:30, bulkThreshold:25, stock:75, image:"https://images.unsplash.com/photo-1587826080692-f439cd0b70da?w=400", rating:4.5, reviews:89 },
+  { id:50, name:"Wireless Mouse (5pcs)", category:"Electronics", price:28, bulkPrice:22, bulkThreshold:40, stock:120, image:"https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400", rating:4.4, reviews:118 }
 ];
 
 let _orders = [
@@ -419,17 +449,12 @@ export default function App() {
     chat: <ChatScreen setScreen={setScreen} currentUser={currentUser} showToast={showToast} cart={cart} logout={logout} notifOpen={notifOpen} setNotifOpen={setNotifOpen} />,
     shops: <ShopsScreen setScreen={setScreen} currentUser={currentUser} showToast={showToast} cart={cart} logout={logout} notifOpen={notifOpen} setNotifOpen={setNotifOpen} />,
     analytics: <AnalyticsScreen setScreen={setScreen} currentUser={currentUser} cart={cart} logout={logout} notifOpen={notifOpen} setNotifOpen={setNotifOpen} />,
-    profile: <ProfileScreen setScreen={setScreen} currentUser={currentUser} setCurrentUser={setCurrentUser} showToast={showToast} cart={cart} logout={logout} notifOpen={notifOpen} setNotifOpen={setNotifOpen} />,
+    profile: <ProfileScreen setScreen={setScreen} currentUser={currentUser} setCurrentUser={setCurrentUser} showToast={showToast} cart={cart} logout={logout} notifOpen={notifOpen} setNotifOpen={setNotifOpen} theme={theme} handleThemeChange={handleThemeChange} />,
   };
 
   return (
-    <div style={{ fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif", background:THEMES[theme].background, minHeight:"100vh", color:THEMES[theme].text, position:"relative" }}>
-      <GlobalStyles theme={theme} />
-      {currentUser && !["login","register-choice","register-owner","register-wholesale","splash","auth-landing","payment"].includes(screen) && (
-        <div style={{ position:"fixed", top:16, right:16, zIndex:9999, display:"flex", alignItems:"center", gap:12, padding:"8px 12px", borderRadius:12, background:THEMES[theme].cardBackground, border:`1px solid ${THEMES[theme].cardBorder}`, backdropFilter:"blur(12px)" }}>
-          <ThemeSwitcher currentTheme={theme} onThemeChange={handleThemeChange} />
-        </div>
-      )}
+    <div style={{ fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif", background:"#060b14", minHeight:"100vh", color:"#d8e4f0", position:"relative" }}>
+      <GlobalStyles theme="dark" />
       {screens[screen] || screens.dashboard}
       {currentUser && !["login","register-choice","register-owner","register-wholesale","splash","auth-landing","payment"].includes(screen) && (
         <>
@@ -2451,7 +2476,7 @@ function AnalyticsScreen({ setScreen, currentUser, cart, logout, notifOpen, setN
 // ════════════════════════════════════════════════════════════════════
 // ─── PROFILE ──────────────────────────────────────────────────────
 // ════════════════════════════════════════════════════════════════════
-function ProfileScreen({ setScreen, currentUser, setCurrentUser, showToast, cart, logout, notifOpen, setNotifOpen }) {
+function ProfileScreen({ setScreen, currentUser, setCurrentUser, showToast, cart, logout, notifOpen, setNotifOpen, theme, handleThemeChange }) {
   const user = currentUser || _session;
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({ ownerName:user?.ownerName||"", phone:user?.phone||"", location:user?.location||"", shopName:user?.shopName||"" });
@@ -2523,6 +2548,37 @@ function ProfileScreen({ setScreen, currentUser, setCurrentUser, showToast, cart
               <div style={{ fontSize:12, color:"rgba(164,196,255,0.4)", marginTop:4, fontWeight:500 }}>{s.label}</div>
             </div>
           ))}
+        </div>
+
+        {/* Theme Settings */}
+        <div style={{ marginTop:24, borderRadius:20, border:"1px solid rgba(30,48,80,0.5)", background:"rgba(14,24,41,0.7)", padding:28, backdropFilter:"blur(12px)" }}>
+          <h3 style={{ fontSize:15, fontWeight:700, color:"#c8d4f0", marginBottom:16 }}>Appearance Settings</h3>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:12 }}>
+            {Object.entries(THEMES).map(([key, t]) => (
+              <button
+                key={key}
+                onClick={() => handleThemeChange(key)}
+                style={{
+                  padding:"12px 20px",
+                  borderRadius:12,
+                  border:theme===key?"2px solid #4f7cff":"1px solid rgba(30,48,80,0.6)",
+                  background:theme===key?"rgba(79,124,255,0.12)":"rgba(14,24,41,0.6)",
+                  color:theme===key?"#7c9cff":"rgba(164,196,255,0.6)",
+                  fontSize:13,
+                  fontWeight:600,
+                  cursor:"pointer",
+                  transition:"all 0.2s",
+                  display:"flex",
+                  alignItems:"center",
+                  gap:8
+                }}
+              >
+                <div style={{ width:20, height:20, borderRadius:"50%", background:t.background, border:`1px solid ${t.cardBorder}` }} />
+                {t.name}
+                {theme===key && <span>✓</span>}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
