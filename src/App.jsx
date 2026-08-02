@@ -2642,37 +2642,37 @@ function ChatScreen({ setScreen, currentUser, showToast, cart, logout, notifOpen
   };
 
   return (
-    <div style={{ minHeight:"100vh", background:"#060b14" }}>
+    <div style={{ minHeight:"100vh", background:"var(--background)" }}>
       <TopBar user={user} setScreen={setScreen} cart={cart} logout={logout||(() => setScreen("dashboard"))} notifOpen={notifOpen} setNotifOpen={setNotifOpen} />
-      <div style={{ maxWidth:1100, margin:"0 auto", padding:"32px 24px" }}>
-        <div style={{ borderRadius:24, border:"1px solid rgba(30,48,80,0.5)", background:"rgba(14,24,41,0.7)", height:"calc(100vh - 180px)", display:"grid", gridTemplateColumns:"280px 1fr", overflow:"hidden", backdropFilter:"blur(12px)" }}>
+      <div style={{ maxWidth:1100, margin:"0 auto", padding:"36px 28px" }}>
+        <div className="card-glow" style={{ height:"calc(100vh - 180px)", display:"grid", gridTemplateColumns:"300px 1fr", overflow:"hidden" }}>
           {/* Sidebar */}
-          <div style={{ borderRight:"1px solid rgba(30,48,80,0.4)", display:"flex", flexDirection:"column" }}>
-            <div style={{ padding:"18px 16px", borderBottom:"1px solid rgba(30,48,80,0.4)" }}>
-              <h3 style={{ fontSize:15, fontWeight:700, color:"#c8d4f0", marginBottom:12 }}>Messages</h3>
+          <div style={{ borderRight:"1px solid var(--card-border)", display:"flex", flexDirection:"column" }}>
+            <div style={{ padding:"20px 18px", borderBottom:"1px solid var(--card-border)" }}>
+              <h3 style={{ fontSize:16, fontWeight:700, color:"var(--text)", marginBottom:14 }}>Messages</h3>
               <input className="inp" placeholder="Search…" style={{ fontSize:13 }} />
             </div>
             {/* Group chat thread */}
-            <div style={{ padding:"12px 14px", borderBottom:"1px solid rgba(30,48,80,0.3)", cursor:"pointer", background:"rgba(79,124,255,0.06)" }}>
-              <div style={{ display:"flex", gap:10, alignItems:"center" }}>
-                <div style={{ width:40, height:40, borderRadius:12, background:"linear-gradient(135deg,#4f7cff,#7c5cfc)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>🏪</div>
+            <div style={{ padding:"14px 16px", borderBottom:"1px solid var(--card-border)", cursor:"pointer", background:"linear-gradient(135deg,rgba(99,102,241,0.1),rgba(139,92,246,0.06))" }}>
+              <div style={{ display:"flex", gap:12, alignItems:"center" }}>
+                <div style={{ width:44, height:44, borderRadius:14, background:"linear-gradient(135deg,var(--primary),#8b5cf6)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, flexShrink:0 }}>🏪</div>
                 <div style={{ flex:1, minWidth:0 }}>
-                  <p style={{ fontWeight:700, color:"#c8d4f0", fontSize:13 }}>Bulk Order Group</p>
-                  <p style={{ fontSize:12, color:"rgba(164,196,255,0.3)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>Pool orders together</p>
+                  <p style={{ fontWeight:700, color:"var(--text)", fontSize:14 }}>Bulk Order Group</p>
+                  <p style={{ fontSize:13, color:"var(--text-muted)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>Pool orders together</p>
                 </div>
-                <span style={{ width:8, height:8, borderRadius:"50%", background:"#34d399", flexShrink:0 }} />
+                <span style={{ width:10, height:10, borderRadius:"50%", background:"var(--success)", flexShrink:0 }} />
               </div>
             </div>
-            <div style={{ flex:1, overflowY:"auto", padding:"8px" }}>
+            <div style={{ flex:1, overflowY:"auto", padding:"10px" }}>
               {threads.map(t=>(
-                <div key={t.threadId} style={{ padding:"10px 12px", borderRadius:12, cursor:"pointer", marginBottom:4 }} onClick={()=>setCurrentThread(t.threadId)}>
-                  <div style={{ display:"flex", gap:8, alignItems:"center" }}>
-                    <div className="avatar" style={{ width:36, height:36, background:avatarColor(t.lastMessage?.from||"U"), fontSize:13 }}>{initials(t.lastMessage?.from||"U")}</div>
+                <div key={t.threadId} style={{ padding:"12px 14px", borderRadius:14, cursor:"pointer", marginBottom:6, transition:"all 0.2s" }} onClick={()=>setCurrentThread(t.threadId)} onMouseEnter={e=>e.currentTarget.style.background="var(--hover)"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                  <div style={{ display:"flex", gap:10, alignItems:"center" }}>
+                    <div className="avatar" style={{ width:38, height:38, background:avatarColor(t.lastMessage?.from||"U"), fontSize:14 }}>{initials(t.lastMessage?.from||"U")}</div>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <p style={{ fontWeight:600, color:"#c8d4f0", fontSize:13 }}>{t.lastMessage?.sender||"Chat"}</p>
-                      <p style={{ fontSize:12, color:"rgba(164,196,255,0.3)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{t.lastMessage?.text||""}</p>
+                      <p style={{ fontWeight:600, color:"var(--text)", fontSize:14 }}>{t.lastMessage?.sender||"Chat"}</p>
+                      <p style={{ fontSize:13, color:"var(--text-muted)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{t.lastMessage?.text||""}</p>
                     </div>
-                    {t.unreadCount > 0 && <span style={{ background:"#f87171", color:"#fff", borderRadius:8, padding:"1px 6px", fontSize:11, fontWeight:700 }}>{t.unreadCount}</span>}
+                    {t.unreadCount > 0 && <span style={{ background:"var(--danger)", color:"#fff", borderRadius:10, padding:"2px 8px", fontSize:12, fontWeight:700 }}>{t.unreadCount}</span>}
                   </div>
                 </div>
               ))}
@@ -2681,37 +2681,36 @@ function ChatScreen({ setScreen, currentUser, showToast, cart, logout, notifOpen
 
           {/* Messages */}
           <div style={{ display:"flex", flexDirection:"column" }}>
-            <div style={{ padding:"16px 24px", borderBottom:"1px solid rgba(30,48,80,0.4)", display:"flex", justifyContent:"space-between", alignItems:"center", background:"rgba(6,11,20,0.4)" }}>
-              <div style={{ display:"flex", gap:12, alignItems:"center" }}>
-                <div style={{ width:40, height:40, borderRadius:12, background:"linear-gradient(135deg,#4f7cff,#7c5cfc)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>🏪</div>
-                <div><p style={{ fontWeight:700, fontSize:15, color:"#c8d4f0" }}>Bulk Order Group</p><p style={{ fontSize:12, color:"rgba(164,196,255,0.3)" }}>{messages.length} messages</p></div>
+            <div style={{ padding:"18px 28px", borderBottom:"1px solid var(--card-border)", display:"flex", justifyContent:"space-between", alignItems:"center", background:"var(--input-background)" }}>
+              <div style={{ display:"flex", gap:14, alignItems:"center" }}>
+                <div style={{ width:44, height:44, borderRadius:14, background:"linear-gradient(135deg,var(--primary),#8b5cf6)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>🏪</div>
+                <div><p style={{ fontWeight:700, fontSize:16, color:"var(--text)" }}>Bulk Order Group</p><p style={{ fontSize:13, color:"var(--text-muted)" }}>{messages.length} messages</p></div>
               </div>
-              <span className="tag tag-green" style={{ animation:"pulse 2s infinite" }}>● Live</span>
+              <span className="tag tag-green" style={{ animation:"pulse 2s infinite", fontSize:12 }}>● Live</span>
             </div>
 
-            <div style={{ flex:1, overflowY:"auto", padding:"24px 20px", display:"flex", flexDirection:"column", gap:16 }}>
+            <div style={{ flex:1, overflowY:"auto", padding:"28px 24px", display:"flex", flexDirection:"column", gap:18 }}>
               {messages.map(m => {
                 const isMe = m.userId===userId;
                 return (
-                  <div key={m.id} style={{ display:"flex", flexDirection:isMe?"row-reverse":"row", gap:10, alignItems:"flex-end" }}>
-                    {!isMe && <div className="avatar" style={{ width:32, height:32, background:avatarColor(m.sender), fontSize:12, flexShrink:0 }}>{m.avatar}</div>}
-                    <div style={{ maxWidth:"68%" }}>
-                      {!isMe && <p style={{ fontSize:11, color:"rgba(164,196,255,0.3)", marginBottom:4, fontWeight:600 }}>{m.sender}</p>}
-                      <div style={{ background:isMe?"linear-gradient(135deg,rgba(79,124,255,0.3),rgba(124,92,252,0.2))":"rgba(30,48,80,0.4)", border:`1px solid ${isMe?"rgba(79,124,255,0.3)":"rgba(30,48,80,0.4)"}`, borderRadius:isMe?"18px 18px 4px 18px":"18px 18px 18px 4px", padding:"11px 16px" }}>
-                        <p style={{ fontSize:14, color:"#c8d4f0", lineHeight:1.5 }}>{m.text}</p>
+                  <div key={m.id} style={{ display:"flex", flexDirection:isMe?"row-reverse":"row", gap:12, alignItems:"flex-end" }}>
+                    {!isMe && <div className="avatar" style={{ width:36, height:36, background:avatarColor(m.sender), fontSize:13, flexShrink:0 }}>{m.avatar}</div>}
+                    <div style={{ maxWidth:"70%" }}>
+                      {!isMe && <p style={{ fontSize:12, color:"var(--text-muted)", marginBottom:6, fontWeight:600 }}>{m.sender}</p>}
+                      <div style={{ background:isMe?"linear-gradient(135deg,var(--primary),#8b5cf6)":"var(--input-background)", border:`1px solid ${isMe?"transparent":"var(--card-border)"}`, borderRadius:isMe?"20px 20px 6px 20px":"20px 20px 20px 6px", padding:"14px 18px" }}>
+                        <p style={{ fontSize:15, color:isMe?"#fff":"var(--text)", lineHeight:1.6 }}>{m.text}</p>
                       </div>
-                      <p style={{ fontSize:11, color:"rgba(42,58,85,0.8)", marginTop:4, textAlign:isMe?"right":"left" }}>{m.time}</p>
+                      <p style={{ fontSize:12, color:"var(--text-muted)", marginTop:6, textAlign:isMe?"right":"left" }}>{m.time}</p>
                     </div>
                   </div>
                 );
               })}
-              {Object.keys(typingUsers).length > 0 && <p style={{ fontSize:12, color:"rgba(164,196,255,0.3)", fontStyle:"italic" }}>Someone is typing…</p>}
               <div ref={endRef} />
             </div>
 
-            <div style={{ padding:"14px 20px", borderTop:"1px solid rgba(30,48,80,0.4)", display:"flex", gap:10, alignItems:"center" }}>
-              <input className="inp" placeholder="Type a message…" value={msg} onChange={e=>{setMsg(e.target.value);try{socketRef.current?.emit("typing",{threadId:currentThread,userId});}catch{}}} onKeyDown={e=>e.key==="Enter"&&send()} style={{ flex:1 }} />
-              <button className="btn btn-primary" style={{ padding:"12px 20px", fontWeight:700 }} onClick={send}>Send →</button>
+            <div style={{ padding:"18px 24px", borderTop:"1px solid var(--card-border)", display:"flex", gap:12, alignItems:"center" }}>
+              <input className="inp" placeholder="Type a message…" value={msg} onChange={e=>setMsg(e.target.value)} onKeyDown={e=>e.key==="Enter"&&send()} style={{ flex:1 }} />
+              <button className="btn btn-primary" style={{ padding:"14px 24px", fontWeight:700 }} onClick={send}>Send →</button>
             </div>
           </div>
         </div>
