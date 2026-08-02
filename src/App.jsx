@@ -118,87 +118,87 @@ const STATUS_FLOW = ["Pending","Approved","Paid","Shipped","Delivered"];
 const THEMES = {
   dark: {
     name: 'Dark',
-    background: '#060b14',
-    cardBackground: 'linear-gradient(145deg, rgba(12,20,36,0.92), rgba(8,14,28,0.96))',
-    cardBorder: 'rgba(28,44,76,0.55)',
-    text: '#d8e4f0',
-    textMuted: '#4a607e',
-    textLight: '#b8ccee',
-    inputBackground: 'rgba(4,8,18,0.85)',
-    inputBorder: 'rgba(28,44,76,0.75)',
-    inputFocus: 'rgba(64,98,232,0.55)',
+    background: 'linear-gradient(135deg, #0a0f1c 0%, #060b14 50%, #040810 100%)',
+    cardBackground: 'linear-gradient(145deg, rgba(20,30,50,0.95), rgba(10,18,32,0.98))',
+    cardBorder: 'rgba(79,124,255,0.2)',
+    text: '#e8f0ff',
+    textMuted: '#6b7c94',
+    textLight: '#c8d8f0',
+    inputBackground: 'rgba(15,25,45,0.9)',
+    inputBorder: 'rgba(79,124,255,0.3)',
+    inputFocus: 'rgba(79,124,255,0.5)',
     scrollbar: '#1a2840',
-    primary: '#4062e8',
-    primaryGradient: 'linear-gradient(135deg, #4062e8 0%, #6b4fdb 100%)',
-    success: '#22c55e',
-    danger: '#ef4444',
-    warning: '#eab308',
-    border: 'rgba(28,44,76,0.55)',
-    hover: 'rgba(255,255,255,0.04)',
-    shadow: 'rgba(0,0,0,0.45)'
+    primary: '#6366f1',
+    primaryGradient: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%)',
+    success: '#10b981',
+    danger: '#f43f5e',
+    warning: '#f59e0b',
+    border: 'rgba(79,124,255,0.2)',
+    hover: 'rgba(99,102,241,0.15)',
+    shadow: 'rgba(99,102,241,0.25)'
   },
   light: {
     name: 'Light',
-    background: '#f8fafc',
-    cardBackground: '#ffffff',
-    cardBorder: '#e2e8f0',
+    background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)',
+    cardBackground: 'rgba(255,255,255,0.95)',
+    cardBorder: 'rgba(99,102,241,0.15)',
     text: '#1e293b',
     textMuted: '#64748b',
     textLight: '#334155',
-    inputBackground: '#ffffff',
-    inputBorder: '#cbd5e1',
-    inputFocus: 'rgba(64,98,232,0.55)',
+    inputBackground: 'rgba(255,255,255,0.98)',
+    inputBorder: 'rgba(99,102,241,0.25)',
+    inputFocus: 'rgba(99,102,241,0.4)',
     scrollbar: '#cbd5e1',
-    primary: '#4062e8',
-    primaryGradient: 'linear-gradient(135deg, #4062e8 0%, #6b4fdb 100%)',
-    success: '#22c55e',
-    danger: '#ef4444',
-    warning: '#eab308',
-    border: '#e2e8f0',
-    hover: 'rgba(0,0,0,0.04)',
-    shadow: 'rgba(0,0,0,0.1)'
+    primary: '#6366f1',
+    primaryGradient: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%)',
+    success: '#10b981',
+    danger: '#f43f5e',
+    warning: '#f59e0b',
+    border: 'rgba(99,102,241,0.15)',
+    hover: 'rgba(99,102,241,0.08)',
+    shadow: 'rgba(99,102,241,0.15)'
   },
   blue: {
     name: 'Ocean Blue',
-    background: '#0f172a',
-    cardBackground: 'linear-gradient(145deg, rgba(30,58,138,0.92), rgba(15,23,42,0.96))',
-    cardBorder: 'rgba(59,130,246,0.3)',
+    background: 'linear-gradient(135deg, #0c1929 0%, #0f172a 50%, #0a1425 100%)',
+    cardBackground: 'linear-gradient(145deg, rgba(30,64,124,0.95), rgba(15,35,70,0.98))',
+    cardBorder: 'rgba(59,130,246,0.35)',
     text: '#e0f2fe',
     textMuted: '#60a5fa',
     textLight: '#93c5fd',
-    inputBackground: 'rgba(15,23,42,0.85)',
-    inputBorder: 'rgba(59,130,246,0.4)',
-    inputFocus: 'rgba(59,130,246,0.6)',
+    inputBackground: 'rgba(15,35,70,0.9)',
+    inputBorder: 'rgba(59,130,246,0.45)',
+    inputFocus: 'rgba(59,130,246,0.65)',
     scrollbar: '#1e3a8a',
     primary: '#3b82f6',
-    primaryGradient: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-    success: '#22c55e',
-    danger: '#ef4444',
-    warning: '#eab308',
-    border: 'rgba(59,130,246,0.3)',
-    hover: 'rgba(59,130,246,0.1)',
-    shadow: 'rgba(59,130,246,0.2)'
+    primaryGradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)',
+    success: '#10b981',
+    danger: '#f43f5e',
+    warning: '#f59e0b',
+    border: 'rgba(59,130,246,0.35)',
+    hover: 'rgba(59,130,246,0.15)',
+    shadow: 'rgba(59,130,246,0.3)'
   },
   purple: {
     name: 'Royal Purple',
-    background: '#1a0b2e',
-    cardBackground: 'linear-gradient(145deg, rgba(58,17,94,0.92), rgba(26,11,46,0.96))',
-    cardBorder: 'rgba(139,92,246,0.3)',
+    background: 'linear-gradient(135deg, #1e1033 0%, #1a0b2e 50%, #120822 100%)',
+    cardBackground: 'linear-gradient(145deg, rgba(58,17,94,0.95), rgba(26,11,46,0.98))',
+    cardBorder: 'rgba(139,92,246,0.35)',
     text: '#f3e8ff',
     textMuted: '#a78bfa',
     textLight: '#c4b5fd',
-    inputBackground: 'rgba(26,11,46,0.85)',
-    inputBorder: 'rgba(139,92,246,0.4)',
-    inputFocus: 'rgba(139,92,246,0.6)',
+    inputBackground: 'rgba(26,11,46,0.9)',
+    inputBorder: 'rgba(139,92,246,0.45)',
+    inputFocus: 'rgba(139,92,246,0.65)',
     scrollbar: '#3b0764',
     primary: '#8b5cf6',
-    primaryGradient: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
-    success: '#22c55e',
-    danger: '#ef4444',
-    warning: '#eab308',
-    border: 'rgba(139,92,246,0.3)',
-    hover: 'rgba(139,92,246,0.1)',
-    shadow: 'rgba(139,92,246,0.2)'
+    primaryGradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)',
+    success: '#10b981',
+    danger: '#f43f5e',
+    warning: '#f59e0b',
+    border: 'rgba(139,92,246,0.35)',
+    hover: 'rgba(139,92,246,0.15)',
+    shadow: 'rgba(139,92,246,0.3)'
   }
 };
 
@@ -245,80 +245,85 @@ function GlobalStyles({ theme }) {
         background:var(--background);color:var(--text);overflow-x:hidden;
         -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
         font-feature-settings:'ss01','cv01','cv11';
-        letter-spacing:-0.01em;
-        transition: background 0.3s ease, color 0.3s ease;
+        letter-spacing:-0.005em;
+        transition: background 0.4s cubic-bezier(0.4,0,0.2,1), color 0.4s cubic-bezier(0.4,0,0.2,1);
       }
       h1,h2,h3,h4,h5,.heading{
         font-family:'Manrope','Inter','Helvetica Neue',Arial,sans-serif;
-        font-feature-settings:'ss01';letter-spacing:-0.03em;
+        font-feature-settings:'ss01';letter-spacing:-0.025em;
         color: var(--text);
       }
-      ::-webkit-scrollbar{width:4px;height:4px}
+      ::-webkit-scrollbar{width:6px;height:6px}
       ::-webkit-scrollbar-track{background:transparent}
-      ::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:4px}
+      ::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:6px;transition:background 0.3s ease}
+      ::-webkit-scrollbar-thumb:hover{background:var(--primary)}
       input,textarea,select,button{font-family:'Inter','Helvetica Neue',Arial,sans-serif}
 
       /* Cards */
-      .card{background:var(--card-background);border:1px solid var(--card-border);border-radius:18px;backdrop-filter:blur(12px);transition: background 0.3s ease, border 0.3s ease}
-      .card-glow{background:var(--card-background);border:1px solid var(--card-border);border-radius:18px;box-shadow:0 0 40px rgba(79,124,255,0.05),inset 0 1px 0 rgba(255,255,255,0.04);transition: background 0.3s ease, border 0.3s ease}
+      .card{background:var(--card-background);border:1px solid var(--card-border);border-radius:20px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition: all 0.3s cubic-bezier(0.4,0,0.2,1)}
+      .card-glow{background:var(--card-background);border:1px solid var(--card-border);border-radius:20px;box-shadow:0 8px 32px var(--shadow),0 0 60px rgba(99,102,241,0.08),inset 0 1px 0 rgba(255,255,255,0.06);transition: all 0.3s cubic-bezier(0.4,0,0.2,1)}
+      .card-glow:hover{box-shadow:0 12px 48px var(--shadow),0 0 80px rgba(99,102,241,0.12),inset 0 1px 0 rgba(255,255,255,0.08);transform:translateY(-2px)}
 
       /* Buttons */
-      .btn{border:none;border-radius:12px;padding:11px 20px;font-family:'Inter','Helvetica Neue',Arial,sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);letter-spacing:-0.01em;position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+      .btn{border:none;border-radius:14px;padding:12px 24px;font-family:'Inter','Helvetica Neue',Arial,sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);letter-spacing:-0.005em;position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+      .btn::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,rgba(255,255,255,0) 100%);opacity:0;transition:opacity 0.25s ease}
+      .btn:hover::before{opacity:1}
       .btn:disabled{opacity:0.5;cursor:not-allowed;transform:none !important}
-      .btn-primary{background:var(--primary-gradient);color:#fff;box-shadow:0 4px 18px rgba(64,98,232,0.32)}
-      .btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 24px rgba(64,98,232,0.48)}
-      .btn-primary:active{transform:translateY(0)}
-      .btn-outline{background:transparent;color:var(--primary);border:1px solid rgba(64,98,232,0.22)}
-      .btn-outline:hover{border-color:rgba(64,98,232,0.45);background:rgba(64,98,232,0.07);color:#92adf0}
+      .btn-primary{background:var(--primary-gradient);color:#fff;box-shadow:0 4px 20px var(--shadow),0 0 40px rgba(99,102,241,0.2)}
+      .btn-primary:hover:not(:disabled){transform:translateY(-2px) scale(1.02);box-shadow:0 8px 30px var(--shadow),0 0 60px rgba(99,102,241,0.3)}
+      .btn-primary:active{transform:translateY(-1px) scale(1.01)}
+      .btn-outline{background:transparent;color:var(--primary);border:1px solid var(--primary);opacity:0.9}
+      .btn-outline:hover{border-color:var(--primary);background:rgba(99,102,241,0.1);color:var(--text);opacity:1;transform:translateY(-1px)}
       .btn-ghost{background:transparent;color:var(--text-muted);border:none}
-      .btn-ghost:hover{color:var(--text-light);background:var(--hover)}
-      .btn-danger{background:rgba(239,68,68,0.09);color:var(--danger);border:1px solid rgba(239,68,68,0.18)}
-      .btn-danger:hover{background:rgba(239,68,68,0.16)}
-      .btn-success{background:rgba(34,197,94,0.09);color:var(--success);border:1px solid rgba(34,197,94,0.18)}
-      .btn-success:hover{background:rgba(34,197,94,0.18)}
+      .btn-ghost:hover{color:var(--text);background:var(--hover);transform:translateX(2px)}
+      .btn-danger{background:linear-gradient(135deg,rgba(244,63,94,0.15),rgba(244,63,94,0.08));color:var(--danger);border:1px solid rgba(244,63,94,0.3)}
+      .btn-danger:hover{background:linear-gradient(135deg,rgba(244,63,94,0.25),rgba(244,63,94,0.15));transform:translateY(-1px)}
+      .btn-success{background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(16,185,129,0.08));color:var(--success);border:1px solid rgba(16,185,129,0.3)}
+      .btn-success:hover{background:linear-gradient(135deg,rgba(16,185,129,0.25),rgba(16,185,129,0.15));transform:translateY(-1px)}
 
       /* Inputs */
-      .inp{background:var(--input-background);border:1px solid var(--input-border);border-radius:12px;padding:12px 15px;color:var(--text);font-size:14px;font-family:'Inter','Helvetica Neue',Arial,sans-serif;width:100%;outline:none;transition:all 0.18s;letter-spacing:-0.01em}
-      .inp:focus{border-color:var(--input-focus);box-shadow:0 0 0 3px rgba(64,98,232,0.09)}
+      .inp{background:var(--input-background);border:1px solid var(--input-border);border-radius:14px;padding:14px 18px;color:var(--text);font-size:14px;font-family:'Inter','Helvetica Neue',Arial,sans-serif;width:100%;outline:none;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);letter-spacing:-0.005em}
+      .inp:focus{border-color:var(--input-focus);box-shadow:0 0 0 4px var(--input-focus),0 4px 20px var(--shadow);transform:translateY(-1px)}
       .inp::placeholder{color:var(--text-muted)}
       .inp-icon{position:relative}
-      .inp-icon .inp{padding-left:40px}
-      .inp-icon .icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;display:flex;align-items:center}
+      .inp-icon .inp{padding-left:44px}
+      .inp-icon .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;display:flex;align-items:center}
       select.inp option{background:var(--background);color:var(--text)}
-      textarea.inp{resize:vertical;line-height:1.5}
+      textarea.inp{resize:vertical;line-height:1.6;min-height:100px}
 
       /* Tags / Badges */
-      .tag{display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:600;letter-spacing:0.02em;font-family:'Inter',sans-serif}
-      .tag-blue{background:rgba(64,98,232,0.1);color:#6d90e8;border:1px solid rgba(64,98,232,0.18)}
-      .tag-green{background:rgba(34,197,94,0.09);color:var(--success);border:1px solid rgba(34,197,94,0.18)}
-      .tag-amber{background:rgba(234,179,8,0.09);color:var(--warning);border:1px solid rgba(234,179,8,0.18)}
-      .tag-red{background:rgba(239,68,68,0.09);color:var(--danger);border:1px solid rgba(239,68,68,0.18)}
-      .tag-purple{background:rgba(139,92,246,0.09);color:#8b5cf6;border:1px solid rgba(139,92,246,0.18)}
-      .tag-cyan{background:rgba(6,182,212,0.09);color:#06b6d4;border:1px solid rgba(6,182,212,0.18)}
+      .tag{display:inline-flex;align-items:center;gap:5px;border-radius:8px;padding:4px 12px;font-size:11px;font-weight:600;letter-spacing:0.03em;font-family:'Inter',sans-serif;transition:all 0.2s ease}
+      .tag-blue{background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(99,102,241,0.08));color:var(--primary);border:1px solid rgba(99,102,241,0.25)}
+      .tag-green{background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(16,185,129,0.08));color:var(--success);border:1px solid rgba(16,185,129,0.25)}
+      .tag-amber{background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(245,158,11,0.08));color:var(--warning);border:1px solid rgba(245,158,11,0.25)}
+      .tag-red{background:linear-gradient(135deg,rgba(244,63,94,0.15),rgba(244,63,94,0.08));color:var(--danger);border:1px solid rgba(244,63,94,0.25)}
+      .tag-purple{background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.08));color:#8b5cf6;border:1px solid rgba(139,92,246,0.25)}
+      .tag-cyan{background:linear-gradient(135deg,rgba(6,182,212,0.15),rgba(6,182,212,0.08));color:#06b6d4;border:1px solid rgba(6,182,212,0.25)}
 
       /* Animations */
-      @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
       @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-      @keyframes scaleIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
-      @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.45}}
+      @keyframes scaleIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+      @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
       @keyframes spin{to{transform:rotate(360deg)}}
-      @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-      @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-      @keyframes glowPulse{0%,100%{box-shadow:0 0 18px rgba(64,98,232,0.28)}50%{box-shadow:0 0 36px rgba(64,98,232,0.55),0 0 70px rgba(107,79,219,0.28)}}
-      @keyframes bounceIn{0%{opacity:0;transform:scale(0.4)}55%{opacity:1;transform:scale(1.04)}75%{transform:scale(0.96)}100%{transform:scale(1)}}
+      @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+      @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}
+      @keyframes glowPulse{0%,100%{box-shadow:0 0 24px rgba(99,102,241,0.3)}50%{box-shadow:0 0 48px rgba(99,102,241,0.6),0 0 80px rgba(139,92,246,0.3)}}
+      @keyframes bounceIn{0%{opacity:0;transform:scale(0.3)}55%{opacity:1;transform:scale(1.05)}75%{transform:scale(0.97)}100%{transform:scale(1)}}
+      @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 
-      .fade-up{animation:fadeUp 0.45s cubic-bezier(0.4,0,0.2,1) forwards}
-      .fade-in{animation:fadeIn 0.35s ease forwards}
+      .fade-up{animation:fadeUp 0.5s cubic-bezier(0.4,0,0.2,1) forwards}
+      .fade-in{animation:fadeIn 0.4s ease forwards}
 
-      .hover-lift{transition:transform 0.18s,box-shadow 0.18s,border-color 0.18s}
-      .hover-lift:hover{transform:translateY(-3px);box-shadow:0 16px 48px var(--shadow);border-color:rgba(64,98,232,0.28)}
+      .hover-lift{transition:transform 0.25s cubic-bezier(0.4,0,0.2,1),box-shadow 0.25s cubic-bezier(0.4,0,0.2,1),border-color 0.25s cubic-bezier(0.4,0,0.2,1)}
+      .hover-lift:hover{transform:translateY(-4px);box-shadow:0 20px 60px var(--shadow);border-color:var(--primary)}
 
-      .progress-track{height:6px;background:rgba(10,20,38,0.9);border-radius:4px;overflow:hidden}
-      .progress-fill{height:100%;border-radius:4px;transition:width 0.9s cubic-bezier(0.34,1.2,0.64,1)}
+      .progress-track{height:8px;background:rgba(10,20,38,0.9);border-radius:6px;overflow:hidden}
+      .progress-fill{height:100%;border-radius:6px;transition:width 1s cubic-bezier(0.34,1.2,0.64,1)}
 
-      .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(28,44,76,0.5),transparent);margin:14px 0}
-      .avatar{display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:700;font-size:12px;color:#fff;flex-shrink:0;font-family:'Manrope','Inter',sans-serif}
-      .dot-pattern{background-image:radial-gradient(rgba(64,98,232,0.12) 1px,transparent 1px);background-size:22px 22px}
+      .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(99,102,241,0.3),transparent);margin:16px 0}
+      .avatar{display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:700;font-size:12px;color:#fff;flex-shrink:0;font-family:'Manrope','Inter',sans-serif;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+      .dot-pattern{background-image:radial-gradient(rgba(99,102,241,0.15) 1px,transparent 1px);background-size:24px 24px}
       .gradient-text{background:linear-gradient(135deg,#4062e8,#6b4fdb,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     `}</style>
   );
@@ -750,32 +755,33 @@ function LoginScreen({ setScreen, setCurrentUser, showToast }) {
   }, [resendTimer]);
 
   return (
-    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:24, background:"radial-gradient(ellipse at 25% 25%, rgba(79,124,255,0.08) 0%, transparent 55%), radial-gradient(ellipse at 75% 75%, rgba(124,92,252,0.06) 0%, transparent 55%), var(--background)", position:"relative", overflow:"hidden" }}>
-      <div className="dot-pattern" style={{ position:"absolute", inset:0, opacity:0.3 }} />
-      <div style={{ position:"absolute", top:"30%", left:"50%", transform:"translateX(-50%)", width:700, height:700, background:"radial-gradient(circle,rgba(79,124,255,0.06) 0%,transparent 70%)", borderRadius:"50%", pointerEvents:"none" }} />
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:28, background:"radial-gradient(ellipse at 20% 20%, rgba(99,102,241,0.1) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(139,92,246,0.08) 0%, transparent 60%), var(--background)", position:"relative", overflow:"hidden" }}>
+      <div className="dot-pattern" style={{ position:"absolute", inset:0, opacity:0.35 }} />
+      <div style={{ position:"absolute", top:"25%", left:"50%", transform:"translateX(-50%)", width:800, height:800, background:"radial-gradient(circle,rgba(99,102,241,0.08) 0%,transparent 70%)", borderRadius:"50%", pointerEvents:"none" }} />
+      <div style={{ position:"absolute", bottom:"10%", right:"10%", width:400, height:400, background:"radial-gradient(circle,rgba(139,92,246,0.06) 0%,transparent 70%)", borderRadius:"50%", pointerEvents:"none" }} />
 
-      <div style={{ width:"100%", maxWidth:420, position:"relative", animation:"fadeUp 0.5s ease" }}>
+      <div style={{ width:"100%", maxWidth:440, position:"relative", animation:"fadeUp 0.6s cubic-bezier(0.4,0,0.2,1)" }}>
         {/* Back button */}
-        <button className="btn btn-ghost" onClick={() => setScreen("auth-landing")} style={{ marginBottom:24, fontSize:13, padding:"8px 0" }}>
-          <IcArrowLeft size={16} /> Back
+        <button className="btn btn-ghost" onClick={() => setScreen("auth-landing")} style={{ marginBottom:28, fontSize:14, padding:"10px 0", fontWeight:600 }}>
+          <IcArrowLeft size={18} /> Back
         </button>
 
         {/* Logo */}
-        <div style={{ textAlign:"center", marginBottom:40, display:"flex", justifyContent:"center" }}>
-          <Logo size={44} textSize={26} />
+        <div style={{ textAlign:"center", marginBottom:44, display:"flex", justifyContent:"center" }}>
+          <Logo size={48} textSize={28} />
         </div>
 
-        <div className="card-glow" style={{ padding:40, textAlign:"center" }}>
+        <div className="card-glow" style={{ padding:44, textAlign:"center" }}>
           {step === 1 ? (
             <>
-              <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:26, fontWeight:800, color:"var(--text)", marginBottom:6 }}>Welcome back</h2>
-              <p style={{ color:"var(--text-muted)", fontSize:14, marginBottom:32 }}>Sign in to your shop dashboard</p>
+              <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:28, fontWeight:800, color:"var(--text)", marginBottom:8 }}>Welcome back</h2>
+              <p style={{ color:"var(--text-muted)", fontSize:15, marginBottom:36 }}>Sign in to your shop dashboard</p>
 
-              <div style={{ display:"flex", flexDirection:"column", gap:18, textAlign:"left" }}>
+              <div style={{ display:"flex", flexDirection:"column", gap:20, textAlign:"left" }}>
                 <div>
                   <label style={lblStyle}>Email Address</label>
                   <div className="inp-icon">
-                    <span className="icon"><IcMail size={16} color="currentColor" /></span>
+                    <span className="icon"><IcMail size={18} color="currentColor" /></span>
                     <input className="inp" type="email" placeholder="owner@yourshop.com" value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
                   </div>
                 </div>
@@ -797,33 +803,33 @@ function LoginScreen({ setScreen, setCurrentUser, showToast }) {
             </>
           ) : (
             <>
-              <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:26, fontWeight:800, color:"var(--text)", marginBottom:6 }}>Verify OTP</h2>
-              <p style={{ color:"var(--text-muted)", fontSize:14, marginBottom:32 }}>Enter the 6-digit code sent to {form.email}</p>
+              <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:28, fontWeight:800, color:"var(--text)", marginBottom:8 }}>Verify OTP</h2>
+              <p style={{ color:"var(--text-muted)", fontSize:15, marginBottom:36 }}>Enter the 6-digit code sent to {form.email}</p>
 
-              <div style={{ marginBottom:24 }}>
+              <div style={{ marginBottom:28 }}>
                 <OtpInput value={otp} onChange={setOtp} />
               </div>
 
               <button className="btn btn-primary" onClick={verifyOtp} disabled={loading || otp.length !== 6} style={{ padding:"15px", fontSize:15, fontWeight:700, marginTop:4, borderRadius:14, width:"100%" }}>
-                {loading ? <span style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:10 }}><span style={{ width:16, height:16, border:"2px solid rgba(255,255,255,0.3)", borderTopColor:"#fff", borderRadius:"50%", animation:"spin 0.7s linear infinite" }} />Verifying…</span> : <span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Verify & Sign In <IcCheckCircle size={16} color="#ffffff" /></span>}
+                {loading ? <span style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:10 }}><span style={{ width:16, height:16, border:"2px solid rgba(255,255,255,0.3)", borderTopColor:"#fff", borderRadius:"50%", animation:"spin 0.7s linear infinite" }} />Verifying…</span> : <span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Verify & Sign In <IcCheckCircle size={18} color="#ffffff" /></span>}
               </button>
 
-              <div style={{ marginTop:20, fontSize:13, color:"var(--text-muted)" }}>
-                {resendTimer > 0 ? <span>Resend in {resendTimer}s</span> : <span style={{ color:"var(--primary)", cursor:"pointer" }} onClick={sendOtp}>Resend OTP</span>}
+              <div style={{ marginTop:24, fontSize:14, color:"var(--text-muted)" }}>
+                {resendTimer > 0 ? <span>Resend in {resendTimer}s</span> : <span style={{ color:"var(--primary)", cursor:"pointer", fontWeight:600 }} onClick={sendOtp}>Resend OTP</span>}
               </div>
 
-              <button className="btn btn-ghost" onClick={() => setStep(1)} style={{ marginTop:16, fontSize:13 }}>
-                <IcArrowLeft size={14} /> Back to login
+              <button className="btn btn-ghost" onClick={() => setStep(1)} style={{ marginTop:20, fontSize:14, fontWeight:600 }}>
+                <IcArrowLeft size={16} /> Back to login
               </button>
             </>
           )}
 
           {step === 1 && (
             <>
-              <div className="divider" style={{ margin:"24px 0" }} />
-              <p style={{ textAlign:"center", color:"var(--text-muted)", fontSize:13 }}>
+              <div className="divider" style={{ margin:"28px 0" }} />
+              <p style={{ textAlign:"center", color:"var(--text-muted)", fontSize:14 }}>
                 Don't have an account?{" "}
-                <span style={{ color:"var(--primary)", cursor:"pointer", fontWeight:600 }} onClick={() => setScreen("register-choice")}>Create one free</span>
+                <span style={{ color:"var(--primary)", cursor:"pointer", fontWeight:700 }} onClick={() => setScreen("register-choice")}>Create one free</span>
               </p>
             </>
           )}
@@ -845,48 +851,50 @@ function RegisterChoiceScreen({ setScreen }) {
   ];
 
   return (
-    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:24, background:"radial-gradient(ellipse at 50% 0%, rgba(79,124,255,0.1) 0%, transparent 60%), var(--background)" }}>
-      <div style={{ width:"100%", maxWidth:860, animation:"fadeUp 0.5s ease" }}>
-        <button className="btn btn-ghost" onClick={() => setScreen("auth-landing")} style={{ marginBottom:32, fontSize:13, padding:"8px 0" }}><IcArrowLeft size={16} /> Back</button>
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:28, background:"radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.12) 0%, transparent 60%), radial-gradient(ellipse at 50% 100%, rgba(139,92,246,0.08) 0%, transparent 60%), var(--background)", position:"relative", overflow:"hidden" }}>
+      <div className="dot-pattern" style={{ position:"absolute", inset:0, opacity:0.3 }} />
+      <div style={{ width:"100%", maxWidth:900, position:"relative", animation:"fadeUp 0.6s cubic-bezier(0.4,0,0.2,1)" }}>
+        <button className="btn btn-ghost" onClick={() => setScreen("auth-landing")} style={{ marginBottom:32, fontSize:14, padding:"10px 0", fontWeight:600 }}><IcArrowLeft size={18} /> Back</button>
 
         {/* Header */}
-        <div style={{ textAlign:"center", marginBottom:48 }}>
-          <div style={{ display:"inline-flex", alignItems:"center", marginBottom:16 }}>
-            <Logo size={44} textSize={24} />
+        <div style={{ textAlign:"center", marginBottom:52 }}>
+          <div style={{ display:"inline-flex", alignItems:"center", marginBottom:20 }}>
+            <Logo size={48} textSize={26} />
           </div>
-          <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:36, fontWeight:900, color:"#fff", marginBottom:10, letterSpacing:"-1px" }}>Choose your account type</h2>
-          <p style={{ color:"rgba(164,196,255,0.5)", fontSize:16 }}>Select the option that best describes your business</p>
+          <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:38, fontWeight:800, color:"var(--text)", marginBottom:12, letterSpacing:"-0.02em" }}>Choose your account type</h2>
+          <p style={{ color:"var(--text-muted)", fontSize:17 }}>Select the option that best describes your business</p>
         </div>
 
         {/* Role cards */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:24, marginBottom:32 }}>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:28, marginBottom:36 }}>
           {roles.map(r => (
             <div key={r.id} onClick={() => setScreen(r.id)} onMouseEnter={() => setHovered(r.id)} onMouseLeave={() => setHovered(null)}
-              style={{ padding:36, borderRadius:24, border:`2px solid ${hovered===r.id?"rgba(79,124,255,0.5)":"rgba(30,48,80,0.6)"}`, background: hovered===r.id ? "rgba(79,124,255,0.06)" : "rgba(14,24,41,0.6)", cursor:"pointer", transition:"all 0.25s", transform:hovered===r.id?"translateY(-4px)":"translateY(0)", boxShadow:hovered===r.id?"0 20px 60px rgba(79,124,255,0.15)":"none", backdropFilter:"blur(12px)" }}>
-              <div style={{ marginBottom:20, width:56, height:56, borderRadius:18, background:"rgba(79,124,255,0.08)", border:"1px solid rgba(79,124,255,0.2)", display:"flex", alignItems:"center", justifyContent:"center" }}><r.icon size={30} color="#8fb0ff" /></div>
-              <div style={{ marginBottom:6 }}>
-                <h3 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:24, fontWeight:800, color:"#fff", marginBottom:2 }}>{r.title}</h3>
-                <span style={{ fontSize:12, color:"rgba(79,124,255,0.8)", fontWeight:600, letterSpacing:"0.5px" }}>{r.subtitle}</span>
+              className="card hover-lift"
+              style={{ padding:40, cursor:"pointer", borderColor:hovered===r.id?"var(--primary)":"var(--card-border)", background:hovered===r.id ? "linear-gradient(135deg,rgba(99,102,241,0.08),rgba(139,92,246,0.04))" : "" }}>
+              <div style={{ marginBottom:24, width:64, height:64, borderRadius:20, background:"linear-gradient(135deg,rgba(99,102,241,0.12),rgba(139,92,246,0.08))", border:"1px solid rgba(99,102,241,0.25)", display:"flex", alignItems:"center", justifyContent:"center" }}><r.icon size={32} color="var(--primary)" /></div>
+              <div style={{ marginBottom:8 }}>
+                <h3 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:26, fontWeight:800, color:"var(--text)", marginBottom:4 }}>{r.title}</h3>
+                <span style={{ fontSize:13, color:"var(--primary)", fontWeight:600, letterSpacing:"0.5px" }}>{r.subtitle}</span>
               </div>
-              <p style={{ color:"rgba(164,196,255,0.55)", fontSize:14, lineHeight:1.6, marginBottom:24 }}>{r.desc}</p>
-              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+              <p style={{ color:"var(--text-muted)", fontSize:15, lineHeight:1.7, marginBottom:28 }}>{r.desc}</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
                 {r.perks.map(p => (
-                  <div key={p} style={{ display:"flex", alignItems:"center", gap:10, fontSize:13, color:"rgba(164,196,255,0.7)" }}>
-                    <span style={{ width:20, height:20, background:"rgba(52,211,153,0.12)", border:"1px solid rgba(52,211,153,0.25)", borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><IcCheck size={12} color="#34d399" /></span>
+                  <div key={p} style={{ display:"flex", alignItems:"center", gap:12, fontSize:14, color:"var(--text-muted)" }}>
+                    <span style={{ width:24, height:24, background:"linear-gradient(135deg,rgba(16,185,129,0.15),rgba(16,185,129,0.08))", border:"1px solid rgba(16,185,129,0.3)", borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><IcCheck size={14} color="var(--success)" /></span>
                     {p}
                   </div>
                 ))}
               </div>
-              <button className="btn btn-primary" style={{ width:"100%", marginTop:28, padding:"13px", fontWeight:700, fontSize:14, borderRadius:14 }}>
-                <span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Continue as {r.title} <IcArrowRight size={16} color="#ffffff" /></span>
+              <button className="btn btn-primary" style={{ width:"100%", marginTop:32, padding:"14px", fontWeight:700, fontSize:15, borderRadius:14 }}>
+                <span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Continue as {r.title} <IcArrowRight size={18} color="#ffffff" /></span>
               </button>
             </div>
           ))}
         </div>
 
-        <p style={{ textAlign:"center", color:"rgba(164,196,255,0.4)", fontSize:13 }}>
+        <p style={{ textAlign:"center", color:"var(--text-muted)", fontSize:14 }}>
           Already have an account?{" "}
-          <span style={{ color:"#7c9cff", cursor:"pointer", fontWeight:600 }} onClick={() => setScreen("login")}>Sign In</span>
+          <span style={{ color:"var(--primary)", cursor:"pointer", fontWeight:700 }} onClick={() => setScreen("login")}>Sign In</span>
         </p>
       </div>
     </div>
@@ -1469,10 +1477,10 @@ function DashboardScreen({ user, setScreen, setSelectedCategory, cart, logout, n
   const pendingCount = _notifications.filter(n=>!n.read).length;
 
   const statCards = [
-    { label:"Total Savings", value:fmt(totalSaved||user.totalSavings||0), icon: IcDollar, color:"#34d399", bg:"rgba(52,211,153,0.08)", border:"rgba(52,211,153,0.2)", sub:"All time" },
-    { label:"Active Orders", value:activeOrders.length, icon: IcPackage, color:"#4f7cff", bg:"rgba(79,124,255,0.08)", border:"rgba(79,124,255,0.2)", sub:`${myOrders.length} total` },
-    { label:"Collaborations", value:user.collaborations||0, icon: IcHandshake, color:"#a78bfa", bg:"rgba(167,139,250,0.08)", border:"rgba(167,139,250,0.2)", sub:"Partner shops" },
-    { label:"Loyalty Points", value:user.loyaltyPoints||0, icon: IcStar, color:"#fbbf24", bg:"rgba(251,191,36,0.08)", border:"rgba(251,191,36,0.2)", sub:`${user.loyaltyTier||'Bronze'} tier` },
+    { label:"Total Savings", value:fmt(totalSaved||user.totalSavings||0), icon: IcDollar, color:"var(--success)", bg:"linear-gradient(135deg,rgba(16,185,129,0.12),rgba(16,185,129,0.06))", border:"rgba(16,185,129,0.25)", sub:"All time" },
+    { label:"Active Orders", value:activeOrders.length, icon: IcPackage, color:"var(--primary)", bg:"linear-gradient(135deg,rgba(99,102,241,0.12),rgba(99,102,241,0.06))", border:"rgba(99,102,241,0.25)", sub:`${myOrders.length} total` },
+    { label:"Collaborations", value:user.collaborations||0, icon: IcHandshake, color:"var(--primary)", bg:"linear-gradient(135deg,rgba(139,92,246,0.12),rgba(139,92,246,0.06))", border:"rgba(139,92,246,0.25)", sub:"Partner shops" },
+    { label:"Loyalty Points", value:user.loyaltyPoints||0, icon: IcStar, color:"var(--warning)", bg:"linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.06))", border:"rgba(245,158,11,0.25)", sub:`${user.loyaltyTier||'Bronze'} tier` },
   ];
 
   const tabs = [
@@ -1483,27 +1491,27 @@ function DashboardScreen({ user, setScreen, setSelectedCategory, cart, logout, n
   ];
 
   return (
-    <div style={{ minHeight:"100vh", background:"#060b14" }}>
+    <div style={{ minHeight:"100vh", background:"var(--background)" }}>
       <TopBar user={user} setScreen={setScreen} cart={cart} logout={logout} notifOpen={notifOpen} setNotifOpen={setNotifOpen} />
 
-      <div style={{ maxWidth:1280, margin:"0 auto", padding:"32px 24px" }}>
+      <div style={{ maxWidth:1280, margin:"0 auto", padding:"36px 28px" }}>
 
         {/* Welcome hero */}
-        <div style={{ position:"relative", background:"linear-gradient(135deg,rgba(14,24,41,0.9) 0%,rgba(10,18,32,0.95) 100%)", border:"1px solid rgba(30,48,80,0.5)", borderRadius:24, padding:"32px 36px", marginBottom:28, overflow:"hidden" }}>
-          <div style={{ position:"absolute", top:-80, right:-80, width:300, height:300, background:"radial-gradient(circle,rgba(79,124,255,0.1) 0%,transparent 70%)", borderRadius:"50%" }} />
-          <div style={{ position:"absolute", bottom:-60, left:-40, width:200, height:200, background:"radial-gradient(circle,rgba(167,139,250,0.08) 0%,transparent 70%)", borderRadius:"50%" }} />
-          <div className="dot-pattern" style={{ position:"absolute", inset:0, opacity:0.2 }} />
+        <div className="card-glow fade-up" style={{ position:"relative", padding:"40px 44px", marginBottom:32, overflow:"hidden" }}>
+          <div style={{ position:"absolute", top:-100, right:-100, width:400, height:400, background:"radial-gradient(circle,rgba(99,102,241,0.15) 0%,transparent 70%)", borderRadius:"50%" }} />
+          <div style={{ position:"absolute", bottom:-80, left:-60, width:280, height:280, background:"radial-gradient(circle,rgba(139,92,246,0.12) 0%,transparent 70%)", borderRadius:"50%" }} />
+          <div className="dot-pattern" style={{ position:"absolute", inset:0, opacity:0.25 }} />
 
-          <div style={{ position:"relative", display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:20 }}>
+          <div style={{ position:"relative", display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:24 }}>
             <div>
-              <p style={{ color:"rgba(164,196,255,0.5)", fontSize:14, marginBottom:6 }}>{greeting}</p>
-              <h1 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:30, fontWeight:900, color:"#fff", marginBottom:8, letterSpacing:"-1px" }}>{user.shopName}</h1>
-              <p style={{ color:"rgba(164,196,255,0.4)", fontSize:13, marginBottom:16, display:"flex", alignItems:"center", gap:8 }}><IcMapPin size={14} color="#7c9cff" /> {user.location} · Member since {user.joinDate}</p>
-              <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-                <span className="tag tag-green"><IcCheck size={12} color="#22c55e" /> Verified Shop</span>
+              <p style={{ color:"var(--text-muted)", fontSize:15, marginBottom:8, fontWeight:500 }}>{greeting}</p>
+              <h1 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:32, fontWeight:800, color:"var(--text)", marginBottom:10, letterSpacing:"-0.02em" }}>{user.shopName}</h1>
+              <p style={{ color:"var(--text-muted)", fontSize:14, marginBottom:20, display:"flex", alignItems:"center", gap:8 }}><IcMapPin size={15} color="var(--primary)" /> {user.location} · Member since {user.joinDate}</p>
+              <div style={{ display:"flex", gap:10, flexWrap:"wrap" }}>
+                <span className="tag tag-green"><IcCheck size={13} color="var(--success)" /> Verified Shop</span>
                 {user.category && <span className="tag tag-blue">{user.category}</span>}
-                {user.role === "wholesale" && <span className="tag tag-purple"><IcBuilding size={12} color="#8b5cf6" /> Wholesale Seller</span>}
-                <span className="tag tag-amber"><IcUsers size={12} color="#eab308" /> {user.collaborations||0} Collabs</span>
+                {user.role === "wholesale" && <span className="tag tag-purple"><IcBuilding size={13} color="#8b5cf6" /> Wholesale Seller</span>}
+                <span className="tag tag-amber"><IcUsers size={13} color="var(--warning)" /> {user.collaborations||0} Collabs</span>
               </div>
             </div>
             <div style={{ display:"flex", gap:12 }}>
@@ -1518,49 +1526,51 @@ function DashboardScreen({ user, setScreen, setSelectedCategory, cart, logout, n
         </div>
 
         {/* Stat cards */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))", gap:18, marginBottom:32 }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:20, marginBottom:36 }}>
           {statCards.map((s,i) => (
-            <div key={i} className="hover-lift" style={{ padding:24, borderRadius:20, background:s.bg, border:`1px solid ${s.border}`, animation:`fadeUp 0.5s ease ${i*0.07}s both`, cursor:"default" }}>
-              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:16 }}>
-                <span style={{ color:s.color }}><s.icon size={24} color="currentColor" /></span>
-                <span style={{ fontSize:11, color:"rgba(164,196,255,0.4)", fontWeight:500 }}>{s.sub}</span>
+            <div key={i} className="card hover-lift fade-up" style={{ padding:28, animationDelay:`${i*0.08}s`, cursor:"default" }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:18 }}>
+                <span style={{ color:s.color, background:s.bg, padding:10, borderRadius:12 }}><s.icon size={24} color="currentColor" /></span>
+                <span style={{ fontSize:12, color:"var(--text-muted)", fontWeight:600 }}>{s.sub}</span>
               </div>
-              <div style={{ fontSize:30, fontWeight:900, color:s.color, fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", marginBottom:4, animation:`countUp 0.5s ease ${i*0.1+0.3}s both` }}>{s.value}</div>
-              <div style={{ fontSize:13, color:"rgba(164,196,255,0.5)", fontWeight:600 }}>{s.label}</div>
+              <div style={{ fontSize:32, fontWeight:800, color:s.color, fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", marginBottom:6 }}>{s.value}</div>
+              <div style={{ fontSize:14, color:"var(--text-muted)", fontWeight:600 }}>{s.label}</div>
             </div>
           ))}
         </div>
 
         {/* Quick action banner */}
-        <div style={{ background:"linear-gradient(135deg,rgba(79,124,255,0.1),rgba(124,92,252,0.08))", border:"1px solid rgba(79,124,255,0.2)", borderRadius:16, padding:"16px 24px", marginBottom:28, display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:12 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-            <IcTrendUp size={22} color="#8fb0ff" />
+        <div className="card-glow fade-up" style={{ padding:"20px 28px", marginBottom:32, display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:16, animationDelay:"0.4s" }}>
+          <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+            <div style={{ background:"linear-gradient(135deg,rgba(99,102,241,0.15),rgba(139,92,246,0.1))", padding:12, borderRadius:14 }}>
+              <IcTrendUp size={24} color="var(--primary)" />
+            </div>
             <div>
-              <p style={{ fontWeight:700, color:"#c8d4f0", fontSize:14 }}>Rice pool is 86% complete!</p>
-              <p style={{ color:"rgba(164,196,255,0.5)", fontSize:12 }}>70kg more needed to unlock 21% bulk discount</p>
+              <p style={{ fontWeight:700, color:"var(--text)", fontSize:15 }}>Rice pool is 86% complete!</p>
+              <p style={{ color:"var(--text-muted)", fontSize:13 }}>70kg more needed to unlock 21% bulk discount</p>
             </div>
           </div>
-          <button className="btn btn-primary" style={{ padding:"9px 20px", fontSize:13, fontWeight:700 }} onClick={() => setScreen("browse")}><span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Join Pool <IcArrowRight size={14} color="#ffffff" /></span></button>
+          <button className="btn btn-primary" style={{ padding:"12px 24px", fontSize:14, fontWeight:700 }} onClick={() => setScreen("browse")}><span style={{ display:"inline-flex", alignItems:"center", gap:8 }}>Join Pool <IcArrowRight size={16} color="#ffffff" /></span></button>
         </div>
 
         {/* Product Recommendations */}
         {recommendations.length > 0 && (
-          <div style={{ marginBottom:28 }}>
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
-              <h3 style={{ fontSize:16, fontWeight:700, color:"#c8d4f0", display:"flex", alignItems:"center", gap:8 }}><IcStar size={16} color="#fbbf24" /> Recommended for You</h3>
-              <button className="btn btn-ghost" style={{ fontSize:12, padding:"6px 12px" }} onClick={() => setScreen("browse")}>View all</button>
+          <div style={{ marginBottom:32 }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color:"var(--text)", display:"flex", alignItems:"center", gap:10 }}><IcStar size={18} color="var(--warning)" /> Recommended for You</h3>
+              <button className="btn btn-ghost" style={{ fontSize:13, padding:"8px 16px" }} onClick={() => setScreen("browse")}>View all</button>
             </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:16 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))", gap:18 }}>
               {recommendations.slice(0, 4).map(product => (
-                <div key={product._id} className="hover-lift" style={{ borderRadius:16, border:"1px solid rgba(30,48,80,0.5)", background:"rgba(14,24,41,0.7)", padding:16, cursor:"pointer" }} onClick={() => { setSelectedProduct(product); setScreen("product"); }}>
-                  <div style={{ width:"100%", height:120, background:"rgba(10,18,32,0.8)", borderRadius:12, marginBottom:12, overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <div key={product._id} className="card hover-lift" style={{ padding:20, cursor:"pointer" }} onClick={() => { setSelectedProduct(product); setScreen("product"); }}>
+                  <div style={{ width:"100%", height:140, background:"var(--input-background)", borderRadius:14, marginBottom:16, overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"center" }}>
                     {product.image ? (
                       <img src={product.image} alt={product.name} style={{ width:"100%", height:"100%", objectFit:"cover" }} />
                     ) : (
-                      <IcPackage size={32} color="rgba(164,196,255,0.3)" />
+                      <IcPackage size={36} color="var(--text-muted)" />
                     )}
                   </div>
-                  <h4 style={{ fontSize:13, fontWeight:600, color:"#c8d4f0", marginBottom:4, lineHeight:1.3 }}>{product.name}</h4>
+                  <h4 style={{ fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:6, lineHeight:1.3 }}>{product.name}</h4>
                   <p style={{ fontSize:11, color:"rgba(164,196,255,0.4)", marginBottom:8 }}>{product.category}</p>
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
                     <span style={{ fontSize:14, fontWeight:700, color:"#34d399" }}>₹{product.price}</span>
@@ -1751,20 +1761,20 @@ function BrowseScreen({ category, setSelectedCategory, setScreen, setSelectedPro
   if (sort==="discount") prods = [...prods].sort((a,b)=>pct(b.bulkPrice,b.price)-pct(a.bulkPrice,a.price));
 
   return (
-    <div style={{ minHeight:"100vh", background:"#060b14" }}>
+    <div style={{ minHeight:"100vh", background:"var(--background)" }}>
       <TopBar user={currentUser||_session} setScreen={setScreen} cart={cart} logout={logout||(() => setScreen("dashboard"))} notifOpen={notifOpen} setNotifOpen={setNotifOpen} />
-      <div style={{ maxWidth:1280, margin:"0 auto", padding:"32px 24px" }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:28, flexWrap:"wrap", gap:14 }}>
+      <div style={{ maxWidth:1280, margin:"0 auto", padding:"36px 28px" }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:32, flexWrap:"wrap", gap:16 }}>
           <div>
-            <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:28, fontWeight:900, color:"#fff", letterSpacing:"-1px" }}>Browse Products</h2>
-            <p style={{ color:"rgba(164,196,255,0.4)", fontSize:13, marginTop:4 }}>{prods.length} products available for pooling</p>
+            <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:30, fontWeight:800, color:"var(--text)", letterSpacing:"-0.02em" }}>Browse Products</h2>
+            <p style={{ color:"var(--text-muted)", fontSize:14, marginTop:6 }}>{prods.length} products available for pooling</p>
           </div>
-          <div style={{ display:"flex", gap:10, flexWrap:"wrap" }}>
-            <div className="inp-icon" style={{ width:260 }}>
-              <span className="icon" style={{ fontSize:14 }}>🔍</span>
+          <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
+            <div className="inp-icon" style={{ width:280 }}>
+              <span className="icon"><IcSearch size={16} /></span>
               <input className="inp" placeholder="Search products…" value={search} onChange={e=>setSearch(e.target.value)} />
             </div>
-            <select className="inp" style={{ width:160 }} value={sort} onChange={e=>setSort(e.target.value)}>
+            <select className="inp" style={{ width:170 }} value={sort} onChange={e=>setSort(e.target.value)}>
               <option value="default">Sort: Default</option>
               <option value="price-asc">Price: Low → High</option>
               <option value="price-desc">Price: High → Low</option>
@@ -1773,53 +1783,53 @@ function BrowseScreen({ category, setSelectedCategory, setScreen, setSelectedPro
           </div>
         </div>
 
-        <div style={{ display:"flex", gap:8, marginBottom:28, flexWrap:"wrap" }}>
+        <div style={{ display:"flex", gap:10, marginBottom:32, flexWrap:"wrap" }}>
           {CATEGORIES.map(c => (
-            <button key={c} onClick={() => setSelectedCategory(c)} style={{ padding:"8px 18px", borderRadius:24, border:`1.5px solid ${cat===c?"rgba(79,124,255,0.6)":"rgba(30,48,80,0.5)"}`, background:cat===c?"rgba(79,124,255,0.12)":"transparent", color:cat===c?"#7c9cff":"rgba(164,196,255,0.4)", fontSize:13, fontWeight:600, cursor:"pointer", transition:"all 0.2s" }}>{c}</button>
+            <button key={c} onClick={() => setSelectedCategory(c)} className={cat===c?"btn btn-primary":"btn btn-outline"} style={{ padding:"10px 20px", fontSize:13, borderRadius:20, fontWeight:600 }}>{c}</button>
           ))}
         </div>
 
         {prods.length === 0 && (
-          <div style={{ textAlign:"center", padding:"80px 0", color:"rgba(164,196,255,0.3)" }}>
-            <div style={{ fontSize:48, marginBottom:16 }}>📦</div>
-            <h3 style={{ fontSize:20, fontWeight:700, color:"rgba(164,196,255,0.5)", marginBottom:8 }}>No products found</h3>
-            <p style={{ fontSize:14 }}>Try a different search or category</p>
+          <div style={{ textAlign:"center", padding:"100px 0", color:"var(--text-muted)" }}>
+            <div style={{ fontSize:56, marginBottom:20 }}>📦</div>
+            <h3 style={{ fontSize:22, fontWeight:700, color:"var(--text)", marginBottom:10 }}>No products found</h3>
+            <p style={{ fontSize:15 }}>Try a different search or category</p>
           </div>
         )}
 
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(290px,1fr))", gap:20 }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))", gap:24 }}>
           {prods.map((p,i) => {
             const pooled = poolQty(p._id||p.id);
             const progress = Math.min((pooled/p.bulkThreshold)*100, 100);
             const unlocked = pooled >= p.bulkThreshold;
             const disc = pct(p.bulkPrice, p.price);
             return (
-              <div key={p._id||p.id} className="hover-lift" style={{ borderRadius:20, border:`1px solid ${unlocked?"rgba(52,211,153,0.2)":"rgba(30,48,80,0.4)"}`, background:"rgba(14,24,41,0.7)", cursor:"pointer", overflow:"hidden", backdropFilter:"blur(12px)", animation:`fadeUp 0.4s ease ${i*0.03}s both` }} onClick={() => { setSelectedProduct(p); setScreen("product"); }}>
-                <div style={{ position:"relative", height:190, overflow:"hidden", background:"linear-gradient(135deg,#0d1a30,#0a1525)" }}>
-                  <img src={p.image} alt={p.name} style={{ width:"100%", height:"100%", objectFit:"cover", transition:"transform 0.4s ease" }} onError={e=>{e.target.style.display="none";}} onMouseEnter={e=>e.target.style.transform="scale(1.05)"} onMouseLeave={e=>e.target.style.transform="scale(1)"} />
-                  <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(6,11,20,0.7) 0%, transparent 50%)" }} />
-                  {unlocked ? <div style={{ position:"absolute", top:12, right:12 }} className="tag tag-green">🎉 Bulk!</div> : <div style={{ position:"absolute", top:12, right:12 }} className="tag tag-amber">-{disc}% off</div>}
-                  <div style={{ position:"absolute", bottom:12, left:14 }}><span className="tag tag-blue" style={{ fontSize:11 }}>{p.category}</span></div>
+              <div key={p._id||p.id} className="card hover-lift fade-up" style={{ cursor:"pointer", overflow:"hidden", animationDelay:`${i*0.04}s` }} onClick={() => { setSelectedProduct(p); setScreen("product"); }}>
+                <div style={{ position:"relative", height:200, overflow:"hidden", background:"var(--input-background)" }}>
+                  <img src={p.image} alt={p.name} style={{ width:"100%", height:"100%", objectFit:"cover", transition:"transform 0.5s cubic-bezier(0.4,0,0.2,1)" }} onError={e=>{e.target.style.display="none";}} onMouseEnter={e=>e.target.style.transform="scale(1.08)"} onMouseLeave={e=>e.target.style.transform="scale(1)"} />
+                  <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, var(--background) 0%, transparent 60%)" }} />
+                  {unlocked ? <div style={{ position:"absolute", top:14, right:14 }} className="tag tag-green">🎉 Bulk!</div> : <div style={{ position:"absolute", top:14, right:14 }} className="tag tag-amber">-{disc}% off</div>}
+                  <div style={{ position:"absolute", bottom:14, left:14 }}><span className="tag tag-blue" style={{ fontSize:12 }}>{p.category}</span></div>
                 </div>
-                <div style={{ padding:"18px 20px 22px" }}>
-                  <h3 style={{ fontSize:14, fontWeight:700, color:"#c8d4f0", marginBottom:14, lineHeight:1.4 }}>{p.name}</h3>
-                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", marginBottom:14 }}>
+                <div style={{ padding:"20px 24px 24px" }}>
+                  <h3 style={{ fontSize:15, fontWeight:700, color:"var(--text)", marginBottom:16, lineHeight:1.4 }}>{p.name}</h3>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", marginBottom:16 }}>
                     <div>
-                      <p style={{ fontSize:10, color:"rgba(164,196,255,0.3)", marginBottom:2, fontWeight:500, letterSpacing:"0.5px" }}>REGULAR</p>
-                      <p style={{ fontSize:17, fontWeight:800, color:"rgba(164,196,255,0.5)", textDecoration:"line-through", fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif" }}>{fmt(p.price)}</p>
+                      <p style={{ fontSize:11, color:"var(--text-muted)", marginBottom:4, fontWeight:600, letterSpacing:"0.5px" }}>REGULAR</p>
+                      <p style={{ fontSize:18, fontWeight:800, color:"var(--text-muted)", textDecoration:"line-through", fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif" }}>{fmt(p.price)}</p>
                     </div>
                     <div style={{ textAlign:"right" }}>
-                      <p style={{ fontSize:10, color:"#34d399", marginBottom:2, fontWeight:500, letterSpacing:"0.5px" }}>BULK PRICE</p>
-                      <p style={{ fontSize:20, fontWeight:900, color:"#34d399", fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif" }}>{fmt(p.bulkPrice)}</p>
+                      <p style={{ fontSize:11, color:"var(--success)", marginBottom:4, fontWeight:600, letterSpacing:"0.5px" }}>BULK PRICE</p>
+                      <p style={{ fontSize:22, fontWeight:800, color:"var(--success)", fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif" }}>{fmt(p.bulkPrice)}</p>
                     </div>
                   </div>
-                  <div style={{ marginBottom:16 }}>
-                    <div style={{ display:"flex", justifyContent:"space-between", fontSize:11, color:"rgba(164,196,255,0.3)", marginBottom:6 }}>
+                  <div style={{ marginBottom:18 }}>
+                    <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, color:"var(--text-muted)", marginBottom:8, fontWeight:500 }}>
                       <span>Pool Progress</span>
                       <span>{pooled}/{p.bulkThreshold} {p.unit}</span>
                     </div>
-                    <div className="progress-track" style={{ height:6 }}>
-                      <div className="progress-fill" style={{ width:`${progress}%`, background:unlocked?"linear-gradient(90deg,#34d399,#10b981)":"linear-gradient(90deg,#4f7cff,#7c5cfc)" }} />
+                    <div className="progress-track">
+                      <div className="progress-fill" style={{ width:`${progress}%`, background:unlocked?"linear-gradient(90deg,var(--success),#059669)":"linear-gradient(90deg,var(--primary),#8b5cf6)" }} />
                     </div>
                     {!unlocked && <p style={{ fontSize:11, color:"#fbbf24", marginTop:6, fontWeight:500 }}>⚡ {p.bulkThreshold-pooled} {p.unit} more to unlock {disc}% off</p>}
                   </div>
@@ -3034,50 +3044,53 @@ function AdminDashboard({ setTab }) {
   const revenue = _orders.filter(o=>["Paid","Delivered"].includes(o.status)).reduce((s,o)=>s+o.totalAmount,0);
   return (
     <div className="fade-in">
-      <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:26, fontWeight:900, color:"var(--text)", marginBottom:4 }}>Admin Dashboard</h2>
-      <p style={{ color:"var(--text-muted)", marginBottom:28, fontSize:13 }}>{new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"})}</p>
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(190px,1fr))", gap:16, marginBottom:32 }}>
+      <h2 style={{ fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", fontSize:28, fontWeight:800, color:"var(--text)", marginBottom:6 }}>Admin Dashboard</h2>
+      <p style={{ color:"var(--text-muted)", marginBottom:32, fontSize:14 }}>{new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"})}</p>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:20, marginBottom:36 }}>
         {[
-          { label:"Total Orders", value:_orders.length, icon:<IcPackage size={24} />, color:"#4f7cff" },
-          { label:"Pending", value:pending, icon:<IcAlertTriangle size={24} />, color:"#fbbf24", alert:pending>0 },
-          { label:"Revenue", value:fmt(revenue), icon:<IcDollar size={24} />, color:"#34d399" },
-          { label:"Products", value:_products.length, icon:<IcTag size={24} />, color:"#a78bfa" },
-          { label:"Users", value:_users.filter(u=>u.role!=="admin").length, icon:<IcUsers size={24} />, color:"#38bdf8" },
-          { label:"Total Savings Given", value:fmt(_orders.reduce((s,o)=>s+o.saving,0)), icon:<IcAward size={24} />, color:"#f472b6" },
+          { label:"Total Orders", value:_orders.length, icon:<IcPackage size={26} />, color:"var(--primary)", bg:"linear-gradient(135deg,rgba(99,102,241,0.12),rgba(99,102,241,0.06))" },
+          { label:"Pending", value:pending, icon:<IcAlertTriangle size={26} />, color:"var(--warning)", bg:"linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.06))", alert:pending>0 },
+          { label:"Revenue", value:fmt(revenue), icon:<IcDollar size={26} />, color:"var(--success)", bg:"linear-gradient(135deg,rgba(16,185,129,0.12),rgba(16,185,129,0.06))" },
+          { label:"Products", value:_products.length, icon:<IcTag size={26} />, color:"var(--primary)", bg:"linear-gradient(135deg,rgba(139,92,246,0.12),rgba(139,92,246,0.06))" },
+          { label:"Users", value:_users.filter(u=>u.role!=="admin").length, icon:<IcUsers size={26} />, color:"var(--primary)", bg:"linear-gradient(135deg,rgba(59,130,246,0.12),rgba(59,130,246,0.06))" },
+          { label:"Total Savings Given", value:fmt(_orders.reduce((s,o)=>s+o.saving,0)), icon:<IcAward size={26} />, color:"var(--danger)", bg:"linear-gradient(135deg,rgba(244,63,94,0.12),rgba(244,63,94,0.06))" },
         ].map((s,i)=>(
-          <div key={i} className="hover-lift" style={{ padding:22, borderRadius:18, border:`1px solid ${s.alert?"rgba(251,191,36,0.3)":"var(--card-border)"}`, background:"var(--card-background)", backdropFilter:"blur(12px)" }}>
-            <div style={{ display:"flex", justifyContent:"space-between", marginBottom:14 }}><span style={{ color:s.color }}>{s.icon}</span>{s.alert&&<span className="tag tag-amber" style={{ animation:"pulse 2s infinite", fontSize:10 }}>Action</span>}</div>
-            <div style={{ fontSize:22, fontWeight:900, color:s.color, fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", marginBottom:4 }}>{s.value}</div>
-            <div style={{ fontSize:12, color:"var(--text-muted)", fontWeight:600 }}>{s.label}</div>
+          <div key={i} className="card hover-lift fade-up" style={{ padding:28, animationDelay:`${i*0.06}s` }}>
+            <div style={{ display:"flex", justifyContent:"space-between", marginBottom:16 }}>
+              <span style={{ color:s.color, background:s.bg, padding:12, borderRadius:14 }}>{s.icon}</span>
+              {s.alert&&<span className="tag tag-amber" style={{ animation:"pulse 2s infinite", fontSize:11 }}>Action</span>}
+            </div>
+            <div style={{ fontSize:28, fontWeight:800, color:s.color, fontFamily:"'Manrope','Inter','Helvetica Neue',sans-serif", marginBottom:6 }}>{s.value}</div>
+            <div style={{ fontSize:13, color:"var(--text-muted)", fontWeight:600 }}>{s.label}</div>
           </div>
         ))}
       </div>
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20 }}>
-        <div style={{ padding:24, borderRadius:20, border:"1px solid var(--card-border)", background:"var(--card-background)" }}>
-          <h3 style={{ fontSize:15, fontWeight:700, color:"var(--text)", marginBottom:18, display:"flex", alignItems:"center", gap:8 }}><IcAlertTriangle size={18} color="#fbbf24" /> Pending Approvals</h3>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:24 }}>
+        <div className="card" style={{ padding:28 }}>
+          <h3 style={{ fontSize:17, fontWeight:700, color:"var(--text)", marginBottom:20, display:"flex", alignItems:"center", gap:10 }}><IcAlertTriangle size={20} color="var(--warning)" /> Pending Approvals</h3>
           {_orders.filter(o=>o.status==="Pending").map(o=>(
-            <div key={o.id} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"10px 0", borderBottom:"1px solid var(--card-border)" }}>
-              <div><p style={{ fontSize:13, fontWeight:700, color:"var(--text)" }}>{o.id}</p><p style={{ fontSize:12, color:"var(--text-muted)" }}>{o.product}</p></div>
-              <button className="btn btn-outline" style={{ padding:"6px 14px", fontSize:12 }} onClick={()=>setTab("orders")}>Review</button>
+            <div key={o.id} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"12px 0", borderBottom:"1px solid var(--card-border)" }}>
+              <div><p style={{ fontSize:14, fontWeight:700, color:"var(--text)" }}>{o.id}</p><p style={{ fontSize:13, color:"var(--text-muted)" }}>{o.product}</p></div>
+              <button className="btn btn-outline" style={{ padding:"8px 16px", fontSize:13 }} onClick={()=>setTab("orders")}>Review</button>
             </div>
           ))}
-          {pending===0 && <p style={{ color:"var(--text-muted)", fontSize:13, display:"flex", alignItems:"center", gap:6 }}><IcCheckCircle size={16} color="#22c55e" /> All clear! No pending orders</p>}
+          {pending===0 && <p style={{ color:"var(--text-muted)", fontSize:14, display:"flex", alignItems:"center", gap:8 }}><IcCheckCircle size={18} color="var(--success)" /> All clear! No pending orders</p>}
         </div>
-        <div style={{ padding:24, borderRadius:20, border:"1px solid var(--card-border)", background:"var(--card-background)" }}>
-          <h3 style={{ fontSize:15, fontWeight:700, color:"var(--text)", marginBottom:18, display:"flex", alignItems:"center", gap:8 }}><IcTrendUp size={18} color="#4f7cff" /> Pool Activity</h3>
+        <div className="card" style={{ padding:28 }}>
+          <h3 style={{ fontSize:17, fontWeight:700, color:"var(--text)", marginBottom:20, display:"flex", alignItems:"center", gap:10 }}><IcTrendUp size={20} color="var(--primary)" /> Pool Activity</h3>
           {[...new Set(_poolCart.map(e=>e.productId))].map(pid => {
             const p = _products.find(pr=>pr.id===pid||(pr._id||"")===pid);
             if (!p) return null;
             const total = _poolCart.filter(e=>e.productId===pid).reduce((s,e)=>s+e.qty,0);
             const prog = Math.min((total/p.bulkThreshold)*100,100);
             return (
-              <div key={pid} style={{ marginBottom:14 }}>
-                <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:5 }}>
-                  <span style={{ color:"rgba(164,196,255,0.5)" }}>{p.name?.slice(0,24)}…</span>
-                  <span style={{ color:"#4f7cff", fontWeight:600 }}>{Math.round(prog)}%</span>
+              <div key={pid} style={{ marginBottom:18 }}>
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:13, marginBottom:8 }}>
+                  <span style={{ color:"var(--text-muted)", fontWeight:500 }}>{p.name?.slice(0,26)}…</span>
+                  <span style={{ color:"var(--primary)", fontWeight:700 }}>{Math.round(prog)}%</span>
                 </div>
-                <div className="progress-track" style={{ height:6 }}>
-                  <div className="progress-fill" style={{ width:`${prog}%`, background:prog>=100?"linear-gradient(90deg,#34d399,#10b981)":"linear-gradient(90deg,#4f7cff,#7c5cfc)" }} />
+                <div className="progress-track">
+                  <div className="progress-fill" style={{ width:`${prog}%`, background:prog>=100?"linear-gradient(90deg,var(--success),#059669)":"linear-gradient(90deg,var(--primary),#8b5cf6)" }} />
                 </div>
               </div>
             );
